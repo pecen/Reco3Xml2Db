@@ -3,7 +3,48 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.902
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reco3Xml2Db.Dal", "Reco3Xml2Db.Dal\Reco3Xml2Db.Dal.csproj", "{0728DEB0-011D-44AE-8730-6858DF910C40}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reco3Xml2Db.DalSql", "Reco3Xml2Db.DalSql\Reco3Xml2Db.DalSql.csproj", "{7871F66F-5750-4A27-B35B-6E2AAB09863C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reco3Xml2Db.Library", "Reco3Xml2Db.Library\Reco3Xml2Db.Library.csproj", "{038CA255-57D8-4E6F-B353-E4D58F5A3DBF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{142F08C1-A94B-4930-B5A1-ED618DD50B20}"
+	ProjectSection(SolutionItems) = preProject
+		nuget.config = nuget.config
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reco3Xml2Db.UI.Shell", "Reco3Xml2Db.UI.Shell\Reco3Xml2Db.UI.Shell.csproj", "{8F12C48D-CF46-4D96-9C44-B63E5296CD67}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reco3Xml2Db.UI.Module", "Reco3Xml2Db.UI.Module\Reco3Xml2Db.UI.Module.csproj", "{673DF9DC-DF4A-4B13-AE27-6E15D6AF827A}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0728DEB0-011D-44AE-8730-6858DF910C40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0728DEB0-011D-44AE-8730-6858DF910C40}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0728DEB0-011D-44AE-8730-6858DF910C40}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0728DEB0-011D-44AE-8730-6858DF910C40}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7871F66F-5750-4A27-B35B-6E2AAB09863C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7871F66F-5750-4A27-B35B-6E2AAB09863C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7871F66F-5750-4A27-B35B-6E2AAB09863C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7871F66F-5750-4A27-B35B-6E2AAB09863C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{038CA255-57D8-4E6F-B353-E4D58F5A3DBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{038CA255-57D8-4E6F-B353-E4D58F5A3DBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{038CA255-57D8-4E6F-B353-E4D58F5A3DBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{038CA255-57D8-4E6F-B353-E4D58F5A3DBF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F12C48D-CF46-4D96-9C44-B63E5296CD67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F12C48D-CF46-4D96-9C44-B63E5296CD67}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F12C48D-CF46-4D96-9C44-B63E5296CD67}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F12C48D-CF46-4D96-9C44-B63E5296CD67}.Release|Any CPU.Build.0 = Release|Any CPU
+		{673DF9DC-DF4A-4B13-AE27-6E15D6AF827A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{673DF9DC-DF4A-4B13-AE27-6E15D6AF827A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{673DF9DC-DF4A-4B13-AE27-6E15D6AF827A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{673DF9DC-DF4A-4B13-AE27-6E15D6AF827A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection

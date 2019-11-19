@@ -1,0 +1,9 @@
+﻿<prism:PrismApplication x:Class="Reco3Xml2Db.UI.Shell.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	     xmlns:prism="http://prismlibrary.com/"
+             xmlns:local="clr-namespace:Reco3Xml2Db.UI.Shell">
+    <Application.Resources>
+         
+    </Application.Resources>
+</prism:PrismApplication>
