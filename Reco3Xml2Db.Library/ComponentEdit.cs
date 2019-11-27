@@ -1,6 +1,7 @@
 ﻿using Csla;
 using Reco3Xml2Db.Dal;
 using Reco3Xml2Db.Dal.Dto;
+using Reco3Xml2Db.Dal.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -60,7 +61,7 @@ namespace Reco3Xml2Db.Library
     }
 
     private void DataPortal_Fetch() {
-      using (var dalManager = DalFactory.GetManager()) {
+      using (var dalManager = DalFactory.GetManager(DalManagerTypes.DalManagerSqlServer)) {
         var dal = dalManager.GetProvider<IComponentDal>();
         var data = dal.FetchComponents();
         using (BypassPropertyChecks) {
@@ -73,7 +74,7 @@ namespace Reco3Xml2Db.Library
     }
 
     protected override void DataPortal_Insert() {
-      using (var ctx = DalFactory.GetManager()) {
+      using (var ctx = DalFactory.GetManager(DalManagerTypes.DalManagerSqlServer)) {
         var dal = ctx.GetProvider<Dal.IComponentDal>();
         using (BypassPropertyChecks) {
           var item = new ComponentDto {

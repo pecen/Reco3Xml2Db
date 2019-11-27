@@ -50,11 +50,14 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\GetDbCommand.cs" />
     <Compile Include="Commands\GetFilenameCommand.cs" />
     <Compile Include="Commands\ImportXmlCommand.cs" />
+    <Compile Include="Commands\SaveSettingsCommand.cs" />
     <Compile Include="Converters\BoolToGreyForegroundConverter.cs" />
     <Compile Include="Converters\BoolToItalicConverter.cs" />
     <Compile Include="Converters\BoolToOpacityConverter.cs" />
+    <Compile Include="Enums\Authentication.cs" />
     <Compile Include="Enums\ComponentType.cs" />
     <Compile Include="Enums\PDSource.cs" />
     <Compile Include="Enums\PDStatus.cs" />
@@ -83,6 +86,7 @@
     <Compile Include="Views\Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Wrappers\DbConnectionDialog.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

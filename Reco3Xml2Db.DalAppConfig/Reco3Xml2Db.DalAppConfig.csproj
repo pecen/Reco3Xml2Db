@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{0728DEB0-011D-44AE-8730-6858DF910C40}</ProjectGuid>
+    <ProjectGuid>{4DA4A7E6-4755-447E-8600-8763267F26E9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Reco3Xml2Db.Dal</RootNamespace>
-    <AssemblyName>Reco3Xml2Db.Dal</AssemblyName>
+    <RootNamespace>Reco3Xml2Db.DalAppConfig</RootNamespace>
+    <AssemblyName>Reco3Xml2Db.DalAppConfig</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -21,7 +21,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -32,9 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Csla">
-      <HintPath>..\..\lib\Csla.5.0.1\lib\net461\Csla.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -45,15 +41,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DalFactory.cs" />
-    <Compile Include="Dto\AppConfigDto.cs" />
-    <Compile Include="Dto\ComponentDto.cs" />
-    <Compile Include="Enums\DalManagerTypes.cs" />
-    <Compile Include="IAppConfigDal.cs" />
-    <Compile Include="IComponentDal.cs" />
-    <Compile Include="IDalManager.cs" />
+    <Compile Include="DalManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Reco3Xml2Db.Dal\Reco3Xml2Db.Dal.csproj">
+      <Project>{0728DEB0-011D-44AE-8730-6858DF910C40}</Project>
+      <Name>Reco3Xml2Db.Dal</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

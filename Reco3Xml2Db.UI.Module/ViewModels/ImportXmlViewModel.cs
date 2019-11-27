@@ -59,9 +59,9 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       PDStatusList = new ObservableCollection<string>();
       ComponentTypeList = new ObservableCollection<string>();
 
-      InitiateControlValues<PDSource>(PDSourceList);
-      InitiateControlValues<PDStatus>(PDStatusList);
-      InitiateControlValues<ComponentType>(ComponentTypeList);
+      GetEnumValues<PDSource>(PDSourceList);
+      GetEnumValues<PDStatus>(PDStatusList);
+      GetEnumValues<ComponentType>(ComponentTypeList);
 
       GetFilenameCommand = new DelegateCommand(GFCExecute);
       ImportXmlCommand = new DelegateCommand(IXCExecute, IXCCanExecute)
@@ -99,23 +99,10 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
         && FileName.Substring(FileName.Length - 4) == ".xml";
     }
 
-    private void InitiateControlValues<T>(ObservableCollection<string> list) where T : Enum {
-      foreach (T item in Enum.GetValues(typeof(T))) {
-        var description = EnumExtensions.GetEnumDescription(item);
-
-        if (string.IsNullOrEmpty(description)) {
-          list.Add(item.ToString());
-        }
-        else {
-          list.Add(description);
-        }
-      }
-    }
-
     private string GetFileName() {
       OpenFileDialog openFileDialog = new OpenFileDialog();
       openFileDialog.InitialDirectory = "c:\\";
-      openFileDialog.Filter = "xml files (*.xml)|*.xml|All files (*.*)|*.*";
+      openFileDialog.Filter = "Xml files (*.xml)|*.xml|All files (*.*)|*.*";
       openFileDialog.FilterIndex = 1;
       openFileDialog.RestoreDirectory = true;
 

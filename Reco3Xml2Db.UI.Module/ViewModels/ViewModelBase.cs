@@ -1,7 +1,9 @@
 ﻿using Prism.Mvvm;
 using Prism.Regions;
+using Reco3Xml2Db.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,6 +26,19 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
 
     public void OnNavigatedTo(NavigationContext navigationContext) {
 
+    }
+
+    protected void GetEnumValues<T>(ObservableCollection<string> list) where T : Enum {
+      foreach (T item in Enum.GetValues(typeof(T))) {
+        var description = EnumExtensions.GetEnumDescription(item);
+
+        if (string.IsNullOrEmpty(description)) {
+          list.Add(item.ToString());
+        }
+        else {
+          list.Add(description);
+        }
+      }
     }
   }
 }
