@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Reco3Xml2Db.Dal
 {
-    public interface IDalManager
+    public interface IDalManager : IDisposable
     {
         T GetProvider<T>() where T : class;
     }

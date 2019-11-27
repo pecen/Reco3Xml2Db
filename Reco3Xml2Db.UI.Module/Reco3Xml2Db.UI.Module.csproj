@@ -23,6 +23,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -49,6 +50,16 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\GetFilenameCommand.cs" />
+    <Compile Include="Commands\ImportXmlCommand.cs" />
+    <Compile Include="Converters\BoolToGreyForegroundConverter.cs" />
+    <Compile Include="Converters\BoolToItalicConverter.cs" />
+    <Compile Include="Converters\BoolToOpacityConverter.cs" />
+    <Compile Include="Enums\ComponentType.cs" />
+    <Compile Include="Enums\PDSource.cs" />
+    <Compile Include="Enums\PDStatus.cs" />
+    <Compile Include="Enums\TabNames.cs" />
+    <Compile Include="Enums\WindowRegions.cs" />
     <Compile Include="Reco3Xml2DbModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -63,10 +74,14 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="ViewModels\ViewAViewModel.cs" />
+    <Compile Include="ViewModels\ImportXmlViewModel.cs" />
+    <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
-    <Compile Include="Views\ViewA.xaml.cs">
-      <DependentUpon>ViewA.xaml</DependentUpon>
+    <Compile Include="Views\ImportXml.xaml.cs">
+      <DependentUpon>ImportXml.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Settings.xaml.cs">
+      <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -96,10 +111,24 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Views\ViewA.xaml">
+    <Page Include="Views\ImportXml.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Settings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Reco3Xml2Db.Library\Reco3Xml2Db.Library.csproj">
+      <Project>{038CA255-57D8-4E6F-B353-E4D58F5A3DBF}</Project>
+      <Name>Reco3Xml2Db.Library</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Reco3Xml2Db.Utilities\Reco3Xml2Db.Utilities.csproj">
+      <Project>{94403781-EEA0-4F56-9522-8B8C6D1178C7}</Project>
+      <Name>Reco3Xml2Db.Utilities</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

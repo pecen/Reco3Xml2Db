@@ -1,0 +1,105 @@
+﻿<UserControl
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:prism="http://prismlibrary.com/"  
+    xmlns:converters="clr-namespace:Reco3Xml2Db.UI.Module.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="Reco3Xml2Db.UI.Module.Views.Settings"             
+    prism:ViewModelLocator.AutoWireViewModel="True" d:DesignWidth="450" d:DesignHeight="300">
+    <UserControl.Resources>
+        <converters:BoolToOpacityConverter x:Key="BoolToOpacity" />
+        <converters:BoolToGreyForegroundConverter x:Key="BoolToForeground" />
+        <converters:BoolToItalicConverter x:Key="BoolToItalic" />
+
+        <Style TargetType="ToolTip">
+            <Setter Property="Background" Value="LightYellow" />
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="100*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Label
+            Grid.ColumnSpan="3"
+            Margin="0,5"
+            Content="{Binding PageHeader}"
+            FontSize="20" />
+        <TextBlock
+            Grid.Row="1"
+            Margin="5,5,0,5"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Center"
+            Text="Source: " />
+        <ComboBox
+            Grid.Row="1"
+            Grid.Column="1"
+            Margin="5,5,0,5"
+            ItemsSource="{Binding DalManagers}"
+            SelectedIndex="{Binding DalManagerInUse}"
+            ToolTip="Choose where the Authorization code should be stored after it has been used.&#x0a;If SQL Server is used, don't forget to set 'Database in use'&#x0a;below on this page.">
+
+            <!--<ComboBoxItem Content="File" />
+            <ComboBoxItem Content="SQL Server" />-->
+        </ComboBox>
+        <TextBlock
+            Grid.Row="3"
+            Margin="5,5,0,5"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Center"
+            Text="XML File Path: " />
+        <TextBox
+            Grid.Row="3"
+            Grid.Column="1"
+            Margin="5,5,0,5"
+            Text="{Binding BaseUri, UpdateSourceTrigger=PropertyChanged}" />
+        <TextBlock
+            Grid.Row="4"
+            Margin="5,5,0,5"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Center"
+            Text="Client Secret: " />
+        <TextBox
+            Grid.Row="4"
+            Grid.Column="1"
+            Margin="5,5,0,5"
+            Text="{Binding ClientSecret, UpdateSourceTrigger=PropertyChanged}" />
+        <TextBlock
+            Grid.Row="2"
+            Margin="5,5,0,5"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Center"
+            FontStyle="{Binding IsDatabase, Converter={StaticResource BoolToItalic}}"
+            Foreground="{Binding IsDatabase, Converter={StaticResource BoolToForeground}}"
+            Text="Database in use: " />
+        <ComboBox
+            Grid.Row="2"
+            Grid.Column="1"
+            Margin="5,5,0,5"
+            FontStyle="{Binding IsDatabase, Converter={StaticResource BoolToItalic}}"
+            Foreground="{Binding IsDatabase, Converter={StaticResource BoolToForeground}}"
+            IsEnabled="{Binding IsDatabase}"
+            ItemsSource="{Binding SqlServerInstances}"
+            SelectedIndex="{Binding DbInUse}"
+            ToolTip="When SQLServer is used as DAL Manager, choose if the AuthorizationCode&#x0a;should be stored locally, or on a server." />
+        <Button
+            Grid.Row="3"
+            Grid.RowSpan="2"
+            Grid.Column="2"
+            Width="75"
+            Height="53"
+            Margin="5,5,10,5"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            Command="{Binding SaveConfigCommand}"
+            Content="Save" />
+    </Grid>
+</UserControl>

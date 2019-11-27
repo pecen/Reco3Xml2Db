@@ -4,7 +4,13 @@
         xmlns:prism="http://prismlibrary.com/"
         prism:ViewModelLocator.AutoWireViewModel="True"
         Title="{Binding Title}" Height="350" Width="525">
+    <Window.Resources>
+        <Style TargetType="TabItem">
+            <Setter Property="Header" Value="{Binding DataContext.Title}" />
+        </Style>
+    </Window.Resources>
     <Grid>
-        <ContentControl prism:RegionManager.RegionName="ContentRegion" />
+        <!--<ContentControl prism:RegionManager.RegionName="{Binding ContentRegion}" />-->
+        <TabControl prism:RegionManager.RegionName="{Binding TabRegion}" />
     </Grid>
 </Window>

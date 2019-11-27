@@ -79,7 +79,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="ComponentEdit.cs" />
+    <Compile Include="ComponentEditList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -88,6 +89,12 @@
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\..\lib\Csla.5.0.1\analyzers\c#\Csla.Analyzers.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Reco3Xml2Db.Dal\Reco3Xml2Db.Dal.csproj">
+      <Project>{0728DEB0-011D-44AE-8730-6858DF910C40}</Project>
+      <Name>Reco3Xml2Db.Dal</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
