@@ -10,10 +10,10 @@ namespace Reco3Xml2Db.Dal.Dto {
     public string PDNumber { get; set; }
     public DateTime DownloadedTimestamp { get; set; }
     public string Description { get; set; }
-    public int Status { get; set; }
+    public int PDStatus { get; set; }
     public int ComponentType { get; set; }
     public string Xml { get; set; }
-    public int Source { get; set; }
-    public int SourceComponentId { get; set; }
+    public int PDSource { get; set; }
+    public int? SourceComponentId { get; set; }
   }
 }

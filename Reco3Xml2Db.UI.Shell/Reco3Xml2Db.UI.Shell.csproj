@@ -89,7 +89,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -106,8 +108,27 @@
     <PackageReference Include="Prism.Wpf">
       <Version>7.2.0.1367</Version>
     </PackageReference>
+    <PackageReference Include="winapicp">
+      <Version>1.1.0</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Reco3Xml2Db.DalAppConfig\Reco3Xml2Db.DalAppConfig.csproj">
+      <Project>{4da4a7e6-4755-447e-8600-8763267f26e9}</Project>
+      <Name>Reco3Xml2Db.DalAppConfig</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Reco3Xml2Db.DalSql\Reco3Xml2Db.DalSql.csproj">
+      <Project>{7871f66f-5750-4a27-b35b-6e2aab09863c}</Project>
+      <Name>Reco3Xml2Db.DalSql</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Reco3Xml2Db.Dal\Reco3Xml2Db.Dal.csproj">
+      <Project>{0728deb0-011d-44ae-8730-6858df910c40}</Project>
+      <Name>Reco3Xml2Db.Dal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Reco3Xml2Db.Library\Reco3Xml2Db.Library.csproj">
+      <Project>{038ca255-57d8-4e6f-b353-e4d58f5a3dbf}</Project>
+      <Name>Reco3Xml2Db.Library</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Reco3Xml2Db.UI.Module\Reco3Xml2Db.UI.Module.csproj">
       <Project>{673DF9DC-DF4A-4B13-AE27-6E15D6AF827A}</Project>
       <Name>Reco3Xml2Db.UI.Module</Name>

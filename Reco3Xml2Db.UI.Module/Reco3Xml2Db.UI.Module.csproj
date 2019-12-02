@@ -50,10 +50,13 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\GetDbCommand.cs" />
+    <Compile Include="Commands\GetComponentsWSamePDNumberCommand.cs" />
+    <Compile Include="Commands\GetFilePathCommand.cs" />
     <Compile Include="Commands\GetFilenameCommand.cs" />
+    <Compile Include="Commands\GetSettingsCommand.cs" />
     <Compile Include="Commands\ImportXmlCommand.cs" />
     <Compile Include="Commands\SaveSettingsCommand.cs" />
+    <Compile Include="Commands\UpdateFilePathCommand.cs" />
     <Compile Include="Converters\BoolToGreyForegroundConverter.cs" />
     <Compile Include="Converters\BoolToItalicConverter.cs" />
     <Compile Include="Converters\BoolToOpacityConverter.cs" />
@@ -113,6 +116,9 @@
     <PackageReference Include="Unity">
       <Version>5.11.1</Version>
     </PackageReference>
+    <PackageReference Include="winapicp">
+      <Version>1.1.0</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <Page Include="Views\ImportXml.xaml">
@@ -125,6 +131,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Reco3Xml2Db.Dal\Reco3Xml2Db.Dal.csproj">
+      <Project>{0728deb0-011d-44ae-8730-6858df910c40}</Project>
+      <Name>Reco3Xml2Db.Dal</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Reco3Xml2Db.Library\Reco3Xml2Db.Library.csproj">
       <Project>{038CA255-57D8-4E6F-B353-E4D58F5A3DBF}</Project>
       <Name>Reco3Xml2Db.Library</Name>

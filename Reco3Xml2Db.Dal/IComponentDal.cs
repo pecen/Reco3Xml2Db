@@ -7,7 +7,10 @@ using System.Threading.Tasks;
 
 namespace Reco3Xml2Db.Dal {
   public interface IComponentDal {
-    List<ComponentDto> FetchComponents();
+    List<ComponentDto> Fetch();
+    ComponentDto Fetch(string pdNumber);
+    List<ComponentDto> FetchAllWSamePDNumber(string pdNumber);
     void Insert(ComponentDto data);
+    bool Exists(string pdNumber);
   }
 }

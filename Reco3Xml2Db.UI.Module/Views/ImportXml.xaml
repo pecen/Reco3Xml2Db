@@ -23,6 +23,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -90,7 +91,7 @@
             Grid.ColumnSpan="2"
             Margin="0,5,0,5"
             ItemsSource="{Binding PDStatusList}"
-            SelectedIndex="0" />
+            SelectedIndex="{Binding SelectedPDStatus}" />
 
         <ComboBox
             Grid.Row="3"
@@ -98,7 +99,7 @@
             Grid.ColumnSpan="2"
             Margin="0,5,0,5"
             ItemsSource="{Binding PDSourceList}"
-            SelectedIndex="0" />
+            SelectedIndex="{Binding SelectedPDSource}" />
 
         <ComboBox
             Grid.Row="4"
@@ -106,7 +107,22 @@
             Grid.ColumnSpan="2"
             Margin="0,5,0,5"
             ItemsSource="{Binding ComponentTypeList}"
-            SelectedIndex="0" />
+            SelectedIndex="{Binding SelectedComponentType}" />
+
+        <TextBlock
+            Grid.Row="5"
+            Margin="5,5,0,5"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Text="Description: " />
+
+        <TextBox
+            Grid.Row="5"
+            Grid.Column="1"
+            Grid.ColumnSpan="2"
+            Height="100"
+            Margin="0,5,0,5"
+            Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" />
 
         <Button
             Grid.Row="3"

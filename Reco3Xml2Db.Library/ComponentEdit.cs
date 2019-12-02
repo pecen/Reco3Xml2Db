@@ -15,28 +15,58 @@ namespace Reco3Xml2Db.Library
     {
     #region Properties
 
-    public static readonly PropertyInfo<string> DalManagerTypeProperty = RegisterProperty<string>(c => c.Xml);
+    public static readonly PropertyInfo<int> ComponentIdProperty = RegisterProperty<int>(c => c.ComponentId);
+    public int ComponentId {
+      get { return GetProperty(ComponentIdProperty); }
+      set { SetProperty(ComponentIdProperty, value); }
+    }
+
+    public static readonly PropertyInfo<string> PDNumberProperty = RegisterProperty<string>(c => c.PDNumber);
+    public string PDNumber {
+      get { return GetProperty(PDNumberProperty); }
+      set { SetProperty(PDNumberProperty, value); }
+    }
+
+    public static readonly PropertyInfo<DateTime> DownloadedTimestampProperty = RegisterProperty<DateTime>(c => c.DownloadedTimestamp);
+    public DateTime DownloadedTimestamp {
+      get { return GetProperty(DownloadedTimestampProperty); }
+      set { SetProperty(DownloadedTimestampProperty, value); }
+    }
+
+    public static readonly PropertyInfo<string> DescriptionProperty = RegisterProperty<string>(c => c.Description);
+    public string Description {
+      get { return GetProperty(DescriptionProperty); }
+      set { SetProperty(DescriptionProperty, value); }
+    }
+
+    public static readonly PropertyInfo<int> PDStatusProperty = RegisterProperty<int>(c => c.PDStatus);
+    public int PDStatus {
+      get { return GetProperty(PDStatusProperty); }
+      set { SetProperty(PDStatusProperty, value); }
+    }
+
+    public static readonly PropertyInfo<int> ComponentTypeProperty = RegisterProperty<int>(c => c.ComponentType);
+    public int ComponentType {
+      get { return GetProperty(ComponentTypeProperty); }
+      set { SetProperty(ComponentTypeProperty, value); }
+    }
+
+    public static readonly PropertyInfo<string> XmlProperty = RegisterProperty<string>(c => c.Xml);
     public string Xml {
-      get { return GetProperty(DalManagerTypeProperty); }
-      set { SetProperty(DalManagerTypeProperty, value); }
+      get { return GetProperty(XmlProperty); }
+      set { SetProperty(XmlProperty, value); }
     }
 
-    public static readonly PropertyInfo<string> BaseUriProperty = RegisterProperty<string>(c => c.BaseUri);
-    public string BaseUri {
-      get { return GetProperty(BaseUriProperty); }
-      set { SetProperty(BaseUriProperty, value); }
+    public static readonly PropertyInfo<int> PDSourceProperty = RegisterProperty<int>(c => c.PDSource);
+    public int PDSource {
+      get { return GetProperty(PDSourceProperty); }
+      set { SetProperty(PDSourceProperty, value); }
     }
 
-    public static readonly PropertyInfo<string> ClientSecretProperty = RegisterProperty<string>(c => c.ClientSecret);
-    public string ClientSecret {
-      get { return GetProperty(ClientSecretProperty); }
-      set { SetProperty(ClientSecretProperty, value); }
-    }
-
-    public static readonly PropertyInfo<string> DbInUseProperty = RegisterProperty<string>(c => c.DbInUse);
-    public string DbInUse {
-      get { return GetProperty(DbInUseProperty); }
-      set { SetProperty(DbInUseProperty, value); }
+    public static readonly PropertyInfo<int?> SourceComponentIdProperty = RegisterProperty<int?>(c => c.SourceComponentId);
+    public int? SourceComponentId {
+      get { return GetProperty(SourceComponentIdProperty); }
+      set { SetProperty(SourceComponentIdProperty, value); }
     }
 
     #endregion
@@ -47,8 +77,26 @@ namespace Reco3Xml2Db.Library
       return DataPortal.Create<ComponentEdit>();
     }
 
-    public static ComponentEdit GetConfigSettings() {
-      return DataPortal.Fetch<ComponentEdit>();
+    /// <summary>
+    /// Fetch first occurence of existing component from the database
+    /// </summary>
+    /// <param name="pdNumber"></param>
+    /// <returns></returns>
+    public static ComponentEdit GetComponent(string pdNumber) {
+      return DataPortal.Fetch<ComponentEdit>(pdNumber);
+    }
+
+    public static bool Exists(string pdNumber) {
+      var cmd = DataPortal.Create<PDNumberExistsCmd>();
+      cmd.PDNumber = pdNumber;
+      cmd = DataPortal.Execute<PDNumberExistsCmd>(cmd);
+
+      if (!string.IsNullOrEmpty(cmd.ErrorMessage)) {
+        //ErrorMessage = cmd.ErrorMessage;
+        return false;
+      }
+
+      return cmd.PDNumberExists;
     }
 
     #endregion
@@ -60,15 +108,22 @@ namespace Reco3Xml2Db.Library
       base.DataPortal_Create();
     }
 
-    private void DataPortal_Fetch() {
+    private void DataPortal_Fetch(string criteria) {
       using (var dalManager = DalFactory.GetManager(DalManagerTypes.DalManagerSqlServer)) {
         var dal = dalManager.GetProvider<IComponentDal>();
-        var data = dal.FetchComponents();
-        using (BypassPropertyChecks) {
-          //DalManagerType = data.DalManagerType;
-          //BaseUri = data.BaseUri;
-          //ClientSecret = data.ClientSecret;
-          //DbInUse = data.DbInUse;
+        var data = dal.Fetch(criteria);
+        if (data != null) {
+          using (BypassPropertyChecks) {
+            ComponentId = data.ComponentId;
+            PDNumber = data.PDNumber;
+            DownloadedTimestamp = data.DownloadedTimestamp;
+            Description = data.Description;
+            PDStatus = data.PDStatus;
+            ComponentType = data.ComponentType;
+            Xml = data.Xml;
+            PDSource = data.PDSource;
+            SourceComponentId = data.SourceComponentId;
+          }
         }
       }
     }
@@ -78,12 +133,18 @@ namespace Reco3Xml2Db.Library
         var dal = ctx.GetProvider<Dal.IComponentDal>();
         using (BypassPropertyChecks) {
           var item = new ComponentDto {
-            //BaseUri = BaseUri,
-            //ClientSecret = ClientSecret,
-            //DalManagerType = DalManagerType,
-            //DbInUse = DbInUse
+            PDNumber = PDNumber,
+            DownloadedTimestamp = DownloadedTimestamp,
+            Description = Description,
+            PDStatus = PDStatus,
+            ComponentType = ComponentType,
+            Xml = Xml,
+            PDSource = PDSource,
+            SourceComponentId = SourceComponentId
           };
           dal.Insert(item);
+
+          ComponentId = item.ComponentId;
         }
       }
     }

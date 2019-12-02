@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Reco3Xml2Db.UI.Module.Commands
 {
-    public class GetDbCommand : PubSubEvent<bool>
+    public class UpdateFilePathCommand : PubSubEvent<string>
     {
     }
 }

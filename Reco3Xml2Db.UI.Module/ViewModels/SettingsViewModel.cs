@@ -1,4 +1,6 @@
-﻿using Prism.Commands;
+﻿using Microsoft.Win32;
+using Microsoft.WindowsAPICodePack.Dialogs;
+using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 using Reco3Xml2Db.Library;
@@ -17,6 +19,7 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
     public string PageHeader { get; } = "Fill in the configuration settings below";
     public string ServerToolTip { get; } = "Choose a server name or an IP-address";
     public string AuthToolTip { get; } = "Select Authentication method for Sql Server";
+    public DelegateCommand GetFilePathCommand { get; set; }
     public DelegateCommand SaveSettingsCommand { get; set; }
 
     private string _server;
@@ -38,14 +41,16 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       get { return _authentication; }
       set {
         SetProperty(ref _authentication, value);
-        //_eventAggregator.GetEvent<UpdateFromConfigCommand>().Publish(ClientSecret);
       }
     }
 
     private string _xmlFilePath;
     public string XmlFilePath {
       get { return _xmlFilePath; }
-      set { SetProperty(ref _xmlFilePath, value); }
+      set {
+        SetProperty(ref _xmlFilePath, value);
+        //_eventAggregator.GetEvent<UpdateFilePathCommand>().Publish(XmlFilePath);
+      }
     }
 
     private ObservableCollection<string> _authenticationList;
@@ -54,9 +59,7 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       set { SetProperty(ref _authenticationList, value); }
     }
 
-    public SettingsEdit SettingsEdit { get; set; }
-
-    public DelegateCommand SaveConfigCommand { get; set; }
+    public SettingsEdit Settings { get; private set; }
 
     public SettingsViewModel(IEventAggregator eventAggregator) {
       _eventAggregator = eventAggregator;
@@ -67,46 +70,56 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
 
       GetEnumValues<Authentication>(AuthenticationList);
 
+      GetFilePathCommand = new DelegateCommand(GetFolderName);
       SaveSettingsCommand = new DelegateCommand(Execute, CanExecute)
         .ObservesProperty(() => Server)
         .ObservesProperty(() => DbName)
         .ObservesProperty(() => XmlFilePath);
 
-
+      _eventAggregator.GetEvent<GetFilePathCommand>().Subscribe(FilePathReceived);
       _eventAggregator.GetEvent<SaveSettingsCommand>().Subscribe(SettingsUpdated);
+      //_eventAggregator.GetEvent<GetSettingsCommand>().Subscribe(SettingsLoaded);
+      //_eventAggregator.GetEvent<GetSettingsCommand>().Publish(SettingsEdit.GetConfigSettings());
+
+      LoadSettings();
     }
+
+    public void LoadSettings() {
+      Settings = SettingsEdit.GetConfigSettings();
+
+      Server = Settings.Server;
+      DbName = Settings.Database;
+      Authentication = Settings.Authentication;
+      XmlFilePath = Settings.XmlFilePath;
+
+      _eventAggregator.GetEvent<GetFilePathCommand>().Publish(XmlFilePath);
+    }
+
+    //private void SettingsLoaded(SettingsEdit obj) {
+    //  SettingsEdit = obj;
+
+    //  Server = SettingsEdit.Server;
+    //  DbName = SettingsEdit.Database;
+    //  Authentication = SettingsEdit.Authentication;
+    //  XmlFilePath = SettingsEdit.XmlFilePath;
+    //
+    //  _eventAggregator.GetEvent<GetFilePathCommand>().Publish(XmlFilePath);
+    //}
 
     //private void DbReceived(SettingsEdit obj) => DbName = obj;
 
-    private void SettingsUpdated(SettingsEdit obj) {
-      SettingsEdit = obj;
+    private void FilePathReceived(string obj) => XmlFilePath = obj;
+    private void SettingsUpdated(SettingsEdit obj) => Settings = obj;
 
-      //DalManagers = new ObservableCollection<string>();
-      //foreach (DalManagers item in Enum.GetValues(typeof(DalManagers))) {
-      //  DalManagers.Add(EnumUtilities.GetEnumDescription(item));
-      //}
-
-      //SqlServerInstances = new ObservableCollection<string>();
-      //foreach (SQLServerInstances item in Enum.GetValues(typeof(SQLServerInstances))) {
-      //  SqlServerInstances.Add(EnumUtilities.GetEnumDescription(item));
-      //}
-
-      //if (ConfigEdit.DalManagerType == EnumUtilities.GetEnumDescription(DalManagerConnectionStrings.DalSql)) {
-      //  DalManagerInUse = (int)Enums.DalManagers.SQLServer;
-      //}
-      //else if (ConfigEdit.DalManagerType == EnumUtilities.GetEnumDescription(DalManagerConnectionStrings.DalFile)) {
-      //  DalManagerInUse = (int)Enums.DalManagers.File;
-      //}
-
-      //BaseUri = ConfigEdit.BaseUri;
-      //ClientSecret = ConfigEdit.ClientSecret;
-
-      //if (ConfigEdit.DbInUse == EnumUtilities.GetEnumDescription(SQLServerInstances.Local)) {
-      //  DbInUse = (int)SQLServerInstances.Local;
-      //}
-      //else {
-      //  DbInUse = (int)SQLServerInstances.Server;
-      //}
+    private void GetFolderName() {
+      try {
+        _eventAggregator
+          .GetEvent<GetFilePathCommand>()
+          .Publish(GetFolderDialog());
+      }
+      catch (Exception ex) {
+        XmlFilePath = ex.Message;
+      }
     }
 
     private bool CanExecute() {
@@ -116,16 +129,43 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
     }
 
     private void Execute() {
+      Settings.Server = Server;
+      Settings.Database = DbName;
+      Settings.Authentication = Authentication;
+      Settings.XmlFilePath = XmlFilePath;
+
       try {
+        var isDirty = Settings.IsDirty;
+
         _eventAggregator
           .GetEvent<SaveSettingsCommand>()
-          .Publish(SaveConfig(SettingsEdit));
+          .Publish(SaveConfig(Settings));
 
-        MessageBox.Show("Configuration saved!", "Reco 3 Configuration", MessageBoxButton.OK);
+        if (isDirty) {
+          MessageBox.Show("Configuration saved!", "Reco 3 Configuration", MessageBoxButton.OK);
+        }
+        else { 
+          MessageBox.Show("Nothing was changed so nothing to be saved!", "Reco 3 Configuration", MessageBoxButton.OK);
+        }
       }
       catch (Exception ex) {
         MessageBox.Show($"An error occurred while saving. The application returned: {ex.Message}");
       }
+    }
+
+    private string GetFolderDialog() {
+      var dialog = new CommonOpenFileDialog { 
+        InitialDirectory = (string.IsNullOrEmpty(XmlFilePath) ? "C:\\" : XmlFilePath),
+        IsFolderPicker = true,
+      };
+
+      if (dialog.ShowDialog() == CommonFileDialogResult.Ok) {
+        //MessageBox.Show("You selected: " + dialog.FileName);
+        //XmlFilePath = dialog.FileName;
+        return dialog.FileName;
+      }
+
+      return XmlFilePath;
     }
 
     public SettingsEdit SaveConfig(SettingsEdit data) {

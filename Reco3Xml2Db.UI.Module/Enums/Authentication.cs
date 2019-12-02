@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace Reco3Xml2Db.UI.Module.Enums {
   public enum Authentication {
-    Windows,
     [Description("Sql Server")]
     SQLServer,
-    [Description("Active Directory")]
-    ActiveDirectory
+    Windows,
+    //[Description("Active Directory")]
+    //ActiveDirectory
   }
 }

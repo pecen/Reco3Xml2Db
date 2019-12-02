@@ -13,28 +13,28 @@ namespace Reco3Xml2Db.Library {
   public class SettingsEdit : BusinessBase<SettingsEdit> {
     #region Properties
 
-    public static readonly PropertyInfo<string> DalManagerTypeProperty = RegisterProperty<string>(c => c.Server);
+    public static readonly PropertyInfo<string> ServerProperty = RegisterProperty<string>(c => c.Server);
     public string Server {
-      get { return GetProperty(DalManagerTypeProperty); }
-      set { SetProperty(DalManagerTypeProperty, value); }
+      get { return GetProperty(ServerProperty); }
+      set { SetProperty(ServerProperty, value); }
     }
 
-    public static readonly PropertyInfo<string> BaseUriProperty = RegisterProperty<string>(c => c.Database);
+    public static readonly PropertyInfo<string> DatabaseProperty = RegisterProperty<string>(c => c.Database);
     public string Database {
-      get { return GetProperty(BaseUriProperty); }
-      set { SetProperty(BaseUriProperty, value); }
+      get { return GetProperty(DatabaseProperty); }
+      set { SetProperty(DatabaseProperty, value); }
     }
 
-    public static readonly PropertyInfo<int> ClientSecretProperty = RegisterProperty<int>(c => c.Authentication);
+    public static readonly PropertyInfo<int> AuthenticationProperty = RegisterProperty<int>(c => c.Authentication);
     public int Authentication {
-      get { return GetProperty(ClientSecretProperty); }
-      set { SetProperty(ClientSecretProperty, value); }
+      get { return GetProperty(AuthenticationProperty); }
+      set { SetProperty(AuthenticationProperty, value); }
     }
 
-    public static readonly PropertyInfo<string> DbInUseProperty = RegisterProperty<string>(c => c.XmlFilePath);
+    public static readonly PropertyInfo<string> XmlFilePathProperty = RegisterProperty<string>(c => c.XmlFilePath);
     public string XmlFilePath {
-      get { return GetProperty(DbInUseProperty); }
-      set { SetProperty(DbInUseProperty, value); }
+      get { return GetProperty(XmlFilePathProperty); }
+      set { SetProperty(XmlFilePathProperty, value); }
     }
 
     #endregion
@@ -60,7 +60,7 @@ namespace Reco3Xml2Db.Library {
 
     private void DataPortal_Fetch() {
       using (var dalManager = DalFactory.GetManager(DalManagerTypes.DalManagerAppConfig)) {
-        var dal = dalManager.GetProvider<IAppConfigDal>();
+        var dal = dalManager.GetProvider<ISettingsDal>();
         var data = dal.Fetch();
         using (BypassPropertyChecks) {
           Server = data.Server;
@@ -71,26 +71,26 @@ namespace Reco3Xml2Db.Library {
       }
     }
 
-    protected override void DataPortal_Insert() {
-      using (var ctx = DalFactory.GetManager(DalManagerTypes.DalManagerAppConfig)) {
-        var dal = ctx.GetProvider<Dal.IAppConfigDal>();
-        using (BypassPropertyChecks) {
-          var item = new AppConfigDto {
-            Server = Server,
-            Database = Database,
-            Authentication = Authentication,
-            XmlFilePath = XmlFilePath
-          };
-          dal.Insert(item);
-        }
-      }
-    }
+    //protected override void DataPortal_Insert() {
+    //  using (var ctx = DalFactory.GetManager(DalManagerTypes.DalManagerAppConfig)) {
+    //    var dal = ctx.GetProvider<Dal.IAppConfigDal>();
+    //    using (BypassPropertyChecks) {
+    //      var item = new AppConfigDto {
+    //        Server = Server,
+    //        Database = Database,
+    //        Authentication = Authentication,
+    //        XmlFilePath = XmlFilePath
+    //      };
+    //      dal.Insert(item);
+    //    }
+    //  }
+    //}
 
     protected override void DataPortal_Update() {
       using (var ctx = DalFactory.GetManager(DalManagerTypes.DalManagerAppConfig)) {
-        var dal = ctx.GetProvider<IAppConfigDal>();
+        var dal = ctx.GetProvider<ISettingsDal>();
         using (BypassPropertyChecks) {
-          var item = new AppConfigDto {
+          var item = new SettingsDto {
             Server = Server,
             Database = Database,
             Authentication = Authentication,

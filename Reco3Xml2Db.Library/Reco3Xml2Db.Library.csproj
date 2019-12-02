@@ -81,7 +81,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ComponentEdit.cs" />
-    <Compile Include="ComponentEditList.cs" />
+    <Compile Include="ComponentInfo.cs" />
+    <Compile Include="ComponentList.cs" />
+    <Compile Include="PDNumberExistsCmd.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SettingsEdit.cs" />
   </ItemGroup>
