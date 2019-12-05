@@ -7,7 +7,6 @@ namespace Reco3Xml2Db.UI.Shell.Views {
   public partial class MainWindow : Window {
     public MainWindow() {
       InitializeComponent();
-      WindowStartupLocation = WindowStartupLocation.CenterScreen;
     }
   }
 }
