@@ -10,15 +10,23 @@ using Reco3Xml2Db.UI.Module.Wrappers;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Windows;
 
 namespace Reco3Xml2Db.UI.Module.ViewModels {
   public class SettingsViewModel : ViewModelBase {
     private IEventAggregator _eventAggregator;
+
+    #region Properties
+
     public string PageHeader { get; } = "Fill in the configuration settings below";
-    public string ServerToolTip { get; } = "Choose a server name or an IP-address";
+    public string ServerToolTip { get; } = "Choose a server name or an IP-address where the Sql Server database resides";
+    public string DbToolTip { get; } = "Type in the name of the Sql Server database";
     public string AuthToolTip { get; } = "Select Authentication method for Sql Server";
+    public string XmlFilePathToolTip { get; } = "Type in the filepath where the Xml files resides";
+    public string XmlFileDialogButtonToolTip { get; } = "Click the button to browse for the location of the Xml file(s)";
+    public string SaveButtonToolTip { get; } = "Click the button to save the configuration settings";
     public DelegateCommand GetFilePathCommand { get; set; }
     public DelegateCommand SaveSettingsCommand { get; set; }
 
@@ -49,7 +57,6 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       get { return _xmlFilePath; }
       set {
         SetProperty(ref _xmlFilePath, value);
-        //_eventAggregator.GetEvent<UpdateFilePathCommand>().Publish(XmlFilePath);
       }
     }
 
@@ -60,6 +67,8 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
     }
 
     public SettingsEdit Settings { get; private set; }
+
+    #endregion
 
     public SettingsViewModel(IEventAggregator eventAggregator) {
       _eventAggregator = eventAggregator;
@@ -123,9 +132,10 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
     }
 
     private bool CanExecute() {
-      return (!string.IsNullOrWhiteSpace(Server) 
-        && !string.IsNullOrEmpty(DbName) 
-        && !string.IsNullOrEmpty(XmlFilePath));
+      return (!string.IsNullOrWhiteSpace(Server)
+        && !string.IsNullOrEmpty(DbName)
+        && !string.IsNullOrEmpty(XmlFilePath))
+        && Directory.Exists(XmlFilePath);
     }
 
     private void Execute() {

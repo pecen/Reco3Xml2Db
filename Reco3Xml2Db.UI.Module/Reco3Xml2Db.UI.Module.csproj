@@ -58,6 +58,7 @@
     <Compile Include="Commands\SaveSettingsCommand.cs" />
     <Compile Include="Commands\UpdateFilePathCommand.cs" />
     <Compile Include="Converters\BoolToButtonTextConverter.cs" />
+    <Compile Include="Converters\BoolToButtonToolTipTextConverter.cs" />
     <Compile Include="Converters\BoolToDescriptionHeightConverter.cs" />
     <Compile Include="Converters\BoolToGreyForegroundConverter.cs" />
     <Compile Include="Converters\BoolToItalicConverter.cs" />
@@ -69,6 +70,7 @@
     <Compile Include="Enums\PDSource.cs" />
     <Compile Include="Enums\PDStatus.cs" />
     <Compile Include="Enums\TabNames.cs" />
+    <Compile Include="Enums\ToolTipText.cs" />
     <Compile Include="Enums\WindowRegions.cs" />
     <Compile Include="Reco3Xml2DbModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

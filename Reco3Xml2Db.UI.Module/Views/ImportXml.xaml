@@ -15,6 +15,11 @@
         <converters:BoolToButtonTextConverter x:Key="BoolToButtonTextConverter" />
         <converters:BoolToDescriptionHeightConverter x:Key="BoolToDescriptionHeightConverter" />
         <converters:BoolToItalicConverter x:Key="BoolToItalicConverter" />
+        <converters:BoolToButtonToolTipTextConverter x:Key="BoolToButtonToolTipTextConverter" />
+
+        <Style TargetType="ToolTip">
+            <Setter Property="Background" Value="LightYellow" />
+        </Style>
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -73,7 +78,8 @@
             Grid.Column="1"
             Margin="0,5,-8,5"
             FontStyle="{Binding ComponentExists, Converter={StaticResource BoolToItalicConverter}, UpdateSourceTrigger=PropertyChanged}"
-            Text="{Binding FileName, UpdateSourceTrigger=PropertyChanged}" />
+            Text="{Binding FileName, UpdateSourceTrigger=PropertyChanged}"
+            ToolTip="{Binding FilenameToolTip}" />
 
         <Button
             Grid.Row="2"
@@ -84,7 +90,8 @@
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
             Command="{Binding GetFilenameCommand}"
-            Content="..." />
+            Content="..."
+            ToolTip="{Binding XmlFileDialogButtonToolTip}" />
 
         <TextBox
             Grid.Row="1"
@@ -158,6 +165,8 @@
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
             Command="{Binding ImportXmlCommand}"
-            Content="{Binding ComponentExists, Converter={StaticResource BoolToButtonTextConverter}, UpdateSourceTrigger=PropertyChanged}" />
+            Content="{Binding ComponentExists, Converter={StaticResource BoolToButtonTextConverter}, UpdateSourceTrigger=PropertyChanged}"
+            ToolTip="{Binding ComponentExists, Converter={StaticResource BoolToButtonToolTipTextConverter}, UpdateSourceTrigger=PropertyChanged}" />
+        <!--  ToolTip="{Binding ImportUpdateButtonToolTip}" />  -->
     </Grid>
 </UserControl>

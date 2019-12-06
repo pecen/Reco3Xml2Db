@@ -18,8 +18,19 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
   public class ImportXmlViewModel : ViewModelBase {
     private IEventAggregator _eventAggregator;
     private readonly string _header = "Fill in the information below and press ";
-
+ 
     #region Properties
+
+    public string FilenameToolTip { get; } = "Type in a valid Component filename (*.Xml)";
+    public string XmlFileDialogButtonToolTip { get; } = "Click the button to open a file dialog to browse for the Xml file(s)";
+    //public string ImportUpdateButtonToolTip {
+    //  get {
+    //    return ComponentExists
+    //      ? "Click the button to update an existing component"
+    //      : "Click the button to import the component";
+    //  }
+    //} 
+    public string AuthToolTip { get; } = "Select Authentication method for Sql Server";
 
     public DelegateCommand GetFilenameCommand { get; set; }
     public DelegateCommand ImportXmlCommand { get; set; }
@@ -37,6 +48,13 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
           : ButtonName.Import.ToString();
       }
     }
+
+    //private string BtnToolTip {
+    //  get {
+    //    return ComponentExists
+    //      ? 
+    //      }
+    //}
 
     private bool _componentExists;
     public bool ComponentExists {

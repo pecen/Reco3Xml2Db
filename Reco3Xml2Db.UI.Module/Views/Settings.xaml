@@ -76,7 +76,8 @@
             Grid.Row="4"
             Grid.Column="1"
             Margin="0,5,-8,5"
-            Text="{Binding XmlFilePath, UpdateSourceTrigger=PropertyChanged}" />
+            Text="{Binding XmlFilePath, UpdateSourceTrigger=PropertyChanged}"
+            ToolTip="{Binding XmlFilePathToolTip}" />
 
         <Button
             Grid.Row="4"
@@ -87,7 +88,8 @@
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
             Command="{Binding GetFilePathCommand}"
-            Content="..." />
+            Content="..."
+            ToolTip="{Binding XmlFileDialogButtonToolTip}" />
 
         <TextBlock
             Grid.Row="3"
@@ -115,7 +117,8 @@
             Grid.Column="1"
             Grid.ColumnSpan="2"
             Margin="0,5,0,5"
-            Text="{Binding DbName, UpdateSourceTrigger=PropertyChanged}" />
+            Text="{Binding DbName, UpdateSourceTrigger=PropertyChanged}"
+            ToolTip="{Binding DbToolTip}" />
         <Button
             Grid.Row="3"
             Grid.RowSpan="2"
@@ -125,6 +128,7 @@
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
             Command="{Binding SaveSettingsCommand}"
-            Content="Save" />
+            Content="Save"
+            ToolTip="{Binding SaveButtonToolTip}" />
     </Grid>
 </UserControl>

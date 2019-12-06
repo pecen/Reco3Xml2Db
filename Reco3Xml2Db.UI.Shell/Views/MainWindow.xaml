@@ -12,6 +12,7 @@
     <Window.Resources>
         <Style TargetType="TabItem">
             <Setter Property="Header" Value="{Binding DataContext.Title}" />
+            <Setter Property="Width" Value="85" />
         </Style>
     </Window.Resources>
     <Grid>
