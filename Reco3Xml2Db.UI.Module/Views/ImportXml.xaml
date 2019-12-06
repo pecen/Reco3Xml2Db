@@ -12,9 +12,9 @@
     mc:Ignorable="d">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-        <!--<converters:BoolToVisibilityConverter x:Key="BooleanToVisibilityConverter" />-->
         <converters:BoolToButtonTextConverter x:Key="BoolToButtonTextConverter" />
         <converters:BoolToDescriptionHeightConverter x:Key="BoolToDescriptionHeightConverter" />
+        <converters:BoolToItalicConverter x:Key="BoolToItalicConverter" />
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -72,6 +72,7 @@
             Grid.Row="2"
             Grid.Column="1"
             Margin="0,5,-8,5"
+            FontStyle="{Binding ComponentExists, Converter={StaticResource BoolToItalicConverter}, UpdateSourceTrigger=PropertyChanged}"
             Text="{Binding FileName, UpdateSourceTrigger=PropertyChanged}" />
 
         <Button

@@ -17,12 +17,26 @@ using System.Windows;
 namespace Reco3Xml2Db.UI.Module.ViewModels {
   public class ImportXmlViewModel : ViewModelBase {
     private IEventAggregator _eventAggregator;
-    public string PageHeader { get; } = $"Fill in the information below and press import";
-    //public string 
+    private readonly string _header = "Fill in the information below and press ";
+
+    #region Properties
+
     public DelegateCommand GetFilenameCommand { get; set; }
     public DelegateCommand ImportXmlCommand { get; set; }
     public ComponentEdit Component { get; set; }
     public ComponentList Components { get; set; }
+
+    public string PageHeader {
+      get { return _header + BtnName; }
+    } 
+
+    private string BtnName {
+      get {
+        return ComponentExists 
+          ? ButtonName.Update.ToString() 
+          : ButtonName.Import.ToString();
+      }
+    }
 
     private bool _componentExists;
     public bool ComponentExists {
@@ -47,12 +61,6 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       get { return _filePath; }
       set { SetProperty(ref _filePath, value); }
     }
-
-    //private ComponentEdit _component;
-    //public ComponentEdit Component {
-    //  get { return _component; }
-    //  set { SetProperty(ref _component, value); }
-    //}
 
     private ObservableCollection<string> _pdSourceList;
     public ObservableCollection<string> PDSourceList {
@@ -98,6 +106,8 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
 
     private Stream XmlStream { get; set; }
 
+    #endregion
+
     public ImportXmlViewModel(IEventAggregator eventAggregator) {
       _eventAggregator = eventAggregator;
 
@@ -129,11 +139,15 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
 
     private void GetFileName() {
       try {
-        _eventAggregator
-          .GetEvent<GetFilenameCommand>()
-          .Publish(GetFileDialog());
+        var filename = GetFileDialog();
 
-        PublishExistingComponent();
+        if (!string.IsNullOrEmpty(filename)) {
+          _eventAggregator
+            .GetEvent<GetFilenameCommand>()
+            .Publish(filename);
+
+          PublishExistingComponent();
+        }
       }
       catch (Exception ex) {
         FileName = ex.Message;
@@ -186,6 +200,7 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
         return true;
       }
       ClearComponent();
+      RaisePropertyChanged(nameof(PageHeader));
 
       return false;
     }
@@ -211,6 +226,8 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       else {
         ClearComponent();
       }
+
+      RaisePropertyChanged(nameof(PageHeader));
     }
 
     private void ClearComponent() {
