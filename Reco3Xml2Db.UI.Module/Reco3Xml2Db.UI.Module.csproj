@@ -57,10 +57,14 @@
     <Compile Include="Commands\ImportXmlCommand.cs" />
     <Compile Include="Commands\SaveSettingsCommand.cs" />
     <Compile Include="Commands\UpdateFilePathCommand.cs" />
+    <Compile Include="Converters\BoolToButtonTextConverter.cs" />
+    <Compile Include="Converters\BoolToDescriptionHeightConverter.cs" />
     <Compile Include="Converters\BoolToGreyForegroundConverter.cs" />
     <Compile Include="Converters\BoolToItalicConverter.cs" />
     <Compile Include="Converters\BoolToOpacityConverter.cs" />
+    <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Enums\Authentication.cs" />
+    <Compile Include="Enums\ButtonName.cs" />
     <Compile Include="Enums\ComponentType.cs" />
     <Compile Include="Enums\PDSource.cs" />
     <Compile Include="Enums\PDStatus.cs" />

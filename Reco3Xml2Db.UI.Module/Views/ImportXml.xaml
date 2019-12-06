@@ -2,6 +2,7 @@
     x:Class="Reco3Xml2Db.UI.Module.Views.ImportXml"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="clr-namespace:Reco3Xml2Db.UI.Module.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
@@ -9,6 +10,12 @@
     d:DesignWidth="450"
     prism:ViewModelLocator.AutoWireViewModel="True"
     mc:Ignorable="d">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <!--<converters:BoolToVisibilityConverter x:Key="BooleanToVisibilityConverter" />-->
+        <converters:BoolToButtonTextConverter x:Key="BoolToButtonTextConverter" />
+        <converters:BoolToDescriptionHeightConverter x:Key="BoolToDescriptionHeightConverter" />
+    </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="100" />
@@ -18,6 +25,7 @@
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="30" />
             <RowDefinition Height="Auto" />
@@ -29,45 +37,45 @@
 
         <Label
             Grid.ColumnSpan="4"
-            Margin="0,5"
+            Margin="0,5,0,0"
             HorizontalAlignment="Center"
             Content="{Binding PageHeader}"
             FontSize="20" />
-
-        <TextBlock
-            Grid.Row="1"
-            Margin="5,5,0,5"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Center"
-            Text="Filename: " />
 
         <TextBlock
             Grid.Row="2"
             Margin="5,5,0,5"
             HorizontalAlignment="Right"
             VerticalAlignment="Center"
-            Text="PD Status: " />
+            Text="Filename: " />
+
         <TextBlock
             Grid.Row="3"
             Margin="5,5,0,5"
             HorizontalAlignment="Right"
             VerticalAlignment="Center"
-            Text="PD Source: " />
+            Text="PD Status: " />
         <TextBlock
             Grid.Row="4"
+            Margin="5,5,0,5"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Center"
+            Text="PD Source: " />
+        <TextBlock
+            Grid.Row="5"
             Margin="5,5,0,5"
             HorizontalAlignment="Right"
             VerticalAlignment="Center"
             Text="Component type: " />
 
         <TextBox
-            Grid.Row="1"
+            Grid.Row="2"
             Grid.Column="1"
             Margin="0,5,-8,5"
             Text="{Binding FileName, UpdateSourceTrigger=PropertyChanged}" />
 
         <Button
-            Grid.Row="1"
+            Grid.Row="2"
             Grid.Column="2"
             Width="25"
             Height="20"
@@ -76,6 +84,22 @@
             VerticalAlignment="Stretch"
             Command="{Binding GetFilenameCommand}"
             Content="..." />
+
+        <TextBox
+            Grid.Row="1"
+            Grid.Column="0"
+            Grid.ColumnSpan="4"
+            Margin="5,0,5,5"
+            HorizontalContentAlignment="Center"
+            Background="Transparent"
+            BorderBrush="Bisque"
+            BorderThickness="5"
+            FontSize="10"
+            FontStyle="Italic"
+            IsReadOnly="True"
+            Text="This component exists. If you continue, an update will take place."
+            TextWrapping="Wrap"
+            Visibility="{Binding ComponentExists, Converter={StaticResource BooleanToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}" />
 
         <!--<TextBlock
             Grid.Row="1"
@@ -86,7 +110,7 @@
             Visibility="{Binding ElementName=txtUserEntry, Path=Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}" />-->
 
         <ComboBox
-            Grid.Row="2"
+            Grid.Row="3"
             Grid.Column="1"
             Grid.ColumnSpan="2"
             Margin="0,5,0,5"
@@ -94,7 +118,7 @@
             SelectedIndex="{Binding SelectedPDStatus}" />
 
         <ComboBox
-            Grid.Row="3"
+            Grid.Row="4"
             Grid.Column="1"
             Grid.ColumnSpan="2"
             Margin="0,5,0,5"
@@ -102,7 +126,7 @@
             SelectedIndex="{Binding SelectedPDSource}" />
 
         <ComboBox
-            Grid.Row="4"
+            Grid.Row="5"
             Grid.Column="1"
             Grid.ColumnSpan="2"
             Margin="0,5,0,5"
@@ -110,29 +134,29 @@
             SelectedIndex="{Binding SelectedComponentType}" />
 
         <TextBlock
-            Grid.Row="5"
+            Grid.Row="6"
             Margin="5,5,0,5"
             HorizontalAlignment="Right"
             VerticalAlignment="Top"
             Text="Description: " />
 
         <TextBox
-            Grid.Row="5"
+            Grid.Row="6"
             Grid.Column="1"
             Grid.ColumnSpan="2"
-            Height="100"
+            Height="{Binding ComponentExists, Converter={StaticResource BoolToDescriptionHeightConverter}, UpdateSourceTrigger=PropertyChanged}"
             Margin="0,5,0,5"
             Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" />
 
         <Button
-            Grid.Row="3"
+            Grid.Row="4"
             Grid.RowSpan="2"
             Grid.Column="3"
             Width="75"
-            Margin="5,5,10,5"
+            Margin="5,5,5,5"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
             Command="{Binding ImportXmlCommand}"
-            Content="Import" />
+            Content="{Binding ComponentExists, Converter={StaticResource BoolToButtonTextConverter}, UpdateSourceTrigger=PropertyChanged}" />
     </Grid>
 </UserControl>

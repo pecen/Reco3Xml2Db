@@ -17,11 +17,24 @@ using System.Windows;
 namespace Reco3Xml2Db.UI.Module.ViewModels {
   public class ImportXmlViewModel : ViewModelBase {
     private IEventAggregator _eventAggregator;
-    public string PageHeader { get; } = "Fill in the information below and press Import";
+    public string PageHeader { get; } = $"Fill in the information below and press import";
+    //public string 
     public DelegateCommand GetFilenameCommand { get; set; }
     public DelegateCommand ImportXmlCommand { get; set; }
     public ComponentEdit Component { get; set; }
     public ComponentList Components { get; set; }
+
+    private bool _componentExists;
+    public bool ComponentExists {
+      get { return _componentExists; }
+      set { SetProperty(ref _componentExists, value); }
+    }
+
+    private string _importBtnContent;
+    public string ImportBtnContent {
+      get { return _importBtnContent; }
+      set { SetProperty(ref _importBtnContent, value); }
+    }
 
     private string _fileName;
     public string FileName {
@@ -87,7 +100,9 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
 
     public ImportXmlViewModel(IEventAggregator eventAggregator) {
       _eventAggregator = eventAggregator;
+
       Title = EnumExtensions.GetEnumDescription(TabNames.ImportToDb);
+      ComponentExists = false;
 
       PDSourceList = new ObservableCollection<string>();
       PDStatusList = new ObservableCollection<string>();
@@ -118,27 +133,7 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
           .GetEvent<GetFilenameCommand>()
           .Publish(GetFileDialog());
 
-        var fileNameWOutExt = Path.GetFileNameWithoutExtension(FileName);
-
-        if (ComponentEdit.Exists(fileNameWOutExt)) {
-          _eventAggregator
-            .GetEvent<GetComponentsWSamePDNumberCommand>()
-            .Publish(ComponentList.GetComponentList(fileNameWOutExt));
-
-          var max = Components.Max(c => c.ComponentId);
-          var lastComponent = Components.Where(c => c.ComponentId == max).FirstOrDefault();
-
-          SelectedComponentType = lastComponent.ComponentType;
-          SelectedPDSource = lastComponent.PDSource;
-          SelectedPDStatus = lastComponent.PDStatus;
-          Description = lastComponent.Description;
-        }
-        else {
-          SelectedComponentType = 0;
-          SelectedPDSource = 0;
-          SelectedPDStatus = 0;
-          Description = string.Empty;
-        }
+        PublishExistingComponent();
       }
       catch (Exception ex) {
         FileName = ex.Message;
@@ -181,10 +176,50 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
     }
 
     private bool CanExecute() {
-      return !string.IsNullOrEmpty(FileName)
+      if(!string.IsNullOrEmpty(FileName)
         && FileName.Length > 4
         && FileName.Substring(FileName.Length - 4) == ".xml"
-        && File.Exists($@"{FilePath}\{FileName}");
+        && File.Exists($@"{FilePath}\{FileName}")) {
+
+        PublishExistingComponent();
+
+        return true;
+      }
+      ClearComponent();
+
+      return false;
+    }
+
+    private void PublishExistingComponent() {
+      var fileNameWOutExt = Path.GetFileNameWithoutExtension(FileName);
+
+      if (ComponentEdit.Exists(fileNameWOutExt)) {
+        _eventAggregator
+          .GetEvent<GetComponentsWSamePDNumberCommand>()
+          .Publish(ComponentList.GetComponentList(fileNameWOutExt));
+
+        var max = Components.Max(c => c.ComponentId);
+        var lastComponent = Components.Where(c => c.ComponentId == max).FirstOrDefault();
+
+        SelectedComponentType = lastComponent.ComponentType;
+        SelectedPDSource = lastComponent.PDSource;
+        SelectedPDStatus = lastComponent.PDStatus;
+        Description = lastComponent.Description;
+
+        ComponentExists = true;
+      }
+      else {
+        ClearComponent();
+      }
+    }
+
+    private void ClearComponent() {
+        SelectedComponentType = 0;
+        SelectedPDSource = 0;
+        SelectedPDStatus = 0;
+        Description = string.Empty;
+
+        ComponentExists = false;
     }
 
     private string GetFileDialog() {
