@@ -15,9 +15,9 @@
         <converters:BoolToGreyForegroundConverter x:Key="BoolToForeground" />
         <converters:BoolToItalicConverter x:Key="BoolToItalic" />
 
-        <Style TargetType="ToolTip">
+        <!--<Style TargetType="ToolTip">
             <Setter Property="Background" Value="LightYellow" />
-        </Style>
+        </Style>-->
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>

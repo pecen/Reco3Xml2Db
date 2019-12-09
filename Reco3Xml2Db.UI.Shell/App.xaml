@@ -5,10 +5,10 @@
     xmlns:local="clr-namespace:Reco3Xml2Db.UI.Shell"
     xmlns:prism="http://prismlibrary.com/">
     <Application.Resources>
-        <ResourceDictionary>
+        <!--<ResourceDictionary>
             <Style TargetType="ToolTip">
                 <Setter Property="Background" Value="LightYellow" />
             </Style>
-        </ResourceDictionary>
+        </ResourceDictionary>-->
     </Application.Resources>
 </prism:PrismApplication>

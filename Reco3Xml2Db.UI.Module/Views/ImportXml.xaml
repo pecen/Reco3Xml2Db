@@ -17,9 +17,9 @@
         <converters:BoolToItalicConverter x:Key="BoolToItalicConverter" />
         <converters:BoolToButtonToolTipTextConverter x:Key="BoolToButtonToolTipTextConverter" />
 
-        <Style TargetType="ToolTip">
+        <!--<Style TargetType="ToolTip">
             <Setter Property="Background" Value="LightYellow" />
-        </Style>
+        </Style>-->
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
