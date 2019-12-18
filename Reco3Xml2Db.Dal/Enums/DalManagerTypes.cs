@@ -2,7 +2,7 @@
 
 namespace Reco3Xml2Db.Dal.Enums {
   public enum DalManagerTypes {
-    DalManagerSqlServer,
+    DalManagerDb,
     DalManagerAppConfig
   }
 }

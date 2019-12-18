@@ -30,7 +30,7 @@ namespace Reco3Xml2Db.Library {
       RaiseListChangedEvents = false;
       IsReadOnly = false;
 
-      using (var dalManager = DalFactory.GetManager(DalManagerTypes.DalManagerSqlServer)) {
+      using (var dalManager = DalFactory.GetManager(DalManagerTypes.DalManagerDb)) {
         IComponentDal dal = dalManager.GetProvider<IComponentDal>();
         IList<ComponentDto> data = dal.FetchAllWSamePDNumber(pdNumber);
 

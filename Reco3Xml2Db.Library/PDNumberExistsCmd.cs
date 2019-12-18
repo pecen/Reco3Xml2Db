@@ -36,7 +36,7 @@ namespace Reco3Xml2Db.Library {
 
     protected override void DataPortal_Execute() {
       try {
-        using (var ctx = DalFactory.GetManager(DalManagerTypes.DalManagerSqlServer)) {
+        using (var ctx = DalFactory.GetManager(DalManagerTypes.DalManagerDb)) {
           var dal = ctx.GetProvider<IComponentDal>();
           PDNumberExists = dal.Exists(PDNumber);
         }

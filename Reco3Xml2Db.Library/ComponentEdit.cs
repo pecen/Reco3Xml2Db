@@ -109,7 +109,7 @@ namespace Reco3Xml2Db.Library
     }
 
     private void DataPortal_Fetch(string criteria) {
-      using (var dalManager = DalFactory.GetManager(DalManagerTypes.DalManagerSqlServer)) {
+      using (var dalManager = DalFactory.GetManager(DalManagerTypes.DalManagerDb)) {
         var dal = dalManager.GetProvider<IComponentDal>();
         var data = dal.Fetch(criteria);
         if (data != null) {
@@ -129,7 +129,7 @@ namespace Reco3Xml2Db.Library
     }
 
     protected override void DataPortal_Insert() {
-      using (var ctx = DalFactory.GetManager(DalManagerTypes.DalManagerSqlServer)) {
+      using (var ctx = DalFactory.GetManager(DalManagerTypes.DalManagerDb)) {
         var dal = ctx.GetProvider<Dal.IComponentDal>();
         using (BypassPropertyChecks) {
           var item = new ComponentDto {

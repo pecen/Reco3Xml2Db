@@ -48,7 +48,10 @@ namespace Reco3Xml2Db.DalAppConfig {
     }
 
     private SettingsDto HandleItemLine(string line) {
-      var strarr = line.Split(new char[] { ';' }).Where(c => !string.IsNullOrEmpty(c)).ToArray();
+      var strarr = line
+        .Split(new char[] { ';' })
+        .Where(c => !string.IsNullOrEmpty(c))
+        .ToArray();
 
       ListDictionary list = new ListDictionary();
       //var list = new ListDictionary<Dictionary<string, string>>();
