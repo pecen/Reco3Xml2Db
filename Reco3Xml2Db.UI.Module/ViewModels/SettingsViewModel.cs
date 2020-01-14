@@ -126,8 +126,8 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
     private void FilePathReceived(string obj) => XmlFilePath = obj;
     private void DbNameReceived(IDictionary<string, string> obj) {
       if (obj != null) {
-        Server = obj["SelectedSource"];
-        DbName = obj["SelectedProvider"];
+        Server = obj[ConnectionString.DataSource.ToString()];
+        DbName = obj[ConnectionString.InitialCatalog.ToString()];
       }
     }
     private void SettingsUpdated(SettingsEdit obj) => Settings = obj;

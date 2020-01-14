@@ -1,10 +1,8 @@
 ﻿using Microsoft.Data.ConnectionUI;
 using Prism.Events;
-using System;
+using Reco3Xml2Db.UI.Module.Enums;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reco3Xml2Db.UI.Module.Commands {
   public class GetDbCommand : PubSubEvent<IDictionary<string, string>> {
@@ -19,6 +17,8 @@ namespace Reco3Xml2Db.UI.Module.Commands {
 
       dcd.UnspecifiedDataSource.Providers.Add(DataProvider.SqlDataProvider);
       dcd.UnspecifiedDataSource.Providers.Add(DataProvider.OracleDataProvider);
+
+      //dcd.SelectedDataSource.
 
       var dataSources = new Dictionary<string, DataSource> {
         { DataSource.SqlDataSource.Name, DataSource.SqlDataSource },
@@ -63,13 +63,20 @@ namespace Reco3Xml2Db.UI.Module.Commands {
         var i = c[0].IndexOf("=");
         var j = c[1].IndexOf("=");
 
-        //var dict = new Dictionary<string, string>();
-        //foreach (var item in c) {
-        //  dict.Add()
-        //}
+        string dataSource = string.Empty;
+        string initialCatalog = string.Empty;
+
+        if(c[0].StartsWith("Data Source")) {
+          dataSource = c[0].Substring(i + 1, c[0].Length - i - 1);
+        }
+
+        if (c[1].StartsWith("Initial Catalog")) {
+          initialCatalog = c[1].Substring(j + 1, c[1].Length - j - 1);
+        }
+
         return new Dictionary<string, string>() {
-          { "SelectedSource", c[0].Substring(i + 1, c[0].Length - i - 1) }, // dcd.SelectedDataSource.Name },
-          { "SelectedProvider",  c[1].Substring(j + 1, c[1].Length - j - 1) } // dcd.SelectedDataProvider.Name }
+          { ConnectionString.DataSource.ToString(), dataSource }, // c[0].Substring(i + 1, c[0].Length - i - 1) }, 
+          { ConnectionString.InitialCatalog.ToString(), initialCatalog } //  c[1].Substring(j + 1, c[1].Length - j - 1) } 
         };
       }
 
