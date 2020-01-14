@@ -16,6 +16,7 @@
         <converters:BoolToDescriptionHeightConverter x:Key="BoolToDescriptionHeightConverter" />
         <converters:BoolToItalicConverter x:Key="BoolToItalicConverter" />
         <converters:BoolToButtonToolTipTextConverter x:Key="BoolToButtonToolTipTextConverter" />
+        <converters:RemovePathFromFilenameConverter x:Key="RemovePathFromFilenameConverter" />
 
         <!--<Style TargetType="ToolTip">
             <Setter Property="Background" Value="LightYellow" />
@@ -78,7 +79,7 @@
             Grid.Column="1"
             Margin="0,5,-8,5"
             FontStyle="{Binding ComponentExists, Converter={StaticResource BoolToItalicConverter}, UpdateSourceTrigger=PropertyChanged}"
-            Text="{Binding FileName, UpdateSourceTrigger=PropertyChanged}"
+            Text="{Binding FileName, Converter={StaticResource RemovePathFromFilenameConverter}, UpdateSourceTrigger=PropertyChanged}"
             ToolTip="{Binding FilenameToolTip}" />
 
         <Button
