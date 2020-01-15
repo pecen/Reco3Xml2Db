@@ -176,12 +176,12 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
           ExecuteMany();
           var files = Directory.EnumerateFiles(FilePath).Count();
 
-          MessageBox.Show($"{files} Component{(files > 1 ? "s" : string.Empty)} saved to database", "Success!", MessageBoxButton.OK);
+          MessageBox.Show($"{files} Component{(files > 1 ? "s" : string.Empty)} saved to the Database", "Success!", MessageBoxButton.OK, MessageBoxImage.Information);
         }
         else {
           ExecuteOne();
 
-          MessageBox.Show("Component saved!", "Success", MessageBoxButton.OK);
+          MessageBox.Show("Component saved!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         ClearValues();
