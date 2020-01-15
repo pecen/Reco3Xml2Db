@@ -108,7 +108,7 @@
             Margin="0,5,-8,5"
             FontStyle="{Binding ComponentExists, Converter={StaticResource BoolToItalicConverter}, UpdateSourceTrigger=PropertyChanged}"
             Text="{Binding FilePath, UpdateSourceTrigger=PropertyChanged}"
-            ToolTip="{Binding FilePathToolTip}"
+            ToolTip="{Binding FilePath}"
             Visibility="{Binding IsChecked, ElementName=filesChkbox, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
         <Button
@@ -145,7 +145,7 @@
             VerticalAlignment="Center"
             Content="All files"
             IsChecked="{Binding IsChecked}"
-            ToolTip="{Binding AllFiles}" />
+            ToolTip="{Binding AllFilesToolTip}" />
         <!--<TextBox Text="All files in directory" Background="Transparent" TextWrapping="Wrap" Width="50" />
         </CheckBox>-->
 

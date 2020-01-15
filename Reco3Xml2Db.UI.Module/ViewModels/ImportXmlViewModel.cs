@@ -32,8 +32,6 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
     public ComponentEdit Component { get; set; }
     public ComponentList Components { get; set; }
 
-    //public string FilePath { get; private set; }
-    //public string SavedFilePath { get; private set; }
     private Stream XmlStream { get; set; }
 
 
@@ -148,13 +146,12 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       GetFilePathCommand = new DelegateCommand(GetFolderDialog);
       GetFilenameCommand = new DelegateCommand(GetFileDialog);
       ImportXmlCommand = new DelegateCommand(Execute, CanExecute)
-        .ObservesProperty(() => FileName);
+        .ObservesProperty(() => FileName)
+        .ObservesProperty(() => IsChecked);
 
       _eventAggregator.GetEvent<GetFilePathCommand>().Subscribe(FilePathReceived);
-      //_eventAggregator.GetEvent<GetFilePathCommand>().Subscribe(FileNameReceived);
       _eventAggregator.GetEvent<GetFilenameCommand>().Subscribe(FileNameReceived);
       _eventAggregator.GetEvent<ImportXmlCommand>().Subscribe(ComponentEditReceived);
-      //_eventAggregator.GetEvent<GetFilePathCommand>().Subscribe(SavedFilePathReceived);
       _eventAggregator.GetEvent<GetComponentsWSamePDNumberCommand>().Subscribe(ComponentListReceived);
     }
 
@@ -162,29 +159,48 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       FilePath = obj;
       FileName = string.Empty;
     }
-    //private void SavedFilePathReceived(string obj) => FilePath = SavedFilePath = obj;
     private void FileNameReceived(string obj) {
       FileName = obj;
-      FilePath = Path.GetDirectoryName(obj);
+
+      var dir = Path.GetDirectoryName(obj);
+      if (dir != FilePath) {
+        FilePath = dir;
+      }
     }
     private void ComponentEditReceived(ComponentEdit obj) => Component = obj;
     private void ComponentListReceived(ComponentList obj) => Components = obj; 
 
     private void Execute() {
-      if (IsChecked) {
-        ExecuteMany();
+      try {
+        if (IsChecked) {
+          ExecuteMany();
+          var files = Directory.EnumerateFiles(FilePath).Count();
+
+          MessageBox.Show($"{files} Component{(files > 1 ? "s" : string.Empty)} saved to database", "Success!", MessageBoxButton.OK);
+        }
+        else {
+          ExecuteOne();
+
+          MessageBox.Show("Component saved!", "Success", MessageBoxButton.OK);
+        }
+
+        ClearValues();
       }
-      else {
-        ExecuteOne();
+      catch (Exception ex) {
+        MessageBox.Show(ex.Message, "Error when saving component", MessageBoxButton.OK, MessageBoxImage.Error);
       }
     }
 
     private void ExecuteMany() {
-      throw new NotImplementedException();
+      foreach(var item in Directory.EnumerateFiles(FilePath)) {
+        FileName = item;
+        XmlStream = File.OpenRead(item);
+        ExecuteOne();
+      }
     }
 
     private void ExecuteOne() {
-      try {
+      //try {
         _eventAggregator
           .GetEvent<ImportXmlCommand>()
           .Publish(ComponentEdit.NewComponentEdit());
@@ -207,15 +223,11 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
         }
 
         Component = Component.Save();
-
-        MessageBox.Show("Component saved!", "Reco 3 Import", MessageBoxButton.OK);
-      }
-      catch (Exception ex) {
-        //FileName = ex.Message;
-        MessageBox.Show(ex.Message, "Wrong PDNumber", MessageBoxButton.OK, MessageBoxImage.Error);
-      }
-
-      ClearValues();
+      //}
+      //catch (Exception ex) {
+      //  //FileName = ex.Message;
+      //  MessageBox.Show(ex.Message, "Wrong PDNumber", MessageBoxButton.OK, MessageBoxImage.Error);
+      //}
     }
 
     private string CheckPDNumber(string pdNumber) {
@@ -227,10 +239,11 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
     }
 
     private bool CanExecute() {
-      if(!string.IsNullOrEmpty(FileName)
+      if (IsChecked
+        || (!string.IsNullOrEmpty(FileName)
         && FileName.Length > 4
         && FileName.Substring(FileName.Length - 4) == ".xml"
-        && File.Exists($"{FileName}")) {
+        && File.Exists($"{FileName}"))) {
 
         PublishExistingComponent();
         RaisePropertyChanged(nameof(PageHeader));
