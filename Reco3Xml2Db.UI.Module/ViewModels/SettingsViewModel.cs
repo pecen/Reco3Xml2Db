@@ -93,8 +93,6 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       _eventAggregator.GetEvent<GetFilePathCommand>().Subscribe(FilePathReceived);
       _eventAggregator.GetEvent<GetDbCommand>().Subscribe(DbNameReceived);
       _eventAggregator.GetEvent<SaveSettingsCommand>().Subscribe(SettingsUpdated);
-      //_eventAggregator.GetEvent<GetSettingsCommand>().Subscribe(SettingsLoaded);
-      //_eventAggregator.GetEvent<GetSettingsCommand>().Publish(SettingsEdit.GetConfigSettings());
 
       LoadSettings();
     }
@@ -109,19 +107,6 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
 
       _eventAggregator.GetEvent<GetFilePathCommand>().Publish(XmlFilePath);
     }
-
-    //private void SettingsLoaded(SettingsEdit obj) {
-    //  SettingsEdit = obj;
-
-    //  Server = SettingsEdit.Server;
-    //  DbName = SettingsEdit.Database;
-    //  Authentication = SettingsEdit.Authentication;
-    //  XmlFilePath = SettingsEdit.XmlFilePath;
-    //
-    //  _eventAggregator.GetEvent<GetFilePathCommand>().Publish(XmlFilePath);
-    //}
-
-    //private void DbReceived(SettingsEdit obj) => DbName = obj;
 
     private void FilePathReceived(string obj) => XmlFilePath = obj;
     private void DbNameReceived(IDictionary<string, string> obj) {
@@ -145,10 +130,6 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
 
     private void GetDbName() {
       try {
-        //_eventAggregator
-        //  .GetEvent<GetDbCommand>()
-        //  .Publish(GetDbDialog());
-
         _eventAggregator
           .GetEvent<GetDbCommand>()
           .Publish(_eventAggregator
@@ -199,8 +180,6 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       };
 
       if (dialog.ShowDialog() == CommonFileDialogResult.Ok) {
-        //MessageBox.Show("You selected: " + dialog.FileName);
-        //XmlFilePath = dialog.FileName;
         return dialog.FileName;
       }
 

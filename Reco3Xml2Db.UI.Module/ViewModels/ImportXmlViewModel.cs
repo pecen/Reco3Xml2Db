@@ -200,7 +200,6 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
     }
 
     private void ExecuteOne() {
-      //try {
         _eventAggregator
           .GetEvent<ImportXmlCommand>()
           .Publish(ComponentEdit.NewComponentEdit());
@@ -223,11 +222,6 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
         }
 
         Component = Component.Save();
-      //}
-      //catch (Exception ex) {
-      //  //FileName = ex.Message;
-      //  MessageBox.Show(ex.Message, "Wrong PDNumber", MessageBoxButton.OK, MessageBoxImage.Error);
-      //}
     }
 
     private string CheckPDNumber(string pdNumber) {
