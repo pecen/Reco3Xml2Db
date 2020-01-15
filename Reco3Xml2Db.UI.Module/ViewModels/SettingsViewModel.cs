@@ -25,7 +25,7 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
     public string XmlFilePathToolTip { get; } = "Type in the filepath where the Xml files resides";
     public string XmlFileDialogButtonToolTip { get; } = "Click the button to browse for the location of the Xml file(s)";
     public string SaveButtonToolTip { get; } = "Click the button to save the configuration settings";
-    public DelegateCommand GetFilePathCommand { get; set; }
+
     public DelegateCommand GetDbCommand { get; set; }
     public DelegateCommand SaveSettingsCommand { get; set; }
 

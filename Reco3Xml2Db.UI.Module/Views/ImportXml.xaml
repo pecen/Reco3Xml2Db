@@ -17,6 +17,7 @@
         <converters:BoolToItalicConverter x:Key="BoolToItalicConverter" />
         <converters:BoolToButtonToolTipTextConverter x:Key="BoolToButtonToolTipTextConverter" />
         <converters:RemovePathFromFilenameConverter x:Key="RemovePathFromFilenameConverter" />
+        <converters:RemoveFilenameFromPathConverter x:Key="RemoveFilenameFromPathConverter" />
 
         <!--<Style TargetType="ToolTip">
             <Setter Property="Background" Value="LightYellow" />
@@ -53,7 +54,16 @@
             Margin="5,5,0,5"
             HorizontalAlignment="Right"
             VerticalAlignment="Center"
-            Text="Filename: " />
+            Text="Filename: "
+            Visibility="{Binding IsNotChecked, Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+        <TextBlock
+            Grid.Row="2"
+            Margin="5,5,0,5"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Center"
+            Text="Path: "
+            Visibility="{Binding IsChecked, ElementName=filesChkbox, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
         <TextBlock
             Grid.Row="3"
@@ -80,7 +90,26 @@
             Margin="0,5,-8,5"
             FontStyle="{Binding ComponentExists, Converter={StaticResource BoolToItalicConverter}, UpdateSourceTrigger=PropertyChanged}"
             Text="{Binding FileName, Converter={StaticResource RemovePathFromFilenameConverter}, UpdateSourceTrigger=PropertyChanged}"
-            ToolTip="{Binding FilenameToolTip}" />
+            ToolTip="{Binding FilenameToolTip}"
+            Visibility="{Binding IsNotChecked, Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+        <!--<TextBox
+            Grid.Row="2"
+            Grid.Column="1"
+            Margin="0,5,-8,5"
+            FontStyle="{Binding ComponentExists, Converter={StaticResource BoolToItalicConverter}, UpdateSourceTrigger=PropertyChanged}"
+            Text="{Binding FileName, Converter={StaticResource RemoveFilenameFromPathConverter}, UpdateSourceTrigger=PropertyChanged}"
+            ToolTip="{Binding FilePathToolTip}"
+            Visibility="{Binding IsChecked, ElementName=filesChkbox, Converter={StaticResource BooleanToVisibilityConverter}}" />-->
+
+        <TextBox
+            Grid.Row="2"
+            Grid.Column="1"
+            Margin="0,5,-8,5"
+            FontStyle="{Binding ComponentExists, Converter={StaticResource BoolToItalicConverter}, UpdateSourceTrigger=PropertyChanged}"
+            Text="{Binding FilePath, UpdateSourceTrigger=PropertyChanged}"
+            ToolTip="{Binding FilePathToolTip}"
+            Visibility="{Binding IsChecked, ElementName=filesChkbox, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
         <Button
             Grid.Row="2"
@@ -92,7 +121,33 @@
             VerticalAlignment="Stretch"
             Command="{Binding GetFilenameCommand}"
             Content="..."
-            ToolTip="{Binding XmlFileDialogButtonToolTip}" />
+            ToolTip="{Binding XmlFileDialogButtonToolTip}"
+            Visibility="{Binding IsNotChecked, Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+        <Button
+            Grid.Row="2"
+            Grid.Column="2"
+            Width="25"
+            Height="20"
+            Margin="0,0,-13,0"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            Command="{Binding GetFilePathCommand}"
+            Content="..."
+            ToolTip="{Binding XmlFileDialogButtonToolTip}"
+            Visibility="{Binding IsChecked, ElementName=filesChkbox, Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+        <CheckBox
+            x:Name="filesChkbox"
+            Grid.Row="2"
+            Grid.Column="3"
+            Margin="5,0,0,0"
+            VerticalAlignment="Center"
+            Content="All files"
+            IsChecked="{Binding IsChecked}"
+            ToolTip="{Binding AllFiles}" />
+        <!--<TextBox Text="All files in directory" Background="Transparent" TextWrapping="Wrap" Width="50" />
+        </CheckBox>-->
 
         <TextBox
             Grid.Row="1"

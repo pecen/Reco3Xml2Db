@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using Microsoft.WindowsAPICodePack.Dialogs;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
@@ -24,13 +25,15 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
     public string FilenameToolTip { get; } = "Type in a valid Component filename (*.Xml)";
     public string XmlFileDialogButtonToolTip { get; } = "Click the button to open a file dialog to browse for the Xml file(s)";
     public string AuthToolTip { get; } = "Select Authentication method for Sql Server";
+    public string AllFilesToolTip { get; } = "Process all files in the chosen directory with the same settings";
 
     public DelegateCommand GetFilenameCommand { get; set; }
     public DelegateCommand ImportXmlCommand { get; set; }
     public ComponentEdit Component { get; set; }
     public ComponentList Components { get; set; }
 
-    public string SavedFilePath { get; private set; }
+    //public string FilePath { get; private set; }
+    //public string SavedFilePath { get; private set; }
     private Stream XmlStream { get; set; }
 
 
@@ -57,6 +60,13 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       get { return _importBtnContent; }
       set { SetProperty(ref _importBtnContent, value); }
     }
+
+    private string _filePath;
+    public string FilePath {
+      get { return _filePath; }
+      set { SetProperty(ref _filePath, value); }
+    }
+
 
     private string _fileName;
     public string FileName {
@@ -106,6 +116,19 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       set { SetProperty(ref _description, value); }
     }
 
+    private bool _isChecked;
+    public bool IsChecked {
+      get { return _isChecked; }
+      set {
+        SetProperty(ref _isChecked, value);
+        RaisePropertyChanged(nameof(IsNotChecked));
+      }
+    }
+
+    public bool IsNotChecked {
+      get { return !_isChecked; }
+    }
+
     #endregion
 
     public ImportXmlViewModel(IEventAggregator eventAggregator) {
@@ -122,22 +145,45 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       GetEnumValues<PDStatus>(PDStatusList);
       GetEnumValues<ComponentType>(ComponentTypeList);
 
+      GetFilePathCommand = new DelegateCommand(GetFolderDialog);
       GetFilenameCommand = new DelegateCommand(GetFileDialog);
       ImportXmlCommand = new DelegateCommand(Execute, CanExecute)
         .ObservesProperty(() => FileName);
 
+      _eventAggregator.GetEvent<GetFilePathCommand>().Subscribe(FilePathReceived);
+      //_eventAggregator.GetEvent<GetFilePathCommand>().Subscribe(FileNameReceived);
       _eventAggregator.GetEvent<GetFilenameCommand>().Subscribe(FileNameReceived);
       _eventAggregator.GetEvent<ImportXmlCommand>().Subscribe(ComponentEditReceived);
-      _eventAggregator.GetEvent<GetFilePathCommand>().Subscribe(FilePathReceived);
+      //_eventAggregator.GetEvent<GetFilePathCommand>().Subscribe(SavedFilePathReceived);
       _eventAggregator.GetEvent<GetComponentsWSamePDNumberCommand>().Subscribe(ComponentListReceived);
     }
 
-    private void FilePathReceived(string obj) => SavedFilePath = obj;
-    private void FileNameReceived(string obj) => FileName = obj;
+    private void FilePathReceived(string obj) {
+      FilePath = obj;
+      FileName = string.Empty;
+    }
+    //private void SavedFilePathReceived(string obj) => FilePath = SavedFilePath = obj;
+    private void FileNameReceived(string obj) {
+      FileName = obj;
+      FilePath = Path.GetDirectoryName(obj);
+    }
     private void ComponentEditReceived(ComponentEdit obj) => Component = obj;
     private void ComponentListReceived(ComponentList obj) => Components = obj; 
 
     private void Execute() {
+      if (IsChecked) {
+        ExecuteMany();
+      }
+      else {
+        ExecuteOne();
+      }
+    }
+
+    private void ExecuteMany() {
+      throw new NotImplementedException();
+    }
+
+    private void ExecuteOne() {
       try {
         _eventAggregator
           .GetEvent<ImportXmlCommand>()
@@ -220,7 +266,8 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
     private void GetFileDialog() {
       OpenFileDialog openFileDialog = new OpenFileDialog {
         InitialDirectory = string.IsNullOrEmpty(FileName)
-                            ? SavedFilePath
+                            //? SavedFilePath
+                            ? FilePath
                             : Path.GetDirectoryName(FileName),
         Filter = "Xml files (*.xml)|*.xml|All files (*.*)|*.*",
         FilterIndex = 1,
@@ -235,6 +282,21 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
 
         _eventAggregator.GetEvent<GetFilenameCommand>()
           .Publish(openFileDialog.FileName);
+      }
+    }
+
+    private void GetFolderDialog() {
+      var dialog = new CommonOpenFileDialog {
+        InitialDirectory = (string.IsNullOrEmpty(FileName) 
+                              //? SavedFilePath 
+                              ? FilePath
+                              : Path.GetDirectoryName(FileName)),
+        IsFolderPicker = true,
+      };
+
+      if (dialog.ShowDialog() == CommonFileDialogResult.Ok) {
+        _eventAggregator.GetEvent<GetFilePathCommand>()
+          .Publish(dialog.FileName);
       }
     }
 

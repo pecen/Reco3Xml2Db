@@ -1,4 +1,5 @@
-﻿using Prism.Mvvm;
+﻿using Prism.Commands;
+using Prism.Mvvm;
 using Prism.Regions;
 using Reco3Xml2Db.Utilities.Extensions;
 using System;
@@ -10,6 +11,8 @@ using System.Threading.Tasks;
 
 namespace Reco3Xml2Db.UI.Module.ViewModels {
   public class ViewModelBase : BindableBase {
+    public DelegateCommand GetFilePathCommand { get; set; }
+
     string _title;
     public string Title {
       get { return _title; }
