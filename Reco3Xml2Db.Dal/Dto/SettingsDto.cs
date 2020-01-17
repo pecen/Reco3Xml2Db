@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Reco3Xml2Db.Dal.Dto {
+﻿namespace Reco3Xml2Db.Dal.Dto {
   public class SettingsDto {
     public string Server { get; set; }
     public string Database { get; set; }

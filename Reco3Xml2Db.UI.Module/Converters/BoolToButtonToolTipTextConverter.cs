@@ -1,11 +1,7 @@
 ﻿using Reco3Xml2Db.UI.Module.Enums;
 using Reco3Xml2Db.Utilities.Extensions;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Data;
 
 namespace Reco3Xml2Db.UI.Module.Converters

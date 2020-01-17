@@ -17,7 +17,7 @@
         <converters:BoolToItalicConverter x:Key="BoolToItalicConverter" />
         <converters:BoolToButtonToolTipTextConverter x:Key="BoolToButtonToolTipTextConverter" />
         <converters:RemovePathFromFilenameConverter x:Key="RemovePathFromFilenameConverter" />
-        <converters:RemoveFilenameFromPathConverter x:Key="RemoveFilenameFromPathConverter" />
+        <!--<converters:RemoveFilenameFromPathConverter x:Key="RemoveFilenameFromPathConverter" />-->
 
         <!--<Style TargetType="ToolTip">
             <Setter Property="Background" Value="LightYellow" />

@@ -3,11 +3,7 @@ using Prism.Mvvm;
 using Prism.Regions;
 using Reco3Xml2Db.Utilities.Extensions;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reco3Xml2Db.UI.Module.ViewModels {
   public class ViewModelBase : BindableBase {

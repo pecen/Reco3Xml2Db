@@ -1,10 +1,9 @@
-﻿using Reco3Xml2Db.UI.Module.Views;
-using Prism.Ioc;
+﻿using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
-using Unity;
-using Prism.Unity;
 using Reco3Xml2Db.UI.Module.Enums;
+using Reco3Xml2Db.UI.Module.Views;
+using Unity;
 
 namespace Reco3Xml2Db.UI.Module {
   public class Reco3Xml2DbModule : IModule {

@@ -1,14 +1,10 @@
-﻿using Csla.Configuration;
-using Csla.Data;
+﻿using Csla.Data;
 using Reco3Xml2Db.Dal;
 using Reco3Xml2Db.Dal.Dto;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reco3Xml2Db.DalSql {
   public class ComponentDal : IComponentDal {

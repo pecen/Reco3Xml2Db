@@ -100,33 +100,6 @@ namespace Reco3Xml2Db.UI.Module.Commands {
 
       }
 
-      //var strarr = line.Split(new char[] { c })
-
-      //string server = "";
-      //string dbName = "";
-      //string auth = "";
-
-      //if (strarr.Count() > 0) {
-      //  server = strarr[0];
-      //}
-
-      //for(int i = 1; i < strarr.Count(); i++) {
-
-      //}
-
-      //if (strarr.Count() == 2) {
-      //  dbName = string.Empty;
-      //  auth = strarr[1];
-      //}
-      //else if (strarr.Count() == 3) {
-      //  dbName = strarr[1];
-      //  auth = strarr[2];
-      //}
-
-      //HandleItem(server, dbName, auth, path);
-      //return new string[] { server, dbName, auth };
-      //return null;
-
       return line.Split(new char[] { c });
     }
 
