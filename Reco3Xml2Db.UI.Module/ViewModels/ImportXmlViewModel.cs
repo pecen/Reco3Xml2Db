@@ -66,7 +66,11 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
     private string _fileName;
     public string FileName {
       get { return _fileName; }
-      set { SetProperty(ref _fileName, value); }
+      set {
+        SetProperty(ref _fileName, Path.IsPathRooted(value) 
+          ? value 
+          : FilePath + "\\" + value);
+      }
     }
 
     private ObservableCollection<string> _pdSourceList;
