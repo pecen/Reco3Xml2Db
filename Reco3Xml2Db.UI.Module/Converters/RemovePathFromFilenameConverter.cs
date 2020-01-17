@@ -10,7 +10,7 @@ namespace Reco3Xml2Db.UI.Module.Converters {
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
-      throw new NotImplementedException();
+      return value;
     }
   }
 }
