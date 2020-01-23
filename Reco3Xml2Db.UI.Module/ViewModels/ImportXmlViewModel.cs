@@ -62,7 +62,6 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       set { SetProperty(ref _filePath, value); }
     }
 
-
     private string _fileName;
     public string FileName {
       get { return _fileName; }
@@ -133,16 +132,16 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
     public ImportXmlViewModel(IEventAggregator eventAggregator) {
       _eventAggregator = eventAggregator;
 
-      Title = EnumExtensions.GetEnumDescription(TabNames.ImportToDb);
+      Title = TabNames.ImportToDb.GetDescription();
       ComponentExists = false;
 
       PDSourceList = new ObservableCollection<string>();
       PDStatusList = new ObservableCollection<string>();
       ComponentTypeList = new ObservableCollection<string>();
 
-      GetEnumValues<PDSource>(PDSourceList);
-      GetEnumValues<PDStatus>(PDStatusList);
-      GetEnumValues<ComponentType>(ComponentTypeList);
+      PDSourceList.GetEnumValues<PDSource>();
+      PDStatusList.GetEnumValues<PDStatus>();
+      ComponentTypeList.GetEnumValues<ComponentType>();
 
       GetFilePathCommand = new DelegateCommand(GetFolderDialog);
       GetFilenameCommand = new DelegateCommand(GetFileDialog);

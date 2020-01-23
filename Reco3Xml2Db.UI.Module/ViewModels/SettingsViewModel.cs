@@ -4,6 +4,7 @@ using Prism.Events;
 using Reco3Xml2Db.Library;
 using Reco3Xml2Db.UI.Module.Commands;
 using Reco3Xml2Db.UI.Module.Enums;
+using Reco3Xml2Db.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -80,8 +81,7 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       Title = TabNames.Settings.ToString();
 
       AuthenticationList = new ObservableCollection<string>();
-
-      GetEnumValues<Authentication>(AuthenticationList);
+      AuthenticationList.GetEnumValues<Authentication>();
 
       GetFilePathCommand = new DelegateCommand(GetFolderName);
       GetDbCommand = new DelegateCommand(GetDbName);
