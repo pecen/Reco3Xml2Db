@@ -24,11 +24,16 @@ namespace Reco3Xml2Db.Library {
       private set { LoadProperty(ErrorMessageProperty, value); }
     }
 
-    public PDNumberExistsCmd() {
-    }
+    public PDNumberExistsCmd() { }
+
+   // public PDNumberExistsCmd(string id) {
+      //PDNumber = id;
+    //}
 
     [Create, RunLocal]
-    protected void Create() { }
+    protected void Create(string id) {
+      PDNumber = id;
+    }
 
     protected override void DataPortal_Execute() {
       try {
