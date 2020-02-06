@@ -98,10 +98,12 @@ namespace Reco3Xml2Db.Library
     #region Data Access
 
     [RunLocal]
+    [Create]
     protected override void DataPortal_Create() {
       base.DataPortal_Create();
     }
 
+    [Fetch]
     private void DataPortal_Fetch(string criteria) {
       using (var dalManager = DalFactory.GetManager(DalManagerTypes.DalManagerDb)) {
         var dal = dalManager.GetProvider<IComponentDal>();
@@ -122,6 +124,7 @@ namespace Reco3Xml2Db.Library
       }
     }
 
+    [Insert]
     protected override void DataPortal_Insert() {
       using (var ctx = DalFactory.GetManager(DalManagerTypes.DalManagerDb)) {
         var dal = ctx.GetProvider<Dal.IComponentDal>();

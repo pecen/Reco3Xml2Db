@@ -65,6 +65,7 @@ namespace Reco3Xml2Db.Library {
 
     #region Data Access
 
+    [FetchChild]
     private void Child_Fetch(ComponentDto item) {
       ComponentId = item.ComponentId;
       PDNumber = item.PDNumber;

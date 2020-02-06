@@ -18,10 +18,12 @@ namespace Reco3Xml2Db.Library {
 
     #region Data Access
 
+    [CreateChild]
     private void Child_Create() {
       // Do initialization here when creating the object.
     }
 
+    [Fetch]
     private void DataPortal_Fetch(string pdNumber) {
       var rlce = RaiseListChangedEvents;
       RaiseListChangedEvents = false;

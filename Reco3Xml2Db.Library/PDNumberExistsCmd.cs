@@ -26,11 +26,13 @@ namespace Reco3Xml2Db.Library {
 
     public PDNumberExistsCmd() { }
 
-    [Create, RunLocal]
+    [RunLocal]
+    [Create]
     protected void Create(string id) {
       PDNumber = id;
     }
 
+    [Execute]
     protected override void DataPortal_Execute() {
       try {
         using (var ctx = DalFactory.GetManager(DalManagerTypes.DalManagerDb)) {
