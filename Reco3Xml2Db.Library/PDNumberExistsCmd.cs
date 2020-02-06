@@ -26,10 +26,6 @@ namespace Reco3Xml2Db.Library {
 
     public PDNumberExistsCmd() { }
 
-   // public PDNumberExistsCmd(string id) {
-      //PDNumber = id;
-    //}
-
     [Create, RunLocal]
     protected void Create(string id) {
       PDNumber = id;
