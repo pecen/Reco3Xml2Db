@@ -5,7 +5,7 @@ using System;
 
 namespace Reco3Xml2Db.Library {
   [Serializable]
-  public class PDNumberExistsCmd : CommandBase<PDNumberExistsCmd> {
+  public class ComponentExistsCmd : CommandBase<ComponentExistsCmd> {
     public static readonly PropertyInfo<string> PDNumberProperty = RegisterProperty<string>(c => c.PDNumber);
     public string PDNumber {
       get { return ReadProperty(PDNumberProperty); }
@@ -24,7 +24,7 @@ namespace Reco3Xml2Db.Library {
       private set { LoadProperty(ErrorMessageProperty, value); }
     }
 
-    public PDNumberExistsCmd() { }
+    public ComponentExistsCmd() { }
 
     [RunLocal]
     [Create]

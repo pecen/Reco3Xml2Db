@@ -83,7 +83,7 @@ namespace Reco3Xml2Db.Library
     }
 
     public static bool Exists(string pdNumber) {
-      var cmd = DataPortal.Create<PDNumberExistsCmd>(pdNumber);
+      var cmd = DataPortal.Create<ComponentExistsCmd>(pdNumber);
       cmd = DataPortal.Execute(cmd);
 
       if (!string.IsNullOrEmpty(cmd.ErrorMessage)) {
