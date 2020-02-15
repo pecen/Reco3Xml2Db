@@ -22,6 +22,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reco3Xml2Db.Utilities", "Re
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reco3Xml2Db.DalAppConfig", "Reco3Xml2Db.DalAppConfig\Reco3Xml2Db.DalAppConfig.csproj", "{4DA4A7E6-4755-447E-8600-8763267F26E9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reco3Xml2Db.DalEf", "Reco3Xml2Db.DalEf\Reco3Xml2Db.DalEf.csproj", "{0E27B9DC-DB64-4FDB-A9B1-FBEB4FCF7395}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -56,6 +58,10 @@ Global
 		{4DA4A7E6-4755-447E-8600-8763267F26E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4DA4A7E6-4755-447E-8600-8763267F26E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4DA4A7E6-4755-447E-8600-8763267F26E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E27B9DC-DB64-4FDB-A9B1-FBEB4FCF7395}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E27B9DC-DB64-4FDB-A9B1-FBEB4FCF7395}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E27B9DC-DB64-4FDB-A9B1-FBEB4FCF7395}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E27B9DC-DB64-4FDB-A9B1-FBEB4FCF7395}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

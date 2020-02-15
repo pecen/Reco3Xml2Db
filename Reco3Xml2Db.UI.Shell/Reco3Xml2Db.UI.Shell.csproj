@@ -137,6 +137,10 @@
       <Project>{4da4a7e6-4755-447e-8600-8763267f26e9}</Project>
       <Name>Reco3Xml2Db.DalAppConfig</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Reco3Xml2Db.DalEf\Reco3Xml2Db.DalEf.csproj">
+      <Project>{0e27b9dc-db64-4fdb-a9b1-fbeb4fcf7395}</Project>
+      <Name>Reco3Xml2Db.DalEf</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Reco3Xml2Db.DalSql\Reco3Xml2Db.DalSql.csproj">
       <Project>{7871f66f-5750-4a27-b35b-6e2aab09863c}</Project>
       <Name>Reco3Xml2Db.DalSql</Name>
