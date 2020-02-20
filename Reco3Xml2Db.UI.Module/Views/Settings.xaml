@@ -34,6 +34,8 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="30" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Label
             Grid.ColumnSpan="4"
@@ -41,6 +43,8 @@
             HorizontalAlignment="Center"
             Content="{Binding PageHeader}"
             FontSize="20" />
+
+        <!--  Here goes Server row  -->
         <TextBlock
             Grid.Row="1"
             Margin="5,5,0,5"
@@ -66,47 +70,7 @@
             Content="..."
             ToolTip="{Binding DbDialogButtonToolTip}" />
 
-        <TextBlock
-            Grid.Row="4"
-            Margin="5,5,0,5"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Center"
-            Text="Xml File Path: " />
-        <TextBox
-            Grid.Row="4"
-            Grid.Column="1"
-            Margin="0,5,-8,5"
-            Text="{Binding XmlFilePath}"
-            ToolTip="{Binding XmlFilePathToolTip}" />
-        <!--  Text="{Binding XmlFilePath, UpdateSourceTrigger=PropertyChanged}"  -->
-
-        <Button
-            Grid.Row="4"
-            Grid.Column="2"
-            Width="25"
-            Height="20"
-            Margin="0,-1,-13,0"
-            HorizontalAlignment="Stretch"
-            VerticalAlignment="Stretch"
-            Command="{Binding GetFilePathCommand}"
-            Content="..."
-            ToolTip="{Binding XmlFileDialogButtonToolTip}" />
-
-        <TextBlock
-            Grid.Row="3"
-            Margin="5,5,0,5"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Center"
-            Text="Authentication: " />
-        <ComboBox
-            Grid.Row="3"
-            Grid.Column="1"
-            Grid.ColumnSpan="2"
-            Margin="0,5,0,5"
-            ItemsSource="{Binding AuthenticationList}"
-            SelectedIndex="{Binding Authentication}"
-            ToolTip="{Binding AuthToolTip}" />
-
+        <!--  Here goes database row  -->
         <TextBlock
             Grid.Row="2"
             Margin="5,5,0,5"
@@ -124,6 +88,86 @@
             IsEnabled="{Binding HasServerValue}"
             Text="{Binding DbName, UpdateSourceTrigger=PropertyChanged}"
             ToolTip="{Binding DbToolTip}" />
+
+        <TextBlock
+            Grid.Row="3"
+            Margin="5,5,0,5"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Center"
+            Text="Authentication: " />
+        <ComboBox
+            Grid.Row="3"
+            Grid.Column="1"
+            Grid.ColumnSpan="2"
+            Margin="0,5,0,5"
+            ItemsSource="{Binding AuthenticationList}"
+            SelectedIndex="{Binding Authentication}"
+            ToolTip="{Binding AuthToolTip}" />
+
+        <!--  Here goes the User name row  -->
+        <TextBlock
+            Grid.Row="4"
+            Margin="5,5,0,5"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Center"
+            FontStyle="{Binding HasServerValue, Converter={StaticResource BoolToItalic}}"
+            Foreground="{Binding HasServerValue, Converter={StaticResource BoolToForeground}}"
+            Text="User name: " />
+        <TextBox
+            Grid.Row="4"
+            Grid.Column="1"
+            Grid.ColumnSpan="2"
+            Margin="0,5,0,5"
+            FontStyle="{Binding HasServerValue, Converter={StaticResource BoolToItalic}}"
+            IsEnabled="{Binding HasServerValue}"
+            Text="{Binding DbName, UpdateSourceTrigger=PropertyChanged}"
+            ToolTip="{Binding UserIdToolTip}" />
+
+        <!--  Here goes the Password row  -->
+        <TextBlock
+            Grid.Row="5"
+            Margin="5,5,0,5"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Center"
+            FontStyle="{Binding HasServerValue, Converter={StaticResource BoolToItalic}}"
+            Foreground="{Binding HasServerValue, Converter={StaticResource BoolToForeground}}"
+            Text="Password: " />
+        <TextBox
+            Grid.Row="5"
+            Grid.Column="1"
+            Grid.ColumnSpan="2"
+            Margin="0,5,0,5"
+            FontStyle="{Binding HasServerValue, Converter={StaticResource BoolToItalic}}"
+            IsEnabled="{Binding HasServerValue}"
+            Text="{Binding DbName, UpdateSourceTrigger=PropertyChanged}"
+            ToolTip="{Binding UserIdToolTip}" />
+
+        <TextBlock
+            Grid.Row="6"
+            Margin="5,5,0,5"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Center"
+            Text="Xml File Path: " />
+        <TextBox
+            Grid.Row="6"
+            Grid.Column="1"
+            Margin="0,5,-8,5"
+            Text="{Binding XmlFilePath}"
+            ToolTip="{Binding XmlFilePathToolTip}" />
+        <!--  Text="{Binding XmlFilePath, UpdateSourceTrigger=PropertyChanged}"  -->
+
+        <Button
+            Grid.Row="6"
+            Grid.Column="2"
+            Width="25"
+            Height="20"
+            Margin="0,-1,-13,0"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            Command="{Binding GetFilePathCommand}"
+            Content="..."
+            ToolTip="{Binding XmlFileDialogButtonToolTip}" />
+
         <Button
             Grid.Row="3"
             Grid.RowSpan="2"

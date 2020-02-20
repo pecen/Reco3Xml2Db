@@ -5,7 +5,7 @@ namespace Reco3Xml2Db.UI.Module.Enums {
     [Description("Sql Server")]
     SQLServer,
     Windows,
-    //[Description("Active Directory")]
-    //ActiveDirectory
+    [Description("Amazon Web Services")]
+    AWS
   }
 }
