@@ -19,7 +19,7 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
  
     #region Properties
 
-    public string FilenameToolTip { get; } = "Type in a valid Component filename (*.Xml)";
+    public string FilenameToolTip { get; } = "Type in a valid Component filename (*.Xml), or click the button to the right to select file.";
     public string XmlFileDialogButtonToolTip { get; } = "Click the button to open a file dialog to browse for the Xml file(s)";
     public string AuthToolTip { get; } = "Select Authentication method for Sql Server";
     public string AllFilesToolTip { get; } = "Process all files in the chosen directory with the same settings";
@@ -244,6 +244,8 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
 
         return true;
       }
+
+      ComponentExists = false;
 
       return false;
     }
