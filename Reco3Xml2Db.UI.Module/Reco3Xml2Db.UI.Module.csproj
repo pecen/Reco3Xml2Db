@@ -92,9 +92,13 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="ViewModels\ComponentsGridViewModel.cs" />
     <Compile Include="ViewModels\ImportXmlViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
+    <Compile Include="Views\ComponentsGrid.xaml.cs">
+      <DependentUpon>ComponentsGrid.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ImportXml.xaml.cs">
       <DependentUpon>ImportXml.xaml</DependentUpon>
     </Compile>
@@ -135,6 +139,10 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Views\ComponentsGrid.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ImportXml.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
