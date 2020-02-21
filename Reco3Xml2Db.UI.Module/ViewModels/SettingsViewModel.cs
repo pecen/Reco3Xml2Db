@@ -26,6 +26,8 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
     public string XmlFilePathToolTip { get; } = "Type in the filepath where the Xml files resides";
     public string XmlFileDialogButtonToolTip { get; } = "Click the button to browse for the location of the Xml file(s)";
     public string SaveButtonToolTip { get; } = "Click the button to save the configuration settings";
+    public string UserNameToolTip { get; } = "Enter a user name";
+    public string PasswordToolTip { get; } = "Enter your password";
 
     public DelegateCommand GetDbCommand { get; set; }
     public DelegateCommand SaveSettingsCommand { get; set; }
@@ -54,6 +56,20 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       get { return _authentication; }
       set {
         SetProperty(ref _authentication, value);
+        if (value == (int)AuthMethod.Windows) {
+          IsUidPwdAuth = false;
+        }
+        else {
+          IsUidPwdAuth = true;
+        }
+      }
+    }
+
+    private bool _isUidPwdAuth;
+    public bool IsUidPwdAuth {
+      get { return _isUidPwdAuth; }
+      set {
+        SetProperty(ref _isUidPwdAuth, value);
       }
     }
 
@@ -71,6 +87,22 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       set { SetProperty(ref _authenticationList, value); }
     }
 
+    private string _userName;
+    public string UserName {
+      get { return _userName; }
+      set {
+        SetProperty(ref _userName, value);
+      }
+    }
+
+    private string _password;
+    public string Password {
+      get { return _password; }
+      set {
+        SetProperty(ref _password, value);
+      }
+    }
+
     public SettingsEdit Settings { get; private set; }
 
     #endregion
@@ -81,7 +113,7 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       Title = TabNames.Settings.ToString();
 
       AuthenticationList = new ObservableCollection<string>();
-      AuthenticationList.GetEnumValues<Authentication>();
+      AuthenticationList.GetEnumValues<AuthMethod>();
 
       GetFilePathCommand = new DelegateCommand(GetFolderName);
       GetDbCommand = new DelegateCommand(GetDbName);

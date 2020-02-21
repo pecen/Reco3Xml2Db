@@ -59,16 +59,23 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
     private string _filePath;
     public string FilePath {
       get { return _filePath; }
-      set { SetProperty(ref _filePath, value); }
+      set {
+        SetProperty(ref _filePath, Directory.Exists(value)
+          ? value
+          : string.Empty);
+      }
     }
 
     private string _fileName;
     public string FileName {
       get { return _fileName; }
       set {
-        SetProperty(ref _fileName, Path.IsPathRooted(value) 
-          ? value 
-          : FilePath + "\\" + value);
+        SetProperty(ref _fileName, Path.IsPathRooted(value)
+          ? value
+          : string.Empty);
+          //: string.IsNullOrEmpty(FilePath) 
+          //  ? value
+          //  : FilePath + "\\" + value);
       }
     }
 
@@ -119,6 +126,9 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       get { return _isChecked; }
       set {
         SetProperty(ref _isChecked, value);
+        if(value == true) {
+          FileName = string.Empty;
+        }
         RaisePropertyChanged(nameof(IsNotChecked));
       }
     }
@@ -147,6 +157,7 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       GetFilenameCommand = new DelegateCommand(GetFileDialog);
       ImportXmlCommand = new DelegateCommand(Execute, CanExecute)
         .ObservesProperty(() => FileName)
+        .ObservesProperty(() => FilePath)
         .ObservesProperty(() => IsChecked);
 
       _eventAggregator.GetEvent<GetFilePathCommand>().Subscribe(FilePathReceived);
@@ -159,6 +170,7 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       FilePath = obj;
       FileName = string.Empty;
     }
+
     private void FileNameReceived(string obj) {
       FileName = obj;
 
@@ -167,6 +179,7 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
         FilePath = dir;
       }
     }
+
     private void ComponentEditReceived(ComponentEdit obj) => Component = obj;
     private void ComponentListReceived(ComponentList obj) => Components = obj; 
 
@@ -233,8 +246,10 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
     }
 
     private bool CanExecute() {
-      if (IsChecked
-        || (!string.IsNullOrEmpty(FileName)
+      if ((IsChecked
+        && Directory.Exists(FilePath))
+        || (IsNotChecked
+        && !string.IsNullOrEmpty(FileName)
         && FileName.Length > 4
         && FileName.Substring(FileName.Length - 4) == ".xml"
         && File.Exists($"{FileName}"))) {
@@ -277,7 +292,9 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
         InitialDirectory = string.IsNullOrEmpty(FileName)
                             //? SavedFilePath
                             ? FilePath
-                            : Path.GetDirectoryName(FileName),
+                            : Directory.Exists(FileName)
+                              ? Path.GetDirectoryName(FileName)
+                              : Environment.CurrentDirectory,
         Filter = "Xml files (*.xml)|*.xml|All files (*.*)|*.*",
         FilterIndex = 1,
         RestoreDirectory = true

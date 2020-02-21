@@ -27,6 +27,18 @@ namespace Reco3Xml2Db.Library {
       set { SetProperty(AuthenticationProperty, value); }
     }
 
+    public static readonly PropertyInfo<string> UserNameProperty = RegisterProperty<string>(c => c.UserName);
+    public string UserName {
+      get { return GetProperty(UserNameProperty); }
+      set { SetProperty(UserNameProperty, value); }
+    }
+
+    public static readonly PropertyInfo<string> PasswordProperty = RegisterProperty<string>(c => c.Password);
+    public string Password {
+      get { return GetProperty(PasswordProperty); }
+      set { SetProperty(PasswordProperty, value); }
+    }
+
     public static readonly PropertyInfo<string> XmlFilePathProperty = RegisterProperty<string>(c => c.XmlFilePath);
     public string XmlFilePath {
       get { return GetProperty(XmlFilePathProperty); }
@@ -93,6 +105,8 @@ namespace Reco3Xml2Db.Library {
             Server = Server,
             Database = Database,
             Authentication = Authentication,
+            UserName = UserName,
+            Password = Password,
             XmlFilePath = XmlFilePath
           };
           dal.Update(item);

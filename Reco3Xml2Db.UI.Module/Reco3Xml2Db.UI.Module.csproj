@@ -68,7 +68,7 @@
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\RemoveFilenameFromPathConverter.cs" />
     <Compile Include="Converters\RemovePathFromFilenameConverter.cs" />
-    <Compile Include="Enums\Authentication.cs" />
+    <Compile Include="Enums\AuthMethod.cs" />
     <Compile Include="Enums\ButtonName.cs" />
     <Compile Include="Enums\ComponentType.cs" />
     <Compile Include="Enums\ConnectionString.cs" />
@@ -78,6 +78,7 @@
     <Compile Include="Enums\TabNames.cs" />
     <Compile Include="Enums\ToolTipText.cs" />
     <Compile Include="Enums\WindowRegions.cs" />
+    <Compile Include="Helpers\PwdHelper.cs" />
     <Compile Include="Reco3Xml2DbModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
