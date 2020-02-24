@@ -15,6 +15,7 @@
         <converters:BoolToOpacityConverter x:Key="BoolToOpacity" />
         <converters:BoolToItalicConverter x:Key="BoolToItalic" />
         <converters:BoolToGreyForegroundConverter x:Key="BoolToGreyForeground" />
+        <converters:EmptyStringToTooltipConverter x:Key="EmptyStringToTooltipConverter" />
 
         <!--<Style TargetType="ToolTip">
             <Setter Property="Background" Value="LightYellow" />
@@ -155,9 +156,16 @@
             Grid.Row="3"
             Grid.Column="1"
             Margin="0,5,-8,5"
-            Text="{Binding XmlFilePath}"
-            ToolTip="{Binding XmlFilePathToolTip}" />
-        <!--  Text="{Binding XmlFilePath, UpdateSourceTrigger=PropertyChanged}"  -->
+            DataContext="{Binding}"
+            Text="{Binding XmlFilePath}">
+            <TextBox.ToolTip>
+                <MultiBinding Converter="{StaticResource EmptyStringToTooltipConverter}">
+                    <Binding Path="XmlFilePath" />
+                    <Binding Path="XmlFilePathToolTip" />
+                </MultiBinding>
+            </TextBox.ToolTip>
+        </TextBox>
+        <!--  ToolTip="{Binding XmlFilePath, Converter={StaticResource EmptyStringToTooltipConverter}}" />  -->
 
         <Button
             Grid.Row="3"

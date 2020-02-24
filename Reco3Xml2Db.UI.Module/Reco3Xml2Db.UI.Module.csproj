@@ -66,6 +66,7 @@
     <Compile Include="Converters\BoolToItalicConverter.cs" />
     <Compile Include="Converters\BoolToOpacityConverter.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="Converters\EmptyStringToTooltipConverter.cs" />
     <Compile Include="Converters\RemoveFilenameFromPathConverter.cs" />
     <Compile Include="Converters\RemovePathFromFilenameConverter.cs" />
     <Compile Include="Enums\AuthMethod.cs" />

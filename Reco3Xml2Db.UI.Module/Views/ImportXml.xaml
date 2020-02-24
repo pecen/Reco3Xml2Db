@@ -17,7 +17,7 @@
         <converters:BoolToItalicConverter x:Key="BoolToItalicConverter" />
         <converters:BoolToButtonToolTipTextConverter x:Key="BoolToButtonToolTipTextConverter" />
         <converters:RemovePathFromFilenameConverter x:Key="RemovePathFromFilenameConverter" />
-        <!--<converters:RemoveFilenameFromPathConverter x:Key="RemoveFilenameFromPathConverter" />-->
+        <converters:EmptyStringToTooltipConverter x:Key="EmptyStringToTooltipConverter" />
 
         <!--<Style TargetType="ToolTip">
             <Setter Property="Background" Value="LightYellow" />
@@ -93,23 +93,20 @@
             ToolTip="{Binding FilenameToolTip}"
             Visibility="{Binding IsNotChecked, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
-        <!--<TextBox
-            Grid.Row="2"
-            Grid.Column="1"
-            Margin="0,5,-8,5"
-            FontStyle="{Binding ComponentExists, Converter={StaticResource BoolToItalicConverter}, UpdateSourceTrigger=PropertyChanged}"
-            Text="{Binding FileName, Converter={StaticResource RemoveFilenameFromPathConverter}, UpdateSourceTrigger=PropertyChanged}"
-            ToolTip="{Binding FilePathToolTip}"
-            Visibility="{Binding IsChecked, ElementName=filesChkbox, Converter={StaticResource BooleanToVisibilityConverter}}" />-->
-
         <TextBox
             Grid.Row="2"
             Grid.Column="1"
             Margin="0,5,-8,5"
             FontStyle="{Binding ComponentExists, Converter={StaticResource BoolToItalicConverter}, UpdateSourceTrigger=PropertyChanged}"
             Text="{Binding FilePath, UpdateSourceTrigger=PropertyChanged}"
-            ToolTip="{Binding FilePath}"
-            Visibility="{Binding IsChecked, ElementName=filesChkbox, Converter={StaticResource BooleanToVisibilityConverter}}" />
+            Visibility="{Binding IsChecked, ElementName=filesChkbox, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <TextBox.ToolTip>
+                <MultiBinding Converter="{StaticResource EmptyStringToTooltipConverter}">
+                    <Binding Path="FilePath" />
+                    <Binding Path="FilePathToolTip" />
+                </MultiBinding>
+            </TextBox.ToolTip>
+        </TextBox>
 
         <Button
             Grid.Row="2"

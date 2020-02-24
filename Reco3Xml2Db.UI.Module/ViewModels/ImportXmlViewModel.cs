@@ -20,6 +20,7 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
     #region Properties
 
     public string FilenameToolTip { get; } = "Type in a valid Component filename (*.Xml), or click the button to the right to select file.";
+    public string FilePathToolTip { get; } = "Type in a valid path to the Component files, or click the button to the right to select path.";
     public string XmlFileDialogButtonToolTip { get; } = "Click the button to open a file dialog to browse for the Xml file(s)";
     public string AuthToolTip { get; } = "Select Authentication method for Sql Server";
     public string AllFilesToolTip { get; } = "Process all files in the chosen directory with the same settings";
@@ -30,7 +31,6 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
     public ComponentList Components { get; set; }
 
     private Stream XmlStream { get; set; }
-
 
     public string PageHeader {
       get { return _header + BtnName; }
@@ -60,9 +60,10 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
     public string FilePath {
       get { return _filePath; }
       set {
-        SetProperty(ref _filePath, Directory.Exists(value)
-          ? value
-          : string.Empty);
+        SetProperty(ref _filePath, value);
+        //SetProperty(ref _filePath, Directory.Exists(value)
+        //  ? value
+        //  : Environment.CurrentDirectory);
       }
     }
 
@@ -127,7 +128,7 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       set {
         SetProperty(ref _isChecked, value);
         if(value == true) {
-          FileName = string.Empty;
+          ClearValues();
         }
         RaisePropertyChanged(nameof(IsNotChecked));
       }
