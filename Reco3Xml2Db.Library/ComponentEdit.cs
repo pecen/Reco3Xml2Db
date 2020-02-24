@@ -99,12 +99,12 @@ namespace Reco3Xml2Db.Library
 
     [RunLocal]
     [Create]
-    protected override void DataPortal_Create() {
+    private void Create() {
       base.DataPortal_Create();
     }
 
     [Fetch]
-    private void DataPortal_Fetch(string criteria) {
+    private void Fetch(string criteria) {
       using (var dalManager = DalFactory.GetManager(DalManagerTypes.DalManagerDb)) {
         var dal = dalManager.GetProvider<IComponentDal>();
         var data = dal.Fetch(criteria);
@@ -125,7 +125,7 @@ namespace Reco3Xml2Db.Library
     }
 
     [Insert]
-    protected override void DataPortal_Insert() {
+    private void Insert() {
       using (var ctx = DalFactory.GetManager(DalManagerTypes.DalManagerDb)) {
         var dal = ctx.GetProvider<Dal.IComponentDal>();
         using (BypassPropertyChecks) {

@@ -4,6 +4,7 @@ using Reco3Xml2Db.Dal.Dto;
 using Reco3Xml2Db.DalEf.Entities;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml;
 
 namespace Reco3Xml2Db.DalEf {
   public class ComponentDal : IComponentDal {

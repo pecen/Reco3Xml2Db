@@ -19,8 +19,8 @@ namespace Reco3Xml2Db.Library {
       set { LoadProperty(PDNumberProperty, value); }
     }
 
-    public static readonly PropertyInfo<DateTime> DownloadedTimestampProperty = RegisterProperty<DateTime>(c => c.DownloadedTimestamp);
-    public DateTime DownloadedTimestamp {
+    public static readonly PropertyInfo<string> DownloadedTimestampProperty = RegisterProperty<string>(c => c.DownloadedTimestamp);
+    public string DownloadedTimestamp {
       get { return GetProperty(DownloadedTimestampProperty); }
       set { LoadProperty(DownloadedTimestampProperty, value); }
     }
@@ -69,7 +69,7 @@ namespace Reco3Xml2Db.Library {
     private void Child_Fetch(ComponentDto item) {
       ComponentId = item.ComponentId;
       PDNumber = item.PDNumber;
-      DownloadedTimestamp = item.DownloadedTimestamp;
+      DownloadedTimestamp = item.DownloadedTimestamp.ToShortDateString();
       Description = item.Description;
       PDStatus = item.PDStatus;
       ComponentType = item.ComponentType;

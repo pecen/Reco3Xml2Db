@@ -10,6 +10,10 @@ namespace Reco3Xml2Db.Library {
   public class ComponentList : ReadOnlyListBase<ComponentList, ComponentInfo> {
     #region Factory Methods
 
+    public static ComponentList GetComponentList() {
+      return DataPortal.Fetch<ComponentList>();
+    }
+
     public static ComponentList GetComponentList(string pdNumber) {
       return DataPortal.Fetch<ComponentList>(pdNumber);
     }
@@ -24,14 +28,26 @@ namespace Reco3Xml2Db.Library {
     }
 
     [Fetch]
-    private void DataPortal_Fetch(string pdNumber) {
+    private void Fetch() {
+      Fetch(null);
+    }
+
+    [Fetch]
+    private void Fetch(string pdNumber) {
       var rlce = RaiseListChangedEvents;
       RaiseListChangedEvents = false;
       IsReadOnly = false;
 
       using (var dalManager = DalFactory.GetManager(DalManagerTypes.DalManagerDb)) {
         IComponentDal dal = dalManager.GetProvider<IComponentDal>();
-        IList<ComponentDto> data = dal.FetchAllWSamePDNumber(pdNumber);
+        IList<ComponentDto> data = null;
+
+        if (string.IsNullOrEmpty(pdNumber)) {
+          data = dal.Fetch();
+        }
+        else {
+          data = dal.FetchAllWSamePDNumber(pdNumber);
+        }
 
         if (data != null) {
           foreach (var item in data) {

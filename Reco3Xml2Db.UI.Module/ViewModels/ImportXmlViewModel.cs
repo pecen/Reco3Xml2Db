@@ -164,7 +164,7 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       _eventAggregator.GetEvent<GetFilePathCommand>().Subscribe(FilePathReceived);
       _eventAggregator.GetEvent<GetFilenameCommand>().Subscribe(FileNameReceived);
       _eventAggregator.GetEvent<ImportXmlCommand>().Subscribe(ComponentEditReceived);
-      _eventAggregator.GetEvent<GetComponentsWSamePDNumberCommand>().Subscribe(ComponentListReceived);
+      _eventAggregator.GetEvent<GetComponentsCommand>().Subscribe(ComponentListReceived);
     }
 
     private void FilePathReceived(string obj) {
@@ -271,7 +271,7 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
 
       if (ComponentEdit.Exists(fileNameWOutExt)) {
         _eventAggregator
-          .GetEvent<GetComponentsWSamePDNumberCommand>()
+          .GetEvent<GetComponentsCommand>()
           .Publish(ComponentList.GetComponentList(fileNameWOutExt));
 
         var max = Components.Max(c => c.ComponentId);

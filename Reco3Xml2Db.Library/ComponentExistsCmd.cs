@@ -28,12 +28,12 @@ namespace Reco3Xml2Db.Library {
 
     [RunLocal]
     [Create]
-    protected void Create(string id) {
+    private void Create(string id) {
       PDNumber = id;
     }
 
     [Execute]
-    protected override void DataPortal_Execute() {
+    private void Execute() {
       try {
         using (var ctx = DalFactory.GetManager(DalManagerTypes.DalManagerDb)) {
           var dal = ctx.GetProvider<IComponentDal>();
