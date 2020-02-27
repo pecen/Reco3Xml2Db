@@ -9,15 +9,18 @@ namespace Reco3Xml2Db.UI.Module {
   public class Reco3Xml2DbModule : IModule {
     public void OnInitialized(IContainerProvider containerProvider) {
       var regionManager = containerProvider.Resolve<IRegionManager>();
+      //regionManager.RegisterViewWithRegion(WindowRegions.ComponentRegion.ToString(), typeof(ImportXml));
+      //regionManager.RegisterViewWithRegion(WindowRegions.SettingsRegion.ToString(), typeof(Settings));
+      //regionManager.RegisterViewWithRegion(WindowRegions.ListRegion.ToString(), typeof(ComponentsGrid));
       regionManager.RegisterViewWithRegion(WindowRegions.TabRegion.ToString(), typeof(ImportXml));
       regionManager.RegisterViewWithRegion(WindowRegions.TabRegion.ToString(), typeof(ComponentsGrid));
       regionManager.RegisterViewWithRegion(WindowRegions.TabRegion.ToString(), typeof(Settings));
     }
 
     public void RegisterTypes(IContainerRegistry containerRegistry) {
-      containerRegistry.RegisterForNavigation(typeof(ImportXml), nameof(ImportXml));
-      containerRegistry.RegisterForNavigation(typeof(ComponentsGrid), nameof(ComponentsGrid));
-      containerRegistry.RegisterForNavigation(typeof(Settings), nameof(Settings));
+      //containerRegistry.RegisterForNavigation(typeof(ImportXml), nameof(ImportXml));
+      //containerRegistry.RegisterForNavigation(typeof(ComponentsGrid), nameof(ComponentsGrid));
+      //containerRegistry.RegisterForNavigation(typeof(Settings), nameof(Settings));
     }
   }
 }

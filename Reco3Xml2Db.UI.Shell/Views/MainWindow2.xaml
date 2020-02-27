@@ -9,17 +9,38 @@
     prism:ViewModelLocator.AutoWireViewModel="True"
     ResizeMode="CanMinimize"
     WindowStartupLocation="CenterScreen">
-    <Window.Resources>
-        <Style TargetType="TabItem">
-            <Setter Property="Header" Value="{Binding DataContext.Title}" />
-            <Setter Property="Width" Value="85" />
-        </Style>
-        <Style TargetType="ToolTip">
-            <Setter Property="Background" Value="LightYellow" />
-        </Style>
-    </Window.Resources>
+    <Window.Background>
+        <ImageBrush ImageSource="pack://siteoforigin:,,,/Resources/water-1330252_1920.jpg">
+            <ImageBrush.RelativeTransform>
+                <TransformGroup>
+                    <ScaleTransform />
+                    <SkewTransform />
+                    <RotateTransform />
+                    <TranslateTransform />
+                </TransformGroup>
+            </ImageBrush.RelativeTransform>
+        </ImageBrush>
+    </Window.Background>
     <Grid>
-        <ContentControl prism:RegionManager.RegionName="{Binding ContentRegion}" />
-        <!--<TabControl prism:RegionManager.RegionName="{Binding TabRegion}" />-->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="300" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="512" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid>
+            <ContentControl prism:RegionManager.RegionName="{Binding ComponentRegion}" />
+        </Grid>
+        <Grid Grid.Column="1">
+            <ContentControl prism:RegionManager.RegionName="{Binding SettingsRegion}" />
+        </Grid>
+        <!--<Grid
+            Grid.Row="1"
+            Grid.Column="0"
+            Grid.ColumnSpan="2">
+            <ContentControl prism:RegionManager.RegionName="{Binding ListRegion}" />
+        </Grid>-->
     </Grid>
 </Window>

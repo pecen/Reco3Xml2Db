@@ -8,6 +8,14 @@ using System.Collections.Generic;
 namespace Reco3Xml2Db.Library {
   [Serializable]
   public class ComponentList : ReadOnlyListBase<ComponentList, ComponentInfo> {
+    protected override ComponentInfo AddNewCore() {
+      //return base.AddNewCore();
+      var item = ComponentInfo.NewComponent();
+      Add(item);
+
+      return item;
+    }
+
     #region Factory Methods
 
     public static ComponentList GetComponentList() {

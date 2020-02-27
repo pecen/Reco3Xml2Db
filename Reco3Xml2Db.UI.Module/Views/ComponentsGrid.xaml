@@ -66,7 +66,7 @@
                 Content="Component Type" />
         </Grid>-->
 
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
             <Label HorizontalAlignment="Right" Content="Count:" />
             <Label Content="{Binding Components.Count}" />
         </StackPanel>

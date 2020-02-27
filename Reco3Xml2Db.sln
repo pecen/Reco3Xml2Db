@@ -24,6 +24,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reco3Xml2Db.DalAppConfig", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reco3Xml2Db.DalEf", "Reco3Xml2Db.DalEf\Reco3Xml2Db.DalEf.csproj", "{0E27B9DC-DB64-4FDB-A9B1-FBEB4FCF7395}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resources", "Resources", "{2E92A1DE-7E5A-4840-BEE5-21F79BFCC2DB}"
+	ProjectSection(SolutionItems) = preProject
+		..\assets\water-1330252_1920.jpg = ..\assets\water-1330252_1920.jpg
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

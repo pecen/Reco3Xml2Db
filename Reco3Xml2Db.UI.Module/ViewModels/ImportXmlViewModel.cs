@@ -16,10 +16,10 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
   public class ImportXmlViewModel : ViewModelBase {
     private IEventAggregator _eventAggregator;
     private readonly string _header = "Fill in the information below and press ";
- 
+
     #region Properties
 
-    public string FilenameToolTip { get; } = "Type in a valid Component filename (*.Xml), or click the button to the right to select file.";
+    public string FileNameToolTip { get; } = "Type in a valid Component filename (*.Xml), or click the button to the right to select file.";
     public string FilePathToolTip { get; } = "Type in a valid path to the Component files, or click the button to the right to select path.";
     public string XmlFileDialogButtonToolTip { get; } = "Click the button to open a file dialog to browse for the Xml file(s)";
     public string AuthToolTip { get; } = "Select Authentication method for Sql Server";
@@ -27,19 +27,19 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
 
     public DelegateCommand GetFilenameCommand { get; set; }
     public DelegateCommand ImportXmlCommand { get; set; }
-    public ComponentEdit Component { get; set; }
-    public ComponentList Components { get; set; }
+    //public ComponentEdit Component { get; set; }
+    //public ComponentList Components { get; set; }
 
     private Stream XmlStream { get; set; }
 
     public string PageHeader {
       get { return _header + BtnName; }
-    } 
+    }
 
     private string BtnName {
       get {
-        return ComponentExists 
-          ? ButtonName.Update.ToString() 
+        return ComponentExists
+          ? ButtonName.Update.ToString()
           : ButtonName.Import.ToString();
       }
     }
@@ -71,12 +71,13 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
     public string FileName {
       get { return _fileName; }
       set {
-        SetProperty(ref _fileName, Path.IsPathRooted(value)
-          ? value
-          : string.Empty);
-          //: string.IsNullOrEmpty(FilePath) 
-          //  ? value
-          //  : FilePath + "\\" + value);
+        SetProperty(ref _fileName, value);
+        //SetProperty(ref _fileName, Path.IsPathRooted(value)
+        //  ? value
+        //  : string.Empty);
+        ////: string.IsNullOrEmpty(FilePath) 
+        ////  ? value
+        ////  : FilePath + "\\" + value);
       }
     }
 
@@ -127,7 +128,8 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       get { return _isChecked; }
       set {
         SetProperty(ref _isChecked, value);
-        if(value == true) {
+        if (value == true)
+        {
           ClearValues();
         }
         RaisePropertyChanged(nameof(IsNotChecked));
@@ -140,7 +142,8 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
 
     #endregion
 
-    public ImportXmlViewModel(IEventAggregator eventAggregator) {
+    public ImportXmlViewModel(IEventAggregator eventAggregator)
+    {
       _eventAggregator = eventAggregator;
 
       Title = TabNames.ImportToDb.GetDescription();
@@ -164,35 +167,54 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       _eventAggregator.GetEvent<GetFilePathCommand>().Subscribe(FilePathReceived);
       _eventAggregator.GetEvent<GetFilenameCommand>().Subscribe(FileNameReceived);
       _eventAggregator.GetEvent<ImportXmlCommand>().Subscribe(ComponentEditReceived);
-      _eventAggregator.GetEvent<GetComponentsCommand>().Subscribe(ComponentListReceived);
+      //_eventAggregator.GetEvent<GetComponentCommand>().Subscribe(ComponentListReceived);
+      //_eventAggregator.GetEvent<GetComponentCommand>().Subscribe(ComponentEditReceived);
     }
 
-    private void FilePathReceived(string obj) {
+    private void FilePathReceived(string obj)
+    {
       FilePath = obj;
-      FileName = string.Empty;
+      //FileName = string.Empty;
     }
 
-    private void FileNameReceived(string obj) {
+    private void FileNameReceived(string obj)
+    {
       FileName = obj;
 
       var dir = Path.GetDirectoryName(obj);
-      if (dir != FilePath) {
-        FilePath = dir;
+      if (dir != FilePath)
+      {
+        _eventAggregator.GetEvent<GetFilePathCommand>().Publish(dir);
+        //FilePath = dir;
       }
     }
 
-    private void ComponentEditReceived(ComponentEdit obj) => Component = obj;
-    private void ComponentListReceived(ComponentList obj) => Components = obj; 
+    private void ComponentEditReceived(ComponentEdit obj)
+    {
+      SelectedComponentType = obj.ComponentType;
+      SelectedPDSource = obj.PDSource;
+      SelectedPDStatus = obj.PDStatus;
+      Description = obj.Description;
+    }
 
-    private void Execute() {
-      try {
-        if (IsChecked) {
+
+
+
+    //private void ComponentListReceived(ComponentList obj) => Components = obj;
+
+    private void Execute()
+    {
+      try
+      {
+        if (IsChecked)
+        {
           ExecuteMany();
           var files = Directory.EnumerateFiles(FilePath).Count();
 
           MessageBox.Show($"{files} Component{(files > 1 ? "s" : string.Empty)} saved to the Database", "Success!", MessageBoxButton.OK, MessageBoxImage.Information);
         }
-        else {
+        else
+        {
           ExecuteOne();
 
           MessageBox.Show("Component saved!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -200,63 +222,77 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
 
         ClearValues();
       }
-      catch (Exception ex) {
+      catch (Exception ex)
+      {
         MessageBox.Show(ex.Message, "Error when saving component", MessageBoxButton.OK, MessageBoxImage.Error);
       }
     }
 
-    private void ExecuteMany() {
-      foreach(var item in Directory.EnumerateFiles(FilePath)) {
+    private void ExecuteMany()
+    {
+      foreach (var item in Directory.EnumerateFiles(FilePath))
+      {
         FileName = item;
         XmlStream = File.OpenRead(item);
         ExecuteOne();
       }
     }
 
-    private void ExecuteOne() {
-        _eventAggregator
-          .GetEvent<ImportXmlCommand>()
-          .Publish(ComponentEdit.NewComponentEdit());
+    private void ExecuteOne()
+    {
+      //_eventAggregator
+      //  .GetEvent<ImportXmlCommand>()
+      //  .Publish(ComponentEdit.NewComponentEdit());
 
-        Component.PDNumber = CheckPDNumber(Path.GetFileNameWithoutExtension(FileName));
-        Component.DownloadedTimestamp = DateTime.Now;
-        Component.Description = Description;
-        Component.PDStatus = SelectedPDStatus;
-        Component.ComponentType = SelectedComponentType;
-        Component.PDSource = SelectedPDSource;
-        Component.Xml = GetXml();
+      var component = ComponentEdit.NewComponentEdit();
 
-        var sourceComponent = ComponentEdit.GetComponent(Component.PDNumber);
+      component.PDNumber = CheckPDNumber(Path.GetFileNameWithoutExtension(FileName));
+      component.DownloadedTimestamp = DateTime.Now;
+      component.Description = Description;
+      component.PDStatus = SelectedPDStatus;
+      component.ComponentType = SelectedComponentType;
+      component.PDSource = SelectedPDSource;
+      component.Xml = GetXml();
 
-        if (!string.IsNullOrEmpty(sourceComponent.PDNumber)) {
-          Component.SourceComponentId = sourceComponent.ComponentId;
-        }
-        else {
-          Component.SourceComponentId = null;
-        }
+      var sourceComponent = ComponentEdit.GetComponent(component.PDNumber);
 
-        Component = Component.Save();
+      if (!string.IsNullOrEmpty(sourceComponent.PDNumber))
+      {
+        component.SourceComponentId = sourceComponent.ComponentId;
+      }
+      else
+      {
+        component.SourceComponentId = null;
+      }
+
+      component = component.Save();
+
+      _eventAggregator
+        .GetEvent<ImportXmlCommand>()
+        .Publish(component);
     }
 
-    private string CheckPDNumber(string pdNumber) {
-      if(!int.TryParse(pdNumber, out int parsedPd)) {
+    private string CheckPDNumber(string pdNumber)
+    {
+      if (!int.TryParse(pdNumber, out int parsedPd))
+      {
         throw new ApplicationException($"Wrong format in PDNumber. The filename is: {pdNumber}");
       }
 
       return pdNumber;
     }
 
-    private bool CanExecute() {
+    private bool CanExecute()
+    {
       if ((IsChecked
         && Directory.Exists(FilePath))
         || (IsNotChecked
         && !string.IsNullOrEmpty(FileName)
         && FileName.Length > 4
         && FileName.Substring(FileName.Length - 4) == ".xml"
-        && File.Exists($"{FileName}"))) {
-
+        && File.Exists($"{FileName}")))
+      {
         PublishExistingComponent();
-        RaisePropertyChanged(nameof(PageHeader));
 
         return true;
       }
@@ -266,21 +302,28 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       return false;
     }
 
-    private void PublishExistingComponent() {
+    private void PublishExistingComponent()
+    {
       var fileNameWOutExt = Path.GetFileNameWithoutExtension(FileName);
 
-      if (ComponentEdit.Exists(fileNameWOutExt)) {
+      if (ComponentEdit.Exists(fileNameWOutExt))
+      {
         _eventAggregator
-          .GetEvent<GetComponentsCommand>()
-          .Publish(ComponentList.GetComponentList(fileNameWOutExt));
+          .GetEvent<ImportXmlCommand>()
+          .Publish(ComponentEdit.GetComponent(fileNameWOutExt));
 
-        var max = Components.Max(c => c.ComponentId);
-        var lastComponent = Components.Where(c => c.ComponentId == max).FirstOrDefault();
+        //var max = Components.Max(c => c.ComponentId);
+        //var lastComponent = Components.Where(c => c.ComponentId == max).FirstOrDefault();
 
-        SelectedComponentType = lastComponent.ComponentType;
-        SelectedPDSource = lastComponent.PDSource;
-        SelectedPDStatus = lastComponent.PDStatus;
-        Description = lastComponent.Description;
+        //SelectedComponentType = lastComponent.ComponentType;
+        //SelectedPDSource = lastComponent.PDSource;
+        //SelectedPDStatus = lastComponent.PDStatus;
+        //Description = lastComponent.Description;
+
+        //SelectedComponentType = Component.ComponentType;
+        //SelectedPDSource = Component.PDSource;
+        //SelectedPDStatus = Component.PDStatus;
+        //Description = Component.Description;
 
         ComponentExists = true;
 
@@ -288,22 +331,26 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       }
     }
 
-    private void GetFileDialog() {
-      OpenFileDialog openFileDialog = new OpenFileDialog {
-        InitialDirectory = string.IsNullOrEmpty(FileName)
-                            //? SavedFilePath
-                            ? FilePath
-                            : Directory.Exists(FileName)
-                              ? Path.GetDirectoryName(FileName)
-                              : Environment.CurrentDirectory,
+    private void GetFileDialog()
+    {
+      OpenFileDialog openFileDialog = new OpenFileDialog
+      {
+        //InitialDirectory = string.IsNullOrEmpty(FileName)
+        //                    //? SavedFilePath
+        //                    ? FilePath
+        //                    : Directory.Exists(FilePath + "\\" + FileName)
+        //                      ? Path.GetDirectoryName(FileName)
+        //                      : Environment.CurrentDirectory,
+        InitialDirectory = FilePath,
         Filter = "Xml files (*.xml)|*.xml|All files (*.*)|*.*",
         FilterIndex = 1,
         RestoreDirectory = true
       };
 
-      if ((bool)openFileDialog.ShowDialog()) {
+      if ((bool)openFileDialog.ShowDialog())
+      {
         ClearValues();
-        
+
         //Read the contents of the file into a stream
         XmlStream = openFileDialog.OpenFile();
 
@@ -312,28 +359,34 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       }
     }
 
-    private void GetFolderDialog() {
-      var dialog = new CommonOpenFileDialog {
-        InitialDirectory = (string.IsNullOrEmpty(FileName) 
+    private void GetFolderDialog()
+    {
+      var dialog = new CommonOpenFileDialog
+      {
+        InitialDirectory = (string.IsNullOrEmpty(FileName)
                               //? SavedFilePath 
                               ? FilePath
                               : Path.GetDirectoryName(FileName)),
         IsFolderPicker = true,
       };
 
-      if (dialog.ShowDialog() == CommonFileDialogResult.Ok) {
+      if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
+      {
         _eventAggregator.GetEvent<GetFilePathCommand>()
           .Publish(dialog.FileName);
       }
     }
 
-    private string GetXml() {
-      using (StreamReader reader = new StreamReader(XmlStream)) {
+    private string GetXml()
+    {
+      using (StreamReader reader = new StreamReader(XmlStream))
+      {
         return reader.ReadToEnd();
       }
     }
 
-    private void ClearValues() {
+    private void ClearValues()
+    {
       FileName = string.Empty;
       Description = string.Empty;
       SelectedPDStatus = 0;

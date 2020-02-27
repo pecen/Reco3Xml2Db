@@ -1,5 +1,7 @@
 ﻿using Csla;
+using Reco3Xml2Db.Dal;
 using Reco3Xml2Db.Dal.Dto;
+using Reco3Xml2Db.Dal.Enums;
 using System;
 
 namespace Reco3Xml2Db.Library {
@@ -63,7 +65,44 @@ namespace Reco3Xml2Db.Library {
 
     #endregion
 
+    #region Factory Methods
+
+    public static ComponentInfo NewComponent() {
+      return DataPortal.Create<ComponentInfo>();
+    }
+
+    public static ComponentInfo GetComponent(string pdNumber) {
+      return DataPortal.Fetch<ComponentInfo>(pdNumber);
+    }
+
+    #endregion
+
     #region Data Access
+
+    [Create]
+    [RunLocal]
+    private void Create() {
+      
+    }
+
+    [Fetch]
+    private void Fetch(string pdNumber) {
+      using (var dalManager = DalFactory.GetManager(DalManagerTypes.DalManagerDb)) {
+        var dal = dalManager.GetProvider<IComponentDal>();
+        var data = dal.Fetch(pdNumber);
+        if (data != null) {
+          ComponentId = data.ComponentId;
+          PDNumber = data.PDNumber;
+          DownloadedTimestamp = data.DownloadedTimestamp.ToShortDateString();
+          Description = data.Description;
+          PDStatus = data.PDStatus;
+          ComponentType = data.ComponentType;
+          Xml = data.Xml;
+          PDSource = data.PDSource;
+          SourceComponentId = data.SourceComponentId;
+        }
+      }
+    }
 
     [FetchChild]
     private void Child_Fetch(ComponentDto item) {

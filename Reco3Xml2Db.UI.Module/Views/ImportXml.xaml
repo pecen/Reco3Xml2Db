@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
     d:DesignHeight="300"
-    d:DesignWidth="450"
+    d:DesignWidth="525"
     prism:ViewModelLocator.AutoWireViewModel="True"
     mc:Ignorable="d">
     <UserControl.Resources>
@@ -84,14 +84,29 @@
             VerticalAlignment="Center"
             Text="Component type: " />
 
+        <!--<TextBox
+            Grid.Row="2"
+            Grid.Column="1"
+            Margin="0,5,-8,5"
+            FontStyle="{Binding ComponentExists, Converter={StaticResource BoolToItalicConverter}, UpdateSourceTrigger=PropertyChanged}"
+            Text="{Binding FileName, Converter={StaticResource RemovePathFromFilenameConverter}, UpdateSourceTrigger=PropertyChanged}"  
+            ToolTip="{Binding FileNameToolTip}"
+            Visibility="{Binding IsNotChecked, Converter={StaticResource BooleanToVisibilityConverter}}" />-->
+
         <TextBox
             Grid.Row="2"
             Grid.Column="1"
             Margin="0,5,-8,5"
             FontStyle="{Binding ComponentExists, Converter={StaticResource BoolToItalicConverter}, UpdateSourceTrigger=PropertyChanged}"
-            Text="{Binding FileName, Converter={StaticResource RemovePathFromFilenameConverter}, UpdateSourceTrigger=PropertyChanged}"
-            ToolTip="{Binding FilenameToolTip}"
-            Visibility="{Binding IsNotChecked, Converter={StaticResource BooleanToVisibilityConverter}}" />
+            Text="{Binding FileName, Converter={StaticResource RemovePathFromFilenameConverter}, UpdateSourceTrigger=PropertyChanged}"  
+            Visibility="{Binding IsNotChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <TextBox.ToolTip>
+                <MultiBinding Converter="{StaticResource EmptyStringToTooltipConverter}">
+                    <Binding Path="FileName" />
+                    <Binding Path="FileNameToolTip" />
+                </MultiBinding>
+            </TextBox.ToolTip>
+        </TextBox>
 
         <TextBox
             Grid.Row="2"
