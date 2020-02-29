@@ -75,6 +75,21 @@ namespace Reco3Xml2Db.Library {
       return DataPortal.Fetch<ComponentInfo>(pdNumber);
     }
 
+    public static implicit operator ComponentInfo(ComponentEdit component) {
+      var componentInfo = NewComponent();
+      componentInfo.ComponentId = component.ComponentId;
+      componentInfo.PDNumber = component.PDNumber;
+      componentInfo.DownloadedTimestamp = component.DownloadedTimestamp.ToShortDateString();
+      componentInfo.Description = component.Description;
+      componentInfo.PDStatus = component.PDStatus;
+      componentInfo.ComponentType = component.ComponentType;
+      componentInfo.PDSource = component.PDSource;
+      componentInfo.Xml = component.Xml;
+      componentInfo.SourceComponentId = component.SourceComponentId;
+
+      return componentInfo;
+    }
+
     #endregion
 
     #region Data Access
@@ -82,7 +97,7 @@ namespace Reco3Xml2Db.Library {
     [Create]
     [RunLocal]
     private void Create() {
-      
+
     }
 
     [Fetch]

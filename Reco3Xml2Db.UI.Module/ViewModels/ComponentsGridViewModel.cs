@@ -32,20 +32,7 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
     }
 
     private void ComponentReceived(ComponentEdit obj) {
-      //var component = ComponentInfo.GetComponent(obj.PDNumber);
-
-      //var component = ComponentInfo.NewComponent();
-      var component = Components.AddNew();
-
-      component.PDNumber = obj.PDNumber;
-      component.DownloadedTimestamp = obj.DownloadedTimestamp.ToShortDateString();
-      component.Description = obj.Description;
-      component.PDStatus = obj.PDStatus;
-      component.ComponentType = obj.ComponentType;
-      component.PDSource = obj.PDSource;
-      component.Xml = obj.Xml;
-
-      //Components.Add(component);
+      Components.Add(obj);
     }
 
     private void ComponentListReceived(ComponentList obj) => Components = obj;
