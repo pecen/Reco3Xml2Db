@@ -89,7 +89,7 @@
             Grid.Column="1"
             Margin="0,5,-8,5"
             FontStyle="{Binding ComponentExists, Converter={StaticResource BoolToItalicConverter}, UpdateSourceTrigger=PropertyChanged}"
-            Text="{Binding FileName, Converter={StaticResource RemovePathFromFilenameConverter}, UpdateSourceTrigger=PropertyChanged}"  
+            Text="{Binding FileName, Converter={StaticResource RemovePathFromFilenameConverter}, UpdateSourceTrigger=PropertyChanged}"
             ToolTip="{Binding FileNameToolTip}"
             Visibility="{Binding IsNotChecked, Converter={StaticResource BooleanToVisibilityConverter}}" />-->
 
@@ -98,7 +98,7 @@
             Grid.Column="1"
             Margin="0,5,-8,5"
             FontStyle="{Binding ComponentExists, Converter={StaticResource BoolToItalicConverter}, UpdateSourceTrigger=PropertyChanged}"
-            Text="{Binding FileName, Converter={StaticResource RemovePathFromFilenameConverter}, UpdateSourceTrigger=PropertyChanged}"  
+            Text="{Binding FileName, Converter={StaticResource RemovePathFromFilenameConverter}, UpdateSourceTrigger=PropertyChanged}"
             Visibility="{Binding IsNotChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
             <TextBox.ToolTip>
                 <MultiBinding Converter="{StaticResource EmptyStringToTooltipConverter}">

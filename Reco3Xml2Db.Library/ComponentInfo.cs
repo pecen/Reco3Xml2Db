@@ -75,19 +75,19 @@ namespace Reco3Xml2Db.Library {
       return DataPortal.Fetch<ComponentInfo>(pdNumber);
     }
 
-    public static implicit operator ComponentInfo(ComponentEdit component) {
-      var componentInfo = NewComponent();
-      componentInfo.ComponentId = component.ComponentId;
-      componentInfo.PDNumber = component.PDNumber;
-      componentInfo.DownloadedTimestamp = component.DownloadedTimestamp.ToShortDateString();
-      componentInfo.Description = component.Description;
-      componentInfo.PDStatus = component.PDStatus;
-      componentInfo.ComponentType = component.ComponentType;
-      componentInfo.PDSource = component.PDSource;
-      componentInfo.Xml = component.Xml;
-      componentInfo.SourceComponentId = component.SourceComponentId;
+    public static implicit operator ComponentInfo(ComponentEdit obj) {
+      var component = NewComponent();
+      component.ComponentId = obj.ComponentId;
+      component.PDNumber = obj.PDNumber;
+      component.DownloadedTimestamp = obj.DownloadedTimestamp.ToShortDateString();
+      component.Description = obj.Description;
+      component.PDStatus = obj.PDStatus;
+      component.ComponentType = obj.ComponentType;
+      component.PDSource = obj.PDSource;
+      component.Xml = obj.Xml;
+      component.SourceComponentId = obj.SourceComponentId;
 
-      return componentInfo;
+      return component;
     }
 
     #endregion

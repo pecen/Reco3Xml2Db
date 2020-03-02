@@ -128,8 +128,7 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       get { return _isChecked; }
       set {
         SetProperty(ref _isChecked, value);
-        if (value == true)
-        {
+        if (value == true) {
           ClearValues();
         }
         RaisePropertyChanged(nameof(IsNotChecked));
@@ -142,8 +141,7 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
 
     #endregion
 
-    public ImportXmlViewModel(IEventAggregator eventAggregator)
-    {
+    public ImportXmlViewModel(IEventAggregator eventAggregator) {
       _eventAggregator = eventAggregator;
 
       Title = TabNames.ImportToDb.GetDescription();
@@ -171,26 +169,22 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       //_eventAggregator.GetEvent<GetComponentCommand>().Subscribe(ComponentEditReceived);
     }
 
-    private void FilePathReceived(string obj)
-    {
+    private void FilePathReceived(string obj) {
       FilePath = obj;
       //FileName = string.Empty;
     }
 
-    private void FileNameReceived(string obj)
-    {
+    private void FileNameReceived(string obj) {
       FileName = obj;
 
       var dir = Path.GetDirectoryName(obj);
-      if (dir != FilePath)
-      {
+      if (dir != FilePath) {
         _eventAggregator.GetEvent<GetFilePathCommand>().Publish(dir);
         //FilePath = dir;
       }
     }
 
-    private void ComponentEditReceived(ComponentEdit obj)
-    {
+    private void ComponentEditReceived(ComponentEdit obj) {
       SelectedComponentType = obj.ComponentType;
       SelectedPDSource = obj.PDSource;
       SelectedPDStatus = obj.PDStatus;
@@ -202,19 +196,15 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
 
     //private void ComponentListReceived(ComponentList obj) => Components = obj;
 
-    private void Execute()
-    {
-      try
-      {
-        if (IsChecked)
-        {
+    private void Execute() {
+      try {
+        if (IsChecked) {
           ExecuteMany();
           var files = Directory.EnumerateFiles(FilePath).Count();
 
           MessageBox.Show($"{files} Component{(files > 1 ? "s" : string.Empty)} saved to the Database", "Success!", MessageBoxButton.OK, MessageBoxImage.Information);
         }
-        else
-        {
+        else {
           ExecuteOne();
 
           MessageBox.Show("Component saved!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -222,24 +212,20 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
 
         ClearValues();
       }
-      catch (Exception ex)
-      {
+      catch (Exception ex) {
         MessageBox.Show(ex.Message, "Error when saving component", MessageBoxButton.OK, MessageBoxImage.Error);
       }
     }
 
-    private void ExecuteMany()
-    {
-      foreach (var item in Directory.EnumerateFiles(FilePath))
-      {
+    private void ExecuteMany() {
+      foreach (var item in Directory.EnumerateFiles(FilePath)) {
         FileName = item;
         XmlStream = File.OpenRead(item);
         ExecuteOne();
       }
     }
 
-    private void ExecuteOne()
-    {
+    private void ExecuteOne() {
       //_eventAggregator
       //  .GetEvent<ImportXmlCommand>()
       //  .Publish(ComponentEdit.NewComponentEdit());
@@ -256,12 +242,10 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
 
       var sourceComponent = ComponentEdit.GetComponent(component.PDNumber);
 
-      if (!string.IsNullOrEmpty(sourceComponent.PDNumber))
-      {
+      if (!string.IsNullOrEmpty(sourceComponent.PDNumber)) {
         component.SourceComponentId = sourceComponent.ComponentId;
       }
-      else
-      {
+      else {
         component.SourceComponentId = null;
       }
 
@@ -272,26 +256,22 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
         .Publish(component);
     }
 
-    private string CheckPDNumber(string pdNumber)
-    {
-      if (!int.TryParse(pdNumber, out int parsedPd))
-      {
+    private string CheckPDNumber(string pdNumber) {
+      if (!int.TryParse(pdNumber, out int parsedPd)) {
         throw new ApplicationException($"Wrong format in PDNumber. The filename is: {pdNumber}");
       }
 
       return pdNumber;
     }
 
-    private bool CanExecute()
-    {
+    private bool CanExecute() {
       if ((IsChecked
         && Directory.Exists(FilePath))
         || (IsNotChecked
         && !string.IsNullOrEmpty(FileName)
         && FileName.Length > 4
         && FileName.Substring(FileName.Length - 4) == ".xml"
-        && File.Exists($"{FileName}")))
-      {
+        && File.Exists($"{FileName}"))) {
         PublishExistingComponent();
 
         return true;
@@ -302,12 +282,10 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       return false;
     }
 
-    private void PublishExistingComponent()
-    {
+    private void PublishExistingComponent() {
       var fileNameWOutExt = Path.GetFileNameWithoutExtension(FileName);
 
-      if (ComponentEdit.Exists(fileNameWOutExt))
-      {
+      if (ComponentEdit.Exists(fileNameWOutExt)) {
         _eventAggregator
           .GetEvent<ImportXmlCommand>()
           .Publish(ComponentEdit.GetComponent(fileNameWOutExt));
@@ -331,10 +309,8 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       }
     }
 
-    private void GetFileDialog()
-    {
-      OpenFileDialog openFileDialog = new OpenFileDialog
-      {
+    private void GetFileDialog() {
+      OpenFileDialog openFileDialog = new OpenFileDialog {
         //InitialDirectory = string.IsNullOrEmpty(FileName)
         //                    //? SavedFilePath
         //                    ? FilePath
@@ -347,8 +323,7 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
         RestoreDirectory = true
       };
 
-      if ((bool)openFileDialog.ShowDialog())
-      {
+      if ((bool)openFileDialog.ShowDialog()) {
         ClearValues();
 
         //Read the contents of the file into a stream
@@ -359,10 +334,8 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       }
     }
 
-    private void GetFolderDialog()
-    {
-      var dialog = new CommonOpenFileDialog
-      {
+    private void GetFolderDialog() {
+      var dialog = new CommonOpenFileDialog {
         InitialDirectory = (string.IsNullOrEmpty(FileName)
                               //? SavedFilePath 
                               ? FilePath
@@ -370,23 +343,19 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
         IsFolderPicker = true,
       };
 
-      if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
-      {
+      if (dialog.ShowDialog() == CommonFileDialogResult.Ok) {
         _eventAggregator.GetEvent<GetFilePathCommand>()
           .Publish(dialog.FileName);
       }
     }
 
-    private string GetXml()
-    {
-      using (StreamReader reader = new StreamReader(XmlStream))
-      {
+    private string GetXml() {
+      using (StreamReader reader = new StreamReader(XmlStream)) {
         return reader.ReadToEnd();
       }
     }
 
-    private void ClearValues()
-    {
+    private void ClearValues() {
       FileName = string.Empty;
       Description = string.Empty;
       SelectedPDStatus = 0;
