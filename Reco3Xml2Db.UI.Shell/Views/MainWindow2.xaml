@@ -36,11 +36,11 @@
         <Grid Grid.Column="1">
             <ContentControl prism:RegionManager.RegionName="{Binding SettingsRegion}" />
         </Grid>
-        <!--<Grid
+        <Grid
             Grid.Row="1"
             Grid.Column="0"
             Grid.ColumnSpan="2">
             <ContentControl prism:RegionManager.RegionName="{Binding ListRegion}" />
-        </Grid>-->
+        </Grid>
     </Grid>
 </Window>

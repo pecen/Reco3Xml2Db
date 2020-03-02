@@ -9,8 +9,8 @@ namespace Reco3Xml2Db.Library {
   [Serializable]
   public class ComponentList : ReadOnlyListBase<ComponentList, ComponentInfo> {
     protected override ComponentInfo AddNewCore() {
-      //return base.AddNewCore();
-      var item = ComponentInfo.NewComponent();
+      var creator = ComponentInfoCreator.GetComponentInfoCreator();
+      var item = creator.Result;
       Add(item);
 
       return item;

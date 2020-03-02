@@ -76,7 +76,9 @@ namespace Reco3Xml2Db.Library {
     }
 
     public static implicit operator ComponentInfo(ComponentEdit obj) {
-      var component = NewComponent();
+      //var component = NewComponent();
+      var component = ComponentInfoCreator.GetComponentInfoCreator().Result;
+
       component.ComponentId = obj.ComponentId;
       component.PDNumber = obj.PDNumber;
       component.DownloadedTimestamp = obj.DownloadedTimestamp.ToShortDateString();
@@ -99,6 +101,9 @@ namespace Reco3Xml2Db.Library {
     private void Create() {
 
     }
+
+    [CreateChild]
+    private void Child_Create() { }
 
     [Fetch]
     private void Fetch(string pdNumber) {

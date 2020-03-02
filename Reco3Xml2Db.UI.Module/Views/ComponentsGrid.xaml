@@ -66,24 +66,43 @@
                 Content="Component Type" />
         </Grid>-->
 
-        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-            <Label HorizontalAlignment="Right" Content="Count:" />
-            <Label Content="{Binding Components.Count}" />
-        </StackPanel>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Label Margin="0,2,0,2" Content="Search PDNumber:" />
+            <TextBox
+                Grid.Column="1"
+                Margin="0,2,5,2"
+                VerticalContentAlignment="Center"
+                Background="White"
+                Text="{Binding SearchText}" />
+            <StackPanel
+                Grid.Column="2"
+                HorizontalAlignment="Right"
+                Orientation="Horizontal">
+                <Label HorizontalAlignment="Right" Content="Count:" />
+                <Label Content="{Binding Components.Count}" />
+            </StackPanel>
+        </Grid>
 
         <DataGrid
             Grid.Row="1"
             AutoGenerateColumns="False"
             HorizontalScrollBarVisibility="Auto"
-            ItemsSource="{Binding Components}">
+            ItemsSource="{Binding Components, UpdateSourceTrigger=PropertyChanged}">
 
             <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding ComponentId}" Header="Component Id" />
                 <DataGridTextColumn Binding="{Binding PDNumber}" Header="PDNumber" />
                 <DataGridTextColumn Binding="{Binding DownloadedTimestamp}" Header="Downloaded" />
                 <DataGridTextColumn Binding="{Binding Description}" Header="Description" />
-                <DataGridTextColumn Binding="{Binding PDStatus, Converter={StaticResource StatusIntToEnumValueConverter}, ConverterParameter={x:Type enums:PDStatus}}" Header="Status" />
+                <DataGridTextColumn Binding="{Binding PDStatus, Converter={StaticResource StatusIntToEnumValueConverter}, ConverterParameter={x:Type enums:PDStatus}}" Header="PD Status" />
                 <DataGridTextColumn Binding="{Binding ComponentType, Converter={StaticResource StatusIntToEnumValueConverter}, ConverterParameter={x:Type enums:ComponentType}}" Header="Type" />
-                <DataGridTextColumn Binding="{Binding PDSource, Converter={StaticResource StatusIntToEnumValueConverter}, ConverterParameter={x:Type enums:PDSource}}" Header="Source" />
+                <DataGridTextColumn Binding="{Binding PDSource, Converter={StaticResource StatusIntToEnumValueConverter}, ConverterParameter={x:Type enums:PDSource}}" Header="PD Source" />
+                <DataGridTextColumn Binding="{Binding SourceComponentId}" Header="Source Component Id" />
                 <DataGridTextColumn
                     Width="200"
                     Binding="{Binding Xml}"

@@ -13,13 +13,21 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
   public class ComponentsGridViewModel : ViewModelBase {
     private IEventAggregator _eventAggregator;
 
-    //public ComponentList Components { get; set; }
+    #region Properties
 
     private ComponentList _components;
     public ComponentList Components {
       get { return _components; }
       set { SetProperty(ref _components, value); }
     }
+
+    private string _searchText;
+    public string SearchText {
+      get { return _searchText; }
+      set { SetProperty(ref _searchText, value); }
+    }
+
+    #endregion
 
     public ComponentsGridViewModel(IEventAggregator eventAggregator) {
       _eventAggregator = eventAggregator;
@@ -32,7 +40,14 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
     }
 
     private void ComponentReceived(ComponentEdit obj) {
-      Components.Add(obj);
+      var tmpList = Components;
+      Components = null;
+      tmpList.Add(obj);
+      Components = tmpList;
+
+      // Use the following method to get all the data directly from the database instead 
+      // of adding the obj item to the list. 
+      //Components = ComponentList.GetComponentList();
     }
 
     private void ComponentListReceived(ComponentList obj) => Components = obj;
