@@ -137,7 +137,13 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       Authentication = Settings.Authentication;
       XmlFilePath = Settings.XmlFilePath;
 
-      _eventAggregator.GetEvent<GetFilePathCommand>().Publish(XmlFilePath);
+      if (Directory.Exists(XmlFilePath)) {
+
+        _eventAggregator.GetEvent<GetFilePathCommand>().Publish(XmlFilePath);
+      }
+      else {
+        XmlFilePath = string.Empty;
+      }
     }
 
     private void FilePathReceived(string obj) => XmlFilePath = obj;
@@ -207,7 +213,7 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
 
     private string GetFolderDialog() {
       var dialog = new CommonOpenFileDialog {
-        InitialDirectory = (string.IsNullOrEmpty(XmlFilePath) ? "C:\\" : XmlFilePath),
+        InitialDirectory = XmlFilePath, 
         IsFolderPicker = true,
       };
 

@@ -88,7 +88,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ComponentEdit.cs" />
-    <Compile Include="ComponentInfoCreator.cs" />
     <Compile Include="ComponentInfo.cs" />
     <Compile Include="ComponentList.cs" />
     <Compile Include="ComponentExistsCmd.cs" />

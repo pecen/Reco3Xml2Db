@@ -4,11 +4,13 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:converters="clr-namespace:Reco3Xml2Db.UI.Module.Converters"
     xmlns:enums="clr-namespace:Reco3Xml2Db.UI.Module.Enums"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:prism="http://prismlibrary.com/"
     prism:ViewModelLocator.AutoWireViewModel="True">
 
     <UserControl.Resources>
         <converters:StatusIntToEnumValueConverter x:Key="StatusIntToEnumValueConverter" />
+        <converters:SelectedFilteringToVisibilityConverter x:Key="SelectedFilteringToVisibilityConverter" />
     </UserControl.Resources>
     <Grid Margin="10">
 
@@ -17,55 +19,6 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <!--<Grid Grid.Row="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="104" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-            <ToolBar
-                Grid.Row="0"
-                Grid.Column="0"
-                HorizontalAlignment="Stretch" />
-            <Label
-                Grid.Row="0"
-                Grid.Column="1"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center"
-                Background="Transparent"
-                BorderBrush="Black"
-                BorderThickness="1"
-                Content="PD Number" />
-            <Label
-                Grid.Row="0"
-                Grid.Column="2"
-                Margin="0,0,0,0"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center"
-                Background="Transparent"
-                BorderBrush="Black"
-                BorderThickness="1"
-                Content="Download Time" />
-            <Label
-                Grid.Row="0"
-                Grid.Column="3"
-                Margin="0,0,2,0"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center"
-                Background="Transparent"
-                Content="Description" />
-            <Label
-                Grid.Row="0"
-                Grid.Column="4"
-                Margin="0,0,2,0"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center"
-                Background="Transparent"
-                Content="Component Type" />
-        </Grid>-->
-
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
@@ -73,12 +26,64 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <Label Margin="0,2,0,2" Content="Search PDNumber:" />
+            <ComboBox
+                Margin="0,2,5,2"
+                ItemsSource="{Binding Columns}"
+                SelectedIndex="{Binding SelectedColumn}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <i:InvokeCommandAction Command="{Binding SearchCommand}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </ComboBox>
             <TextBox
                 Grid.Column="1"
-                Margin="0,2,5,2"
+                Margin="0,2,0,2"
                 VerticalContentAlignment="Center"
                 Background="White"
-                Text="{Binding SearchText}" />
+                Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="TextChanged">
+                        <i:InvokeCommandAction Command="{Binding SearchCommand}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </TextBox>
+            <ComboBox
+                Grid.Column="1"
+                Margin="0,2,5,2"
+                ItemsSource="{Binding PDStatusList}"
+                SelectedIndex="{Binding SelectedPDStatus}"
+                Visibility="Collapsed">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <i:InvokeCommandAction Command="{Binding SearchCommand}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </ComboBox>
+            <ComboBox
+                Grid.Column="1"
+                Margin="0,2,5,2"
+                ItemsSource="{Binding ComponentTypeList}"
+                SelectedIndex="{Binding SelectedComponentType}"
+                Visibility="Collapsed">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <i:InvokeCommandAction Command="{Binding SearchCommand}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </ComboBox>
+            <ComboBox
+                Grid.Column="1"
+                Margin="0,2,5,2"
+                ItemsSource="{Binding PDSourceList}"
+                SelectedIndex="{Binding SelectedPDSource}"
+                Visibility="Collapsed">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <i:InvokeCommandAction Command="{Binding SearchCommand}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </ComboBox>
             <StackPanel
                 Grid.Column="2"
                 HorizontalAlignment="Right"

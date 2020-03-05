@@ -4,16 +4,34 @@ using Reco3Xml2Db.Dal.Dto;
 using Reco3Xml2Db.Dal.Enums;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Reco3Xml2Db.Library {
   [Serializable]
   public class ComponentList : ReadOnlyListBase<ComponentList, ComponentInfo> {
     protected override ComponentInfo AddNewCore() {
-      var creator = ComponentInfoCreator.GetComponentInfoCreator();
-      var item = creator.Result;
+      var item = ComponentInfo.NewComponent(); 
+      var rlce = RaiseListChangedEvents;
+      RaiseListChangedEvents = false;
+      IsReadOnly = false;
+
       Add(item);
 
+      RaiseListChangedEvents = rlce;
+      IsReadOnly = true;
+
       return item;
+    }
+
+    public void AddItem(ComponentEdit component) {
+      var rlce = RaiseListChangedEvents;
+      RaiseListChangedEvents = false;
+      IsReadOnly = false;
+
+      Add(component);
+
+      RaiseListChangedEvents = rlce;
+      IsReadOnly = true;
     }
 
     #region Factory Methods
@@ -24,6 +42,10 @@ namespace Reco3Xml2Db.Library {
 
     public static ComponentList GetComponentList(string pdNumber) {
       return DataPortal.Fetch<ComponentList>(pdNumber);
+    }
+
+    public static async Task<ComponentList> GetFilteredListAsync(IEnumerable<ComponentInfo> components) {
+      return await DataPortal.FetchAsync<ComponentList>(components);
     }
 
     #endregion
@@ -37,7 +59,7 @@ namespace Reco3Xml2Db.Library {
 
     [Fetch]
     private void Fetch() {
-      Fetch(null);
+      Fetch(string.Empty);
     }
 
     [Fetch]
@@ -62,7 +84,25 @@ namespace Reco3Xml2Db.Library {
             Add(DataPortal.FetchChild<ComponentInfo>(item));
           }
         }
+
+        RaiseListChangedEvents = rlce;
+        IsReadOnly = true;
       }
+    }
+
+    [Fetch]
+    [RunLocal]
+    private void Fetch(IEnumerable<ComponentInfo> list) {
+      var rlce = RaiseListChangedEvents;
+      RaiseListChangedEvents = false;
+      IsReadOnly = false;
+
+      foreach(var item in list) {
+        Add(DataPortal.FetchChild<ComponentInfo>(item));
+      }
+      
+      RaiseListChangedEvents = rlce;
+      IsReadOnly = true;
     }
 
     #endregion

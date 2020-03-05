@@ -3,6 +3,7 @@ using Reco3Xml2Db.Dal;
 using Reco3Xml2Db.Dal.Dto;
 using Reco3Xml2Db.Dal.Enums;
 using System;
+using System.Collections;
 
 namespace Reco3Xml2Db.Library {
   [Serializable]
@@ -76,8 +77,7 @@ namespace Reco3Xml2Db.Library {
     }
 
     public static implicit operator ComponentInfo(ComponentEdit obj) {
-      //var component = NewComponent();
-      var component = ComponentInfoCreator.GetComponentInfoCreator().Result;
+      var component = NewComponent();
 
       component.ComponentId = obj.ComponentId;
       component.PDNumber = obj.PDNumber;
@@ -129,6 +129,19 @@ namespace Reco3Xml2Db.Library {
       ComponentId = item.ComponentId;
       PDNumber = item.PDNumber;
       DownloadedTimestamp = item.DownloadedTimestamp.ToShortDateString();
+      Description = item.Description;
+      PDStatus = item.PDStatus;
+      ComponentType = item.ComponentType;
+      Xml = item.Xml;
+      PDSource = item.PDSource;
+      SourceComponentId = item.SourceComponentId;
+    }
+
+    [FetchChild]
+    private void Child_Fetch(ComponentInfo item) {
+      ComponentId = item.ComponentId;
+      PDNumber = item.PDNumber;
+      DownloadedTimestamp = item.DownloadedTimestamp;
       Description = item.Description;
       PDStatus = item.PDStatus;
       ComponentType = item.ComponentType;

@@ -29,8 +29,10 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
     public DelegateCommand ImportXmlCommand { get; set; }
     //public ComponentEdit Component { get; set; }
     //public ComponentList Components { get; set; }
+    public DelegateCommand PublishedCommand { get; set; }
 
     private Stream XmlStream { get; set; }
+    private bool IsPublished { get; set; }
 
     public string PageHeader {
       get { return _header + BtnName; }
@@ -128,9 +130,9 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       get { return _isChecked; }
       set {
         SetProperty(ref _isChecked, value);
-        if (value == true) {
-          ClearValues();
-        }
+        //if (value == true) {
+        //  ClearValues();
+        //}
         RaisePropertyChanged(nameof(IsNotChecked));
       }
     }
@@ -162,16 +164,18 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
         .ObservesProperty(() => FilePath)
         .ObservesProperty(() => IsChecked);
 
+      PublishedCommand = new DelegateCommand(SetPublishedStatus);
+
       _eventAggregator.GetEvent<GetFilePathCommand>().Subscribe(FilePathReceived);
       _eventAggregator.GetEvent<GetFilenameCommand>().Subscribe(FileNameReceived);
-      _eventAggregator.GetEvent<ImportXmlCommand>().Subscribe(ComponentEditReceived);
+      _eventAggregator.GetEvent<ComponentExistsCommand>().Subscribe(ExistingComponentReceived);
+      //_eventAggregator.GetEvent<ImportXmlCommand>().Subscribe(ComponentEditReceived);
       //_eventAggregator.GetEvent<GetComponentCommand>().Subscribe(ComponentListReceived);
       //_eventAggregator.GetEvent<GetComponentCommand>().Subscribe(ComponentEditReceived);
     }
 
     private void FilePathReceived(string obj) {
       FilePath = obj;
-      //FileName = string.Empty;
     }
 
     private void FileNameReceived(string obj) {
@@ -180,21 +184,26 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       var dir = Path.GetDirectoryName(obj);
       if (dir != FilePath) {
         _eventAggregator.GetEvent<GetFilePathCommand>().Publish(dir);
-        //FilePath = dir;
       }
     }
 
-    private void ComponentEditReceived(ComponentEdit obj) {
-      SelectedComponentType = obj.ComponentType;
-      SelectedPDSource = obj.PDSource;
-      SelectedPDStatus = obj.PDStatus;
-      Description = obj.Description;
+    private void ExistingComponentReceived(ComponentInfo obj) {
+      if (obj.ComponentId > 0) {
+        ComponentExists = true;
+        SelectedComponentType = obj.ComponentType;
+        SelectedPDSource = obj.PDSource;
+        SelectedPDStatus = obj.PDStatus;
+        Description = obj.Description;
+
+        RaisePropertyChanged(nameof(PageHeader));
+      }
+      else {
+        ComponentExists = false;
+      }
     }
 
-
-
-
-    //private void ComponentListReceived(ComponentList obj) => Components = obj;
+    //private void ComponentEditReceived(ComponentEdit obj) {
+    //}
 
     private void Execute() {
       try {
@@ -209,11 +218,12 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
 
           MessageBox.Show("Component saved!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
         }
-
-        ClearValues();
       }
       catch (Exception ex) {
         MessageBox.Show(ex.Message, "Error when saving component", MessageBoxButton.OK, MessageBoxImage.Error);
+      }
+      finally {
+        ClearValues();
       }
     }
 
@@ -226,10 +236,6 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
     }
 
     private void ExecuteOne() {
-      //_eventAggregator
-      //  .GetEvent<ImportXmlCommand>()
-      //  .Publish(ComponentEdit.NewComponentEdit());
-
       var component = ComponentEdit.NewComponentEdit();
 
       component.PDNumber = CheckPDNumber(Path.GetFileNameWithoutExtension(FileName));
@@ -272,7 +278,10 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
         && FileName.Length > 4
         && FileName.Substring(FileName.Length - 4) == ".xml"
         && File.Exists($"{FileName}"))) {
-        PublishExistingComponent();
+
+        if (!IsPublished) {
+          PublishExistingComponent();
+        }
 
         return true;
       }
@@ -282,13 +291,23 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       return false;
     }
 
+    public void SetPublishedStatus() {
+      IsPublished = false;
+    }
+
     private void PublishExistingComponent() {
       var fileNameWOutExt = Path.GetFileNameWithoutExtension(FileName);
 
-      if (ComponentEdit.Exists(fileNameWOutExt)) {
-        _eventAggregator
-          .GetEvent<ImportXmlCommand>()
-          .Publish(ComponentEdit.GetComponent(fileNameWOutExt));
+      _eventAggregator
+        .GetEvent<ComponentExistsCommand>()
+        .Publish(ComponentInfo.GetComponent(fileNameWOutExt));
+
+      IsPublished = true;
+
+      //if (ComponentEdit.Exists(fileNameWOutExt)) {
+        //_eventAggregator
+        //  .GetEvent<ImportXmlCommand>()
+        //  .Publish(ComponentEdit.GetComponent(fileNameWOutExt));
 
         //var max = Components.Max(c => c.ComponentId);
         //var lastComponent = Components.Where(c => c.ComponentId == max).FirstOrDefault();
@@ -303,10 +322,10 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
         //SelectedPDStatus = Component.PDStatus;
         //Description = Component.Description;
 
-        ComponentExists = true;
+        //ComponentExists = true;
 
-        RaisePropertyChanged(nameof(PageHeader));
-      }
+      //  RaisePropertyChanged(nameof(PageHeader));
+      //}
     }
 
     private void GetFileDialog() {
@@ -337,13 +356,14 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
     private void GetFolderDialog() {
       var dialog = new CommonOpenFileDialog {
         InitialDirectory = (string.IsNullOrEmpty(FileName)
-                              //? SavedFilePath 
                               ? FilePath
                               : Path.GetDirectoryName(FileName)),
         IsFolderPicker = true,
       };
 
       if (dialog.ShowDialog() == CommonFileDialogResult.Ok) {
+        // dialog.FileName below holds the path and not the filename
+        // even though the property FileName is used. 
         _eventAggregator.GetEvent<GetFilePathCommand>()
           .Publish(dialog.FileName);
       }
