@@ -27,6 +27,7 @@
             </Grid.ColumnDefinitions>
             <Label Margin="0,2,0,2" Content="Search PDNumber:" />
             <ComboBox
+                x:Name="ColumnNames"
                 Margin="0,2,5,2"
                 ItemsSource="{Binding Columns}"
                 SelectedIndex="{Binding SelectedColumn}">
@@ -50,10 +51,10 @@
             </TextBox>
             <ComboBox
                 Grid.Column="1"
-                Margin="0,2,5,2"
+                Margin="0,2,0,2"
                 ItemsSource="{Binding PDStatusList}"
                 SelectedIndex="{Binding SelectedPDStatus}"
-                Visibility="Collapsed">
+                Visibility="{Binding SelectedColumn, Converter={StaticResource SelectedFilteringToVisibilityConverter}, ConverterParameter='PDStatus'}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
                         <i:InvokeCommandAction Command="{Binding SearchCommand}" />
@@ -62,10 +63,10 @@
             </ComboBox>
             <ComboBox
                 Grid.Column="1"
-                Margin="0,2,5,2"
+                Margin="0,2,0,2"
                 ItemsSource="{Binding ComponentTypeList}"
                 SelectedIndex="{Binding SelectedComponentType}"
-                Visibility="Collapsed">
+                Visibility="{Binding SelectedColumn, Converter={StaticResource SelectedFilteringToVisibilityConverter}, ConverterParameter='ComponentType'}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
                         <i:InvokeCommandAction Command="{Binding SearchCommand}" />
@@ -74,10 +75,10 @@
             </ComboBox>
             <ComboBox
                 Grid.Column="1"
-                Margin="0,2,5,2"
+                Margin="0,2,0,2"
                 ItemsSource="{Binding PDSourceList}"
                 SelectedIndex="{Binding SelectedPDSource}"
-                Visibility="Collapsed">
+                Visibility="{Binding SelectedColumn, Converter={StaticResource SelectedFilteringToVisibilityConverter}, ConverterParameter='PDSource'}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
                         <i:InvokeCommandAction Command="{Binding SearchCommand}" />

@@ -98,9 +98,10 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       PDSourceList.GetEnumValues<PDSource>();
 
       SelectedColumn = 1;
-      SelectedPDStatus = -1;
-      SelectedComponentType = -1;
-      SelectedPDSource = -1;
+      SelectedPDStatus = 0;
+      SelectedComponentType = 0;
+      SelectedPDSource = 0;
+      SearchText = string.Empty;
 
       SearchCommand = new DelegateCommand(GetFilteredComponentList);
 
@@ -110,52 +111,52 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
     }
 
     private async void GetFilteredComponentList() {
-      if (!string.IsNullOrEmpty(SearchText) || Components.Count() != UnFilteredList.Count()) {
-        var column = (FilterableColumns)SelectedColumn;
-        Func<ComponentInfo, bool> predicate;
+      var column = (FilterableColumns)SelectedColumn;
+      Func<ComponentInfo, bool> filter;
 
+      if ((FilterableColumns)SelectedColumn == FilterableColumns.ComponentType
+        || (FilterableColumns)SelectedColumn == FilterableColumns.PDSource
+        || (FilterableColumns)SelectedColumn == FilterableColumns.PDStatus) {
         switch (column) {
-          case FilterableColumns.ComponentId:
-            predicate = c => c.ComponentId.ToString().Contains(SearchText);
-            //Components = await ComponentList.GetFilteredListAsync(UnFilteredList.Where(c => c.ComponentId.ToString().Contains(SearchText)));
-            break;
-          case FilterableColumns.PDNumber:
-            predicate = c => c.PDNumber.Contains(SearchText);
-            //Components = await ComponentList.GetFilteredListAsync(UnFilteredList.Where(c => c.PDNumber.Contains(SearchText)));
-            break;
           case FilterableColumns.PDStatus:
-            predicate = c => c.PDStatus.ToString().Contains(SearchText);
-            //Components = await ComponentList.GetFilteredListAsync(UnFilteredList.Where(c => c.PDStatus.ToString().Contains(SearchText)));
+            filter = c => c.PDStatus == SelectedPDStatus;
             break;
           case FilterableColumns.ComponentType:
-            predicate = c => c.ComponentType.ToString().Contains(SearchText);
-            //Components = await ComponentList.GetFilteredListAsync(UnFilteredList.Where(c => c.ComponentType.ToString().Contains(SearchText)));
+            filter = c => c.ComponentType == SelectedComponentType;
             break;
           case FilterableColumns.PDSource:
-            predicate = c => c.PDSource.ToString().Contains(SearchText);
-            //Components = await ComponentList.GetFilteredListAsync(UnFilteredList.Where(c => c.PDSource.ToString().Contains(SearchText)));
-            break;
-          case FilterableColumns.SourceComponentId:
-            predicate = c => c.SourceComponentId.ToString().Contains(SearchText);
-            //Components = await ComponentList.GetFilteredListAsync(UnFilteredList.Where(c => c.SourceComponentId.ToString().Contains(SearchText)));
+            filter = c => c.PDSource == SelectedPDSource;
             break;
           default:
-            predicate = c => c.PDNumber.Contains(SearchText);
+            filter = c => c.PDNumber.Contains(SearchText);
             break;
         }
 
-        Components = await ComponentList.GetFilteredListAsync(UnFilteredList.Where(predicate));
+        Components = await ComponentList.GetFilteredListAsync(UnFilteredList.Where(filter));
+      }
+      else {
+        if (!string.IsNullOrEmpty(SearchText) || Components.Count() != UnFilteredList.Count()) {
+          switch (column) {
+            case FilterableColumns.ComponentId:
+              filter = c => c.ComponentId.ToString().Contains(SearchText);
+              break;
+            case FilterableColumns.PDNumber:
+              filter = c => c.PDNumber.Contains(SearchText);
+              break;
+            case FilterableColumns.SourceComponentId:
+              filter = c => c.SourceComponentId.ToString().Contains(SearchText);
+              break;
+            default:
+              filter = c => c.PDNumber.Contains(SearchText);
+              break;
+          }
+
+          Components = await ComponentList.GetFilteredListAsync(UnFilteredList.Where(filter));
+        }
       }
     }
 
     private void NewComponentReceived(ComponentEdit obj) {
-      //var tmpList = Components;
-      //Components = null;
-      //var tmpObj = tmpList.AddNew();
-      //tmpObj = obj;
-      ////tmpList.Add(obj);
-      //Components = tmpList;
-
       Components.AddItem(obj);
 
       // Use the following method to get all the data directly from the database instead 
