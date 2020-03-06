@@ -108,6 +108,10 @@
       <Project>{0728DEB0-011D-44AE-8730-6858DF910C40}</Project>
       <Name>Reco3Xml2Db.Dal</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Reco3Xml2Db.Utilities\Reco3Xml2Db.Utilities.csproj">
+      <Project>{94403781-EEA0-4F56-9522-8B8C6D1178C7}</Project>
+      <Name>Reco3Xml2Db.Utilities</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

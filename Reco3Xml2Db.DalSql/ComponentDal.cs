@@ -135,5 +135,9 @@ namespace Reco3Xml2Db.DalSql {
         }
       }
     }
+
+    public void Update(ComponentDto data) {
+      throw new NotImplementedException();
+    }
   }
 }

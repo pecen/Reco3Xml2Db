@@ -1,7 +1,9 @@
 ﻿using Csla.Data.EF6;
 using Reco3Xml2Db.Dal;
 using Reco3Xml2Db.Dal.Dto;
+using Reco3Xml2Db.Dal.Exceptions;
 using Reco3Xml2Db.DalEf.Entities;
+using Reco3Xml2Db.Utilities.Extensions;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
@@ -92,6 +94,31 @@ namespace Reco3Xml2Db.DalEf {
         ctx.DbContext.Components.Add(item);
         ctx.DbContext.SaveChanges();
         data.ComponentId = item.ComponentId;
+      }
+    }
+
+    public void Update(ComponentDto data) {
+      using (var ctx = DbContextManager<Reco3Xml2DbContext>.GetManager(_dbName)) {
+        var item = (from r in ctx.DbContext.Components
+                    where r.ComponentId == data.ComponentId
+                    select r).FirstOrDefault();
+        if (data == null)
+          throw new DataNotFoundException("Component not found error.");
+        if (!data.DownloadedTimestamp.Matches(data.DownloadedTimestamp))
+          throw new ConcurrencyException("ConcurrencyException: DownloadedTimeStamp mismatch.");
+
+        item.PDNumber = data.PDNumber;
+        item.DownloadedTimestamp = data.DownloadedTimestamp;
+        item.Description = data.Description;
+        item.PD_Status = data.PDStatus;
+        item.Component_Type = data.ComponentType;
+        item.XML = data.Xml;
+        item.PD_Source = data.PDSource;
+        item.SourceComponentId = data.SourceComponentId;
+
+        var count = ctx.DbContext.SaveChanges();
+        if (count == 0)
+          throw new UpdateFailureException("Failed to save Component.");
       }
     }
   }

@@ -98,9 +98,9 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       PDSourceList.GetEnumValues<PDSource>();
 
       SelectedColumn = 1;
-      SelectedPDStatus = 0;
-      SelectedComponentType = 0;
-      SelectedPDSource = 0;
+      SelectedPDStatus = -1;
+      SelectedComponentType = -1;
+      SelectedPDSource = -1;
       SearchText = string.Empty;
 
       SearchCommand = new DelegateCommand(GetFilteredComponentList);
@@ -114,18 +114,21 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       var column = (FilterableColumns)SelectedColumn;
       Func<ComponentInfo, bool> filter;
 
-      if ((FilterableColumns)SelectedColumn == FilterableColumns.ComponentType
-        || (FilterableColumns)SelectedColumn == FilterableColumns.PDSource
-        || (FilterableColumns)SelectedColumn == FilterableColumns.PDStatus) {
+      if (((FilterableColumns)SelectedColumn == FilterableColumns.ComponentType && SelectedComponentType > -1)
+        || ((FilterableColumns)SelectedColumn == FilterableColumns.PDSource && SelectedPDSource > -1)
+        || ((FilterableColumns)SelectedColumn == FilterableColumns.PDStatus && SelectedPDStatus > -1)) {
         switch (column) {
           case FilterableColumns.PDStatus:
             filter = c => c.PDStatus == SelectedPDStatus;
+            SelectedPDSource = SelectedComponentType = -1;
             break;
           case FilterableColumns.ComponentType:
             filter = c => c.ComponentType == SelectedComponentType;
+            SelectedPDSource = SelectedPDStatus = -1;
             break;
           case FilterableColumns.PDSource:
             filter = c => c.PDSource == SelectedPDSource;
+            SelectedPDStatus = SelectedComponentType = -1;
             break;
           default:
             filter = c => c.PDNumber.Contains(SearchText);
@@ -135,6 +138,8 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
         Components = await ComponentList.GetFilteredListAsync(UnFilteredList.Where(filter));
       }
       else {
+        SelectedPDSource = SelectedPDStatus = SelectedComponentType = -1;
+
         if (!string.IsNullOrEmpty(SearchText) || Components.Count() != UnFilteredList.Count()) {
           switch (column) {
             case FilterableColumns.ComponentId:
