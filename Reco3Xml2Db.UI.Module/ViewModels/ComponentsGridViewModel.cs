@@ -18,6 +18,10 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
     #region Properties
 
     public DelegateCommand SearchCommand { get; set; }
+    public DelegateCommand UpdateComponentSetCommand { get; set; }
+
+    private int LastSearchLength { get; set; }
+
     public ComponentList UnFilteredList { get; set; }
 
     private ComponentList _components;
@@ -102,12 +106,42 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       SelectedComponentType = -1;
       SelectedPDSource = -1;
       SearchText = string.Empty;
+      LastSearchLength = 0;
 
       SearchCommand = new DelegateCommand(GetFilteredComponentList);
+      UpdateComponentSetCommand = new DelegateCommand(PublishComponentId);
 
       _eventAggregator.GetEvent<GetComponentsCommand>().Subscribe(ComponentListReceived);
       _eventAggregator.GetEvent<GetComponentsCommand>().Publish(ComponentList.GetComponentList());
-      _eventAggregator.GetEvent<ImportXmlCommand>().Subscribe(NewComponentReceived);
+      _eventAggregator.GetEvent<ImportComponentCommand>().Subscribe(NewComponentReceived);
+      _eventAggregator.GetEvent<UpdateComponentCommand>().Subscribe(UpdateComponentReceived);
+      _eventAggregator.GetEvent<GetFilenameCommand>().Subscribe(FilenameReceived);
+    }
+
+    private void FilenameReceived(string obj) {
+      SearchText = string.Empty;
+    }
+
+    private void UpdateComponentReceived(ComponentEdit obj) {
+      if (obj.IsDirty) {
+        var item = UnFilteredList.First(c => c.ComponentId == obj.ComponentId);
+        UnFilteredList.RemoveItem(item);
+        UnFilteredList.AddItem(obj);
+      }
+      SearchText = string.Empty;
+      LastSearchLength = 0;
+    }
+
+    private void PublishComponentId() {
+      int id = 0;
+
+      if (Components.Count() == 1) {
+        id = Components[0].ComponentId;
+      }
+
+      _eventAggregator
+        .GetEvent<UpdateComponentSetCommand>()
+        .Publish(id);
     }
 
     private async void GetFilteredComponentList() {
@@ -117,6 +151,10 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       if (((FilterableColumns)SelectedColumn == FilterableColumns.ComponentType && SelectedComponentType > -1)
         || ((FilterableColumns)SelectedColumn == FilterableColumns.PDSource && SelectedPDSource > -1)
         || ((FilterableColumns)SelectedColumn == FilterableColumns.PDStatus && SelectedPDStatus > -1)) {
+
+        LastSearchLength = 0;
+        SearchText = string.Empty;
+
         switch (column) {
           case FilterableColumns.PDStatus:
             filter = c => c.PDStatus == SelectedPDStatus;
@@ -156,21 +194,30 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
               break;
           }
 
-          Components = await ComponentList.GetFilteredListAsync(UnFilteredList.Where(filter));
+          if (LastSearchLength < SearchText.Length) {
+            Components = await ComponentList.GetFilteredListAsync(Components.Where(filter));
+          }
+          else {
+            Components = await ComponentList.GetFilteredListAsync(UnFilteredList.Where(filter));
+          }
+
+          //var list1 = UnFilteredList.Where(filter).AsQueryable();
+          //Components = (ComponentList)list1;
+          //var list2 = UnFilteredList.Where(filter).Cast<ComponentInfo>();
+          
+          LastSearchLength = SearchText.Length;
         }
+
+        UpdateComponentSetCommand.Execute();
       }
     }
 
     private void NewComponentReceived(ComponentEdit obj) {
-      Components.AddItem(obj);
+      UnFilteredList.AddItem(obj);
 
       // Use the following method to get all the data directly from the database instead 
       // of adding the obj item to the list. 
       //Components = ComponentList.GetComponentList();
-    }
-
-    private void UpdateComponents() {
-
     }
 
     private void ComponentListReceived(ComponentList obj) => UnFilteredList = Components = obj;

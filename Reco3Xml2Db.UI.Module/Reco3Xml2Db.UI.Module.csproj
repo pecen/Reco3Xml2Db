@@ -57,10 +57,12 @@
     <Compile Include="Commands\GetFilePathCommand.cs" />
     <Compile Include="Commands\GetFilenameCommand.cs" />
     <Compile Include="Commands\GetSettingsCommand.cs" />
-    <Compile Include="Commands\ImportXmlCommand.cs" />
+    <Compile Include="Commands\ImportComponentCommand.cs" />
     <Compile Include="Commands\SaveSettingsCommand.cs" />
     <Compile Include="Commands\SearchCommand.cs" />
+    <Compile Include="Commands\UpdateComponentSetCommand.cs" />
     <Compile Include="Commands\UpdateFilePathCommand.cs" />
+    <Compile Include="Commands\UpdateComponentCommand.cs" />
     <Compile Include="Converters\BoolToButtonTextConverter.cs" />
     <Compile Include="Converters\BoolToButtonToolTipTextConverter.cs" />
     <Compile Include="Converters\BoolToDescriptionHeightConverter.cs" />

@@ -12,7 +12,8 @@
     prism:ViewModelLocator.AutoWireViewModel="True"
     mc:Ignorable="d">
     <UserControl.Resources>
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <!--<BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />-->
+        <converters:BoolToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <converters:BoolToButtonTextConverter x:Key="BoolToButtonTextConverter" />
         <converters:BoolToDescriptionHeightConverter x:Key="BoolToDescriptionHeightConverter" />
         <converters:BoolToItalicConverter x:Key="BoolToItalicConverter" />
@@ -56,7 +57,7 @@
             HorizontalAlignment="Right"
             VerticalAlignment="Center"
             Text="Filename: "
-            Visibility="{Binding IsNotChecked, Converter={StaticResource BooleanToVisibilityConverter}}" />
+            Visibility="{Binding AllFilesIsNotChecked, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
         <TextBlock
             Grid.Row="2"
@@ -89,18 +90,18 @@
             Grid.Row="2"
             Grid.Column="1"
             Margin="0,5,-8,5"
-            FontStyle="{Binding ComponentExists, Converter={StaticResource BoolToItalicConverter}, UpdateSourceTrigger=PropertyChanged}"
+            FontStyle="{Binding SourceComponentExists, Converter={StaticResource BoolToItalicConverter}, UpdateSourceTrigger=PropertyChanged}"
             Text="{Binding FileName, Converter={StaticResource RemovePathFromFilenameConverter}, UpdateSourceTrigger=PropertyChanged}"
             ToolTip="{Binding FileNameToolTip}"
-            Visibility="{Binding IsNotChecked, Converter={StaticResource BooleanToVisibilityConverter}}" />-->
+            Visibility="{Binding AllFilesIsNotChecked, Converter={StaticResource BooleanToVisibilityConverter}}" />-->
 
         <TextBox
             Grid.Row="2"
             Grid.Column="1"
             Margin="0,5,-8,5"
-            FontStyle="{Binding ComponentExists, Converter={StaticResource BoolToItalicConverter}, UpdateSourceTrigger=PropertyChanged}"
+            FontStyle="{Binding SourceComponentExists, Converter={StaticResource BoolToItalicConverter}, UpdateSourceTrigger=PropertyChanged}"
             Text="{Binding FileName, Converter={StaticResource RemovePathFromFilenameConverter}, UpdateSourceTrigger=PropertyChanged}"
-            Visibility="{Binding IsNotChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
+            Visibility="{Binding AllFilesIsNotChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
             <TextBox.ToolTip>
                 <MultiBinding Converter="{StaticResource EmptyStringToTooltipConverter}">
                     <Binding Path="FileName" />
@@ -118,7 +119,7 @@
             Grid.Row="2"
             Grid.Column="1"
             Margin="0,5,-8,5"
-            FontStyle="{Binding ComponentExists, Converter={StaticResource BoolToItalicConverter}, UpdateSourceTrigger=PropertyChanged}"
+            FontStyle="{Binding SourceComponentExists, Converter={StaticResource BoolToItalicConverter}, UpdateSourceTrigger=PropertyChanged}"
             Text="{Binding FilePath, UpdateSourceTrigger=PropertyChanged}"
             Visibility="{Binding IsChecked, ElementName=filesChkbox, Converter={StaticResource BooleanToVisibilityConverter}}">
             <TextBox.ToolTip>
@@ -140,7 +141,7 @@
             Command="{Binding GetFilenameCommand}"
             Content="..."
             ToolTip="{Binding XmlFileDialogButtonToolTip}"
-            Visibility="{Binding IsNotChecked, Converter={StaticResource BooleanToVisibilityConverter}}" />
+            Visibility="{Binding AllFilesIsNotChecked, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
         <Button
             Grid.Row="2"
@@ -162,7 +163,7 @@
             Margin="5,0,0,0"
             VerticalAlignment="Center"
             Content="All files"
-            IsChecked="{Binding IsChecked}"
+            IsChecked="{Binding AllFilesIsChecked}"
             ToolTip="{Binding AllFilesToolTip}" />
         <!--<TextBox Text="All files in directory" Background="Transparent" TextWrapping="Wrap" Width="50" />
         </CheckBox>-->
@@ -179,9 +180,9 @@
             FontSize="10"
             FontStyle="Italic"
             IsReadOnly="True"
-            Text="This component exists. If you continue, an update will take place."
+            Text="{Binding SourceComponentExistsInfo, Mode=OneWay}"
             TextWrapping="Wrap"
-            Visibility="{Binding ComponentExists, Converter={StaticResource BooleanToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}" />
+            Visibility="{Binding SourceComponentExists, Converter={StaticResource BooleanToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}" />
 
         <!--<TextBlock
             Grid.Row="1"
@@ -215,6 +216,17 @@
             ItemsSource="{Binding ComponentTypeList}"
             SelectedIndex="{Binding SelectedComponentType}" />
 
+        <CheckBox
+            x:Name="replaceChkbox"
+            Grid.Row="5"
+            Grid.Column="3"
+            Margin="5,0,0,0"
+            VerticalAlignment="Center"
+            Content="Replace"
+            IsChecked="{Binding ReplaceIsChecked}"
+            ToolTip="{Binding UpdateExistingToolTip}"
+            Visibility="{Binding ReplaceIsActive, Converter={StaticResource BooleanToVisibilityConverter}}" />
+
         <TextBlock
             Grid.Row="6"
             Margin="5,5,0,5"
@@ -226,7 +238,7 @@
             Grid.Row="6"
             Grid.Column="1"
             Grid.ColumnSpan="2"
-            Height="{Binding ComponentExists, Converter={StaticResource BoolToDescriptionHeightConverter}, UpdateSourceTrigger=PropertyChanged}"
+            Height="{Binding SourceComponentExists, Converter={StaticResource BoolToDescriptionHeightConverter}, UpdateSourceTrigger=PropertyChanged}"
             Margin="0,5,0,5"
             Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" />
 
@@ -238,9 +250,9 @@
             Margin="5,5,5,5"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
-            Command="{Binding ImportXmlCommand}"
-            Content="{Binding ComponentExists, Converter={StaticResource BoolToButtonTextConverter}, UpdateSourceTrigger=PropertyChanged}"
-            ToolTip="{Binding ComponentExists, Converter={StaticResource BoolToButtonToolTipTextConverter}, UpdateSourceTrigger=PropertyChanged}" />
+            Command="{Binding ImportComponentCommand}"
+            Content="{Binding SourceComponentExists, Converter={StaticResource BoolToButtonTextConverter}, UpdateSourceTrigger=PropertyChanged}"
+            ToolTip="{Binding SourceComponentExists, Converter={StaticResource BoolToButtonToolTipTextConverter}, UpdateSourceTrigger=PropertyChanged}" />
         <!--  ToolTip="{Binding ImportUpdateButtonToolTip}" />  -->
     </Grid>
 </UserControl>

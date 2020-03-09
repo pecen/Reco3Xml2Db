@@ -19,20 +19,31 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
 
     #region Properties
 
+    public string ComponentExistsInfo { get; } = "This component exists. If you continue, an update will take place.";
+    public string SourceComponentExistsInfo { get; } = "This PD number exists in the database. The component will be added with reference to the source component.";
+
     public string FileNameToolTip { get; } = "Type in a valid Component filename (*.Xml), or click the button to the right to select file.";
     public string FilePathToolTip { get; } = "Type in a valid path to the Component files, or click the button to the right to select path.";
     public string XmlFileDialogButtonToolTip { get; } = "Click the button to open a file dialog to browse for the Xml file(s)";
     public string AuthToolTip { get; } = "Select Authentication method for Sql Server";
     public string AllFilesToolTip { get; } = "Process all files in the chosen directory with the same settings";
+    public string UpdateExistingToolTip { get; } = "This component already exists in the database. An Update will take place by replacing existing data for component, " +
+      "as opposed to updating an existing component by adding this file, which is not present in the database, and referring to a source component";
 
     public DelegateCommand GetFilenameCommand { get; set; }
-    public DelegateCommand ImportXmlCommand { get; set; }
+    public DelegateCommand ImportComponentCommand { get; set; }
+    public DelegateCommand UpdateComponentCommand { get; set; }
     //public ComponentEdit Component { get; set; }
     //public ComponentList Components { get; set; }
     public DelegateCommand PublishedCommand { get; set; }
 
     private Stream XmlStream { get; set; }
     private bool IsPublished { get; set; }
+    private int UpdateComponentId { get; set; }
+
+    public bool ReplaceIsActive {
+      get { return SourceComponentExists == true && UpdateComponentId > 0; }
+    }
 
     public string PageHeader {
       get { return _header + BtnName; }
@@ -40,16 +51,16 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
 
     private string BtnName {
       get {
-        return ComponentExists
+        return SourceComponentExists
           ? ButtonName.Update.ToString()
           : ButtonName.Import.ToString();
       }
     }
 
-    private bool _componentExists;
-    public bool ComponentExists {
-      get { return _componentExists; }
-      set { SetProperty(ref _componentExists, value); }
+    private bool _sourceComponentExists;
+    public bool SourceComponentExists {
+      get { return _sourceComponentExists; }
+      set { SetProperty(ref _sourceComponentExists, value); }
     }
 
     private string _importBtnContent;
@@ -125,20 +136,27 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       set { SetProperty(ref _description, value); }
     }
 
-    private bool _isChecked;
-    public bool IsChecked {
-      get { return _isChecked; }
+    private bool _allFilesIsChecked;
+    public bool AllFilesIsChecked {
+      get { return _allFilesIsChecked; }
       set {
-        SetProperty(ref _isChecked, value);
-        //if (value == true) {
-        //  ClearValues();
-        //}
-        RaisePropertyChanged(nameof(IsNotChecked));
+        SetProperty(ref _allFilesIsChecked, value);
+        if(value == true) ReplaceIsChecked = false;
+        RaisePropertyChanged(nameof(AllFilesIsNotChecked));
       }
     }
 
-    public bool IsNotChecked {
-      get { return !_isChecked; }
+    public bool AllFilesIsNotChecked {
+      get { return !_allFilesIsChecked; }
+    }
+
+    private bool _replacedIsChecked;
+    public bool ReplaceIsChecked {
+      get { return _replacedIsChecked; }
+      set {
+        SetProperty(ref _replacedIsChecked, value);
+        if (value == true) AllFilesIsChecked = false;
+      }
     }
 
     #endregion
@@ -147,7 +165,8 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       _eventAggregator = eventAggregator;
 
       Title = TabNames.ImportToDb.GetDescription();
-      ComponentExists = false;
+      SourceComponentExists = false;
+      ReplaceIsChecked = false;
 
       PDSourceList = new ObservableCollection<string>();
       PDStatusList = new ObservableCollection<string>();
@@ -159,19 +178,25 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
 
       GetFilePathCommand = new DelegateCommand(GetFolderDialog);
       GetFilenameCommand = new DelegateCommand(GetFileDialog);
-      ImportXmlCommand = new DelegateCommand(Execute, CanExecute)
+      ImportComponentCommand = new DelegateCommand(Execute, CanExecute)
         .ObservesProperty(() => FileName)
         .ObservesProperty(() => FilePath)
-        .ObservesProperty(() => IsChecked);
+        .ObservesProperty(() => AllFilesIsChecked);
+      UpdateComponentCommand = new DelegateCommand(Execute, CanExecute)
+        .ObservesProperty(() => FileName);
 
       PublishedCommand = new DelegateCommand(SetPublishedStatus);
 
       _eventAggregator.GetEvent<GetFilePathCommand>().Subscribe(FilePathReceived);
       _eventAggregator.GetEvent<GetFilenameCommand>().Subscribe(FileNameReceived);
       _eventAggregator.GetEvent<ComponentExistsCommand>().Subscribe(ExistingComponentReceived);
-      //_eventAggregator.GetEvent<ImportXmlCommand>().Subscribe(ComponentEditReceived);
-      //_eventAggregator.GetEvent<GetComponentCommand>().Subscribe(ComponentListReceived);
-      //_eventAggregator.GetEvent<GetComponentCommand>().Subscribe(ComponentEditReceived);
+      _eventAggregator.GetEvent<UpdateComponentSetCommand>().Subscribe(UpdateComponentIdReceived);
+    }
+
+    private void UpdateComponentIdReceived(int obj) {
+      UpdateComponentId = obj;
+
+      RaisePropertyChanged(nameof(ReplaceIsActive));
     }
 
     private void FilePathReceived(string obj) {
@@ -185,29 +210,32 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       if (dir != FilePath) {
         _eventAggregator.GetEvent<GetFilePathCommand>().Publish(dir);
       }
+
+      ReplaceIsChecked = false;
     }
 
     private void ExistingComponentReceived(ComponentInfo obj) {
       if (obj.ComponentId > 0) {
-        ComponentExists = true;
+        SourceComponentExists = true;
         SelectedComponentType = obj.ComponentType;
         SelectedPDSource = obj.PDSource;
         SelectedPDStatus = obj.PDStatus;
         Description = obj.Description;
 
         RaisePropertyChanged(nameof(PageHeader));
+        RaisePropertyChanged(nameof(ReplaceIsActive));
       }
       else {
-        ComponentExists = false;
+        SourceComponentExists = false;
       }
     }
 
-    //private void ComponentEditReceived(ComponentEdit obj) {
-    //}
-
     private void Execute() {
       try {
-        if (IsChecked) {
+        if (ReplaceIsChecked) {
+          ReplaceComponent();
+        }
+        else if (AllFilesIsChecked) {
           ExecuteMany();
           var files = Directory.EnumerateFiles(FilePath).Count();
 
@@ -225,6 +253,22 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       finally {
         ClearValues();
       }
+    }
+
+    private void ReplaceComponent() {
+      var component = ComponentEdit.GetComponent(UpdateComponentId);
+
+      component.Description = Description;
+      component.PDStatus = SelectedPDStatus;
+      component.ComponentType = SelectedComponentType;
+      component.PDSource = SelectedPDSource;
+      component.Xml = GetXml();
+
+      component = component.Save();
+
+      _eventAggregator
+        .GetEvent<UpdateComponentCommand>()
+        .Publish(component);
     }
 
     private void ExecuteMany() {
@@ -258,7 +302,7 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       component = component.Save();
 
       _eventAggregator
-        .GetEvent<ImportXmlCommand>()
+        .GetEvent<ImportComponentCommand>()
         .Publish(component);
     }
 
@@ -271,22 +315,22 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
     }
 
     private bool CanExecute() {
-      if ((IsChecked
+      if ((AllFilesIsChecked
         && Directory.Exists(FilePath))
-        || (IsNotChecked
+        || (AllFilesIsNotChecked
         && !string.IsNullOrEmpty(FileName)
         && FileName.Length > 4
         && FileName.Substring(FileName.Length - 4) == ".xml"
         && File.Exists($"{FileName}"))) {
 
         if (!IsPublished) {
-          PublishExistingComponent();
+          PublishSourceComponent();
         }
 
         return true;
       }
 
-      ComponentExists = false;
+      SourceComponentExists = false;
 
       return false;
     }
@@ -295,7 +339,7 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       IsPublished = false;
     }
 
-    private void PublishExistingComponent() {
+    private void PublishSourceComponent() {
       var fileNameWOutExt = Path.GetFileNameWithoutExtension(FileName);
 
       _eventAggregator
@@ -303,29 +347,6 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
         .Publish(ComponentInfo.GetComponent(fileNameWOutExt));
 
       IsPublished = true;
-
-      //if (ComponentEdit.Exists(fileNameWOutExt)) {
-        //_eventAggregator
-        //  .GetEvent<ImportXmlCommand>()
-        //  .Publish(ComponentEdit.GetComponent(fileNameWOutExt));
-
-        //var max = Components.Max(c => c.ComponentId);
-        //var lastComponent = Components.Where(c => c.ComponentId == max).FirstOrDefault();
-
-        //SelectedComponentType = lastComponent.ComponentType;
-        //SelectedPDSource = lastComponent.PDSource;
-        //SelectedPDStatus = lastComponent.PDStatus;
-        //Description = lastComponent.Description;
-
-        //SelectedComponentType = Component.ComponentType;
-        //SelectedPDSource = Component.PDSource;
-        //SelectedPDStatus = Component.PDStatus;
-        //Description = Component.Description;
-
-        //ComponentExists = true;
-
-      //  RaisePropertyChanged(nameof(PageHeader));
-      //}
     }
 
     private void GetFileDialog() {
@@ -382,7 +403,8 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       SelectedComponentType = 0;
       SelectedPDSource = 0;
       XmlStream = null;
-      ComponentExists = false;
+      SourceComponentExists = false;
+      ReplaceIsChecked = false;
     }
   }
 }

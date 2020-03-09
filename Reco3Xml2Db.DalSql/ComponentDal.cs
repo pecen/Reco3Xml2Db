@@ -26,6 +26,10 @@ namespace Reco3Xml2Db.DalSql {
       throw new NotImplementedException();
     }
 
+    public ComponentDto Fetch(int componentId) {
+      throw new NotImplementedException();
+    }
+
     // Fetch the first record with the given PDNumber
     public ComponentDto Fetch(string pdNumber) {
       using (var ctx = ConnectionManager<SqlConnection>.GetManager(_dbName)) {

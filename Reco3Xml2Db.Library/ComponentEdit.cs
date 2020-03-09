@@ -73,6 +73,10 @@ namespace Reco3Xml2Db.Library
       return DataPortal.Create<ComponentEdit>();
     }
 
+    public static ComponentEdit GetComponent(int componentId) {
+      return DataPortal.Fetch<ComponentEdit>(componentId);
+    }
+
     /// <summary>
     /// Fetch first occurence of existing component from the database
     /// </summary>
@@ -101,6 +105,27 @@ namespace Reco3Xml2Db.Library
     [Create]
     private void Create() {
       base.DataPortal_Create();
+    }
+
+    [Fetch]
+    private void Fetch(int criteria) {
+      using (var dalManager = DalFactory.GetManager(DalManagerTypes.DalManagerDb)) {
+        var dal = dalManager.GetProvider<IComponentDal>();
+        var data = dal.Fetch(criteria);
+        if (data != null) {
+          using (BypassPropertyChecks) {
+            ComponentId = data.ComponentId;
+            PDNumber = data.PDNumber;
+            DownloadedTimestamp = data.DownloadedTimestamp;
+            Description = data.Description;
+            PDStatus = data.PDStatus;
+            ComponentType = data.ComponentType;
+            Xml = data.Xml;
+            PDSource = data.PDSource;
+            SourceComponentId = data.SourceComponentId;
+          }
+        }
+      }
     }
 
     [Fetch]
@@ -146,20 +171,26 @@ namespace Reco3Xml2Db.Library
       }
     }
 
-    //protected override void DataPortal_Update() {
-    //  using (var ctx = DalFactory.GetManager()) {
-    //    var dal = ctx.GetProvider<IComponentDal>();
-    //    using (BypassPropertyChecks) {
-    //      var item = new ComponentDto {
-    //        //BaseUri = BaseUri,
-    //        //ClientSecret = ClientSecret,
-    //        //DalManagerType = DalManagerType,
-    //        //DbInUse = DbInUse
-    //      };
-    //      dal.Update(item);
-    //    }
-    //  }
-    //}
+    [Update]
+    private void Update() {
+      using (var ctx = DalFactory.GetManager(DalManagerTypes.DalManagerDb)) {
+        var dal = ctx.GetProvider<IComponentDal>();
+        using (BypassPropertyChecks) {
+          var item = new ComponentDto {
+            ComponentId = ComponentId,
+            PDNumber = PDNumber,
+            DownloadedTimestamp = DownloadedTimestamp,
+            Description = Description,
+            PDStatus = PDStatus,
+            ComponentType = ComponentType,
+            Xml = Xml,
+            PDSource = PDSource,
+            SourceComponentId = SourceComponentId
+          };
+          dal.Update(item);
+        }
+      }
+    }
 
     //protected override void DataPortal_DeleteSelf() {
     //  using (BypassPropertyChecks)

@@ -34,6 +34,17 @@ namespace Reco3Xml2Db.Library {
       IsReadOnly = true;
     }
 
+    public void RemoveItem(ComponentInfo component) {
+      var rlce = RaiseListChangedEvents;
+      RaiseListChangedEvents = false;
+      IsReadOnly = false;
+
+      Remove(component);
+
+      RaiseListChangedEvents = rlce;
+      IsReadOnly = true;
+    }
+
     #region Factory Methods
 
     public static ComponentList GetComponentList() {
