@@ -1,4 +1,5 @@
-﻿using Prism.Commands;
+﻿using Csla;
+using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 using Reco3Xml2Db.Library;
@@ -10,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows.Input;
 
 namespace Reco3Xml2Db.UI.Module.ViewModels {
   public class ComponentsGridViewModel : ViewModelBase {
@@ -148,6 +150,8 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       var column = (FilterableColumns)SelectedColumn;
       Func<ComponentInfo, bool> filter;
 
+      Mouse.OverrideCursor = Cursors.Wait;
+
       if (((FilterableColumns)SelectedColumn == FilterableColumns.ComponentType && SelectedComponentType > -1)
         || ((FilterableColumns)SelectedColumn == FilterableColumns.PDSource && SelectedPDSource > -1)
         || ((FilterableColumns)SelectedColumn == FilterableColumns.PDStatus && SelectedPDStatus > -1)) {
@@ -201,15 +205,13 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
             Components = await ComponentList.GetFilteredListAsync(UnFilteredList.Where(filter));
           }
 
-          //var list1 = UnFilteredList.Where(filter).AsQueryable();
-          //Components = (ComponentList)list1;
-          //var list2 = UnFilteredList.Where(filter).Cast<ComponentInfo>();
-          
           LastSearchLength = SearchText.Length;
         }
 
         UpdateComponentSetCommand.Execute();
       }
+
+      Mouse.OverrideCursor = Cursors.Arrow;
     }
 
     private void NewComponentReceived(ComponentEdit obj) {
