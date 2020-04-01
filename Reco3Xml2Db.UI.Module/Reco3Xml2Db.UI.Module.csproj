@@ -56,6 +56,7 @@
     <Compile Include="Commands\GetDbCommand.cs" />
     <Compile Include="Commands\GetFilePathCommand.cs" />
     <Compile Include="Commands\GetFilenameCommand.cs" />
+    <Compile Include="Commands\GetFilteredComponentsCommand.cs" />
     <Compile Include="Commands\GetSettingsCommand.cs" />
     <Compile Include="Commands\ImportComponentCommand.cs" />
     <Compile Include="Commands\SaveSettingsCommand.cs" />
@@ -87,6 +88,7 @@
     <Compile Include="Enums\ToolTipText.cs" />
     <Compile Include="Enums\WindowRegions.cs" />
     <Compile Include="Helpers\PwdHelper.cs" />
+    <Compile Include="Models\ComponentUIModel.cs" />
     <Compile Include="Reco3Xml2DbModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -101,6 +103,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Services\PathProvider.cs" />
+    <Compile Include="Services\IPathProvider.cs" />
     <Compile Include="ViewModels\ComponentsGridViewModel.cs" />
     <Compile Include="ViewModels\ImportXmlViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
@@ -178,5 +182,6 @@
       <Name>Reco3Xml2Db.Utilities</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

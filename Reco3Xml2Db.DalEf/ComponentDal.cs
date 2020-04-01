@@ -12,6 +12,18 @@ namespace Reco3Xml2Db.DalEf {
   public class ComponentDal : IComponentDal {
     private readonly string _dbName = "Server";
 
+    public void Delete(int componentId) {
+      using (var ctx = DbContextManager<Reco3Xml2DbContext>.GetManager(_dbName)) {
+        var data = (from r in ctx.DbContext.Components
+                    where r.ComponentId == componentId
+                    select r).FirstOrDefault();
+        if (data != null) {
+          ctx.DbContext.Components.Remove(data);
+          ctx.DbContext.SaveChanges();
+        }
+      }
+    }
+
     public bool Exists(string pdNumber) {
       using (var ctx = DbContextManager<Reco3Xml2DbContext>.GetManager(_dbName)) {
         var result = (from r in ctx.DbContext.Components

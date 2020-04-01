@@ -5,26 +5,38 @@ using Prism.Mvvm;
 using Reco3Xml2Db.Library;
 using Reco3Xml2Db.UI.Module.Commands;
 using Reco3Xml2Db.UI.Module.Enums;
+using Reco3Xml2Db.UI.Module.Services;
 using Reco3Xml2Db.Utilities.Comparers;
 using Reco3Xml2Db.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 
 namespace Reco3Xml2Db.UI.Module.ViewModels {
   public class ComponentsGridViewModel : ViewModelBase {
     private IEventAggregator _eventAggregator;
+    private IPathProvider _filePathProvider;
 
     #region Properties
 
+    public string DeleteInfo { get; } = "Delete the selected components in the grid";
+
     public DelegateCommand SearchCommand { get; set; }
     public DelegateCommand UpdateComponentSetCommand { get; set; }
+    public DelegateCommand DeleteComponentsCommand { get; set; }
 
     private int LastSearchLength { get; set; }
-
     public ComponentList UnFilteredList { get; set; }
+
+    private bool _hasCheckedItem;
+    private bool HasCheckedItem {
+      get => _hasCheckedItem;
+      set { SetProperty(ref _hasCheckedItem, value); }
+    }
 
     private ComponentList _components;
     public ComponentList Components {
@@ -88,8 +100,9 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
 
     #endregion
 
-    public ComponentsGridViewModel(IEventAggregator eventAggregator) {
+    public ComponentsGridViewModel(IEventAggregator eventAggregator, IPathProvider filePathProvider) {
       _eventAggregator = eventAggregator;
+      _filePathProvider = filePathProvider;
 
       Title = TabNames.ComponentsGrid.GetDescription();
 
@@ -109,15 +122,54 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       SelectedPDSource = -1;
       SearchText = string.Empty;
       LastSearchLength = 0;
+      HasCheckedItem = false;
 
       SearchCommand = new DelegateCommand(GetFilteredComponentList);
       UpdateComponentSetCommand = new DelegateCommand(PublishComponentId);
+      DeleteComponentsCommand = new DelegateCommand(Execute, CanExecute)
+        .ObservesProperty(() => HasCheckedItem);
 
       _eventAggregator.GetEvent<GetComponentsCommand>().Subscribe(ComponentListReceived);
       _eventAggregator.GetEvent<GetComponentsCommand>().Publish(ComponentList.GetComponentList());
       _eventAggregator.GetEvent<ImportComponentCommand>().Subscribe(NewComponentReceived);
       _eventAggregator.GetEvent<UpdateComponentCommand>().Subscribe(UpdateComponentReceived);
       _eventAggregator.GetEvent<GetFilenameCommand>().Subscribe(FilenameReceived);
+      _eventAggregator.GetEvent<GetFilteredComponentsCommand>().Subscribe(FilteredComponentListReceived);
+
+      _allSelected = false;
+    }
+
+    private bool CanExecute() {
+      return Components.Any(c => c.IsChecked);
+    }
+
+    /// <summary>
+    /// Delete Components
+    /// </summary>
+    private void Execute() {
+      var count = Components.Where(c => c.IsChecked).Count();
+
+      if (MessageBox.Show($"Are you sure you want to delete {(count > 1 ? "these components" : "this component")}?", 
+        "Delete Component?", 
+        MessageBoxButton.YesNo, 
+        MessageBoxImage.Warning) == MessageBoxResult.Yes) {
+
+        foreach (var item in Components) {
+          if (item.IsChecked) {
+            ComponentEdit.DeleteComponentAsync(item.ComponentId);
+            //Components.RemoveItem(item);
+            //UnFilteredList.RemoveItem(item);
+            //if (Components.Count() == 0) break;
+          }
+        }
+
+        _eventAggregator
+          .GetEvent<GetComponentsCommand>()
+          .Publish(ComponentList.GetComponentList());
+
+        ClearFields();
+        //RaisePropertyChanged(nameof(Components));
+      }
     }
 
     private void FilenameReceived(string obj) {
@@ -147,6 +199,17 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
     }
 
     private async void GetFilteredComponentList() {
+      if(SelectedPDSource == -1 
+        && SelectedPDStatus == -1 
+        && SelectedComponentType == -1 
+        && string.IsNullOrEmpty(SearchText)
+        && LastSearchLength == 0) {
+        return;
+      }
+
+      if ((bool)AllSelected) {
+        AllSelected = false;
+      }
       var column = (FilterableColumns)SelectedColumn;
       Func<ComponentInfo, bool> filter;
 
@@ -177,7 +240,9 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
             break;
         }
 
-        Components = await ComponentList.GetFilteredListAsync(UnFilteredList.Where(filter));
+        _eventAggregator
+          .GetEvent<GetFilteredComponentsCommand>()
+          .Publish(await ComponentList.GetFilteredListAsync(UnFilteredList.Where(filter)));
       }
       else {
         SelectedPDSource = SelectedPDStatus = SelectedComponentType = -1;
@@ -199,10 +264,14 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
           }
 
           if (LastSearchLength < SearchText.Length) {
-            Components = await ComponentList.GetFilteredListAsync(Components.Where(filter));
+            _eventAggregator
+              .GetEvent<GetFilteredComponentsCommand>()
+              .Publish(await ComponentList.GetFilteredListAsync(Components.Where(filter)));
           }
           else {
-            Components = await ComponentList.GetFilteredListAsync(UnFilteredList.Where(filter));
+            _eventAggregator
+              .GetEvent<GetFilteredComponentsCommand>()
+              .Publish(await ComponentList.GetFilteredListAsync(UnFilteredList.Where(filter)));
           }
 
           LastSearchLength = SearchText.Length;
@@ -214,7 +283,14 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       Mouse.OverrideCursor = Cursors.Arrow;
     }
 
+    private void ClearFields() {
+      AllSelected = false;
+      SearchText = string.Empty;
+      SelectedPDSource = SelectedPDStatus = SelectedComponentType = -1;
+    }
+
     private void NewComponentReceived(ComponentEdit obj) {
+      obj.PropertyChanged += ComponentOnPropertyChanged;
       UnFilteredList.AddItem(obj);
 
       // Use the following method to get all the data directly from the database instead 
@@ -222,6 +298,93 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       //Components = ComponentList.GetComponentList();
     }
 
-    private void ComponentListReceived(ComponentList obj) => UnFilteredList = Components = obj;
+    private void ComponentOnPropertyChanged(object sender, PropertyChangedEventArgs args) {
+      // Only re-check if the IsChecked property changed
+      if (args.PropertyName == nameof(ComponentInfo.IsChecked)) {
+        RecheckAllSelected();
+      }
+    }
+
+    private void ComponentListReceived(ComponentList obj) {
+      foreach (var component in obj) {
+        component.PropertyChanged += ComponentOnPropertyChanged;
+      }
+
+      UnFilteredList = Components = obj;
+    }
+
+    private void FilteredComponentListReceived(ComponentList obj) {
+      foreach (var component in obj) {
+        component.PropertyChanged += ComponentOnPropertyChanged;
+      }
+
+      Components = obj;
+    }
+
+    private bool? _allSelected;
+    public bool? AllSelected {
+      get => _allSelected;
+      set {
+        SetProperty(ref _allSelected, value);
+
+        // Set all other CheckBoxes
+        AllSelectedChanged();
+        //OnPropertyChanged();
+      }
+    }
+
+    private void RecheckAllSelected() {
+      // Has this change been caused by some other change?
+      // return so we don't mess things up
+      if (_allSelectedChanging) return;
+
+      try {
+        _allSelectedChanging = true;
+
+        if (Components.All(e => e.IsChecked)) {
+          AllSelected = true;
+          HasCheckedItem = true;
+        }
+        else if (Components.All(e => !e.IsChecked)) {
+          AllSelected = false;
+          HasCheckedItem = false;
+        }
+        else {
+          AllSelected = null;
+          HasCheckedItem = true;
+        }
+      }
+      finally {
+        _allSelectedChanging = false;
+      }
+    }
+
+    private bool _allSelectedChanging;
+    private void AllSelectedChanged() {
+      // Has this change been caused by some other change?
+      // return so we don't mess things up
+      if (_allSelectedChanging) return;
+
+      try {
+        _allSelectedChanging = true;
+
+        // this can of course be simplified
+        if (AllSelected == true) {
+          foreach (var component in Components) {
+            component.IsChecked = true;
+          }
+          HasCheckedItem = true;
+        }
+        else if (AllSelected == false) {
+          foreach (var component in Components) {
+            component.IsChecked = false;
+          }
+          HasCheckedItem = false;
+        }
+      }
+      finally {
+        _allSelectedChanging = false;
+      }
+    }
   }
 }

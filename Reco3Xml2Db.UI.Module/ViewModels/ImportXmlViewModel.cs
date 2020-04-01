@@ -5,6 +5,7 @@ using Prism.Events;
 using Reco3Xml2Db.Library;
 using Reco3Xml2Db.UI.Module.Commands;
 using Reco3Xml2Db.UI.Module.Enums;
+using Reco3Xml2Db.UI.Module.Services;
 using Reco3Xml2Db.Utilities.Extensions;
 using System;
 using System.Collections.ObjectModel;
@@ -15,6 +16,8 @@ using System.Windows;
 namespace Reco3Xml2Db.UI.Module.ViewModels {
   public class ImportXmlViewModel : ViewModelBase {
     private IEventAggregator _eventAggregator;
+    private IPathProvider _filePathProvider;
+
     private readonly string _header = "Fill in the information below and press ";
 
     #region Properties
@@ -161,8 +164,9 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
 
     #endregion
 
-    public ImportXmlViewModel(IEventAggregator eventAggregator) {
+    public ImportXmlViewModel(IEventAggregator eventAggregator, IPathProvider filePathProvider) {
       _eventAggregator = eventAggregator;
+      _filePathProvider = filePathProvider;
 
       Title = TabNames.ImportToDb.GetDescription();
       SourceComponentExists = false;
@@ -176,8 +180,8 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       PDStatusList.GetEnumValues<PDStatus>();
       ComponentTypeList.GetEnumValues<ComponentType>();
 
-      GetFilePathCommand = new DelegateCommand(GetFolderDialog);
-      GetFilenameCommand = new DelegateCommand(GetFileDialog);
+      GetFilePathCommand = new DelegateCommand(GetFolder);
+      GetFilenameCommand = new DelegateCommand(GetFileName);
       ImportComponentCommand = new DelegateCommand(Execute, CanExecute)
         .ObservesProperty(() => FileName)
         .ObservesProperty(() => FilePath)
@@ -193,10 +197,21 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       _eventAggregator.GetEvent<UpdateComponentSetCommand>().Subscribe(UpdateComponentIdReceived);
     }
 
-    private void UpdateComponentIdReceived(int obj) {
-      UpdateComponentId = obj;
+    private void GetFolder() {
+      var pathProvider = new PathProvider(_eventAggregator);
+      var folderPath = string.IsNullOrEmpty(FileName)
+                              ? FilePath
+                              : Path.GetDirectoryName(FileName);
+      pathProvider.FolderPathService(folderPath);
+    }
 
-      RaisePropertyChanged(nameof(ReplaceIsActive));
+    private void GetFileName() {
+      var pathProvider = new PathProvider(_eventAggregator);
+      var tmpStream = pathProvider.FilePathService(FilePath);
+
+      if(tmpStream != null) {
+        XmlStream = tmpStream;
+      }
     }
 
     private void FilePathReceived(string obj) {
@@ -204,14 +219,19 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
     }
 
     private void FileNameReceived(string obj) {
+      ClearValues();
       FileName = obj;
 
       var dir = Path.GetDirectoryName(obj);
       if (dir != FilePath) {
         _eventAggregator.GetEvent<GetFilePathCommand>().Publish(dir);
       }
+    }
 
-      ReplaceIsChecked = false;
+    private void UpdateComponentIdReceived(int obj) {
+      UpdateComponentId = obj;
+
+      RaisePropertyChanged(nameof(ReplaceIsActive));
     }
 
     private void ExistingComponentReceived(ComponentInfo obj) {
@@ -256,7 +276,7 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
     }
 
     private void ReplaceComponent() {
-      var component = ComponentEdit.GetComponent(UpdateComponentId);
+      var component = ComponentEdit.GetComponentAsync(UpdateComponentId).Result;
 
       component.Description = Description;
       component.PDStatus = SelectedPDStatus;
@@ -351,12 +371,6 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
 
     private void GetFileDialog() {
       OpenFileDialog openFileDialog = new OpenFileDialog {
-        //InitialDirectory = string.IsNullOrEmpty(FileName)
-        //                    //? SavedFilePath
-        //                    ? FilePath
-        //                    : Directory.Exists(FilePath + "\\" + FileName)
-        //                      ? Path.GetDirectoryName(FileName)
-        //                      : Environment.CurrentDirectory,
         InitialDirectory = FilePath,
         Filter = "Xml files (*.xml)|*.xml|All files (*.*)|*.*",
         FilterIndex = 1,

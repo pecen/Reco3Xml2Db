@@ -3,6 +3,7 @@ using Reco3Xml2Db.Dal;
 using Reco3Xml2Db.Dal.Dto;
 using Reco3Xml2Db.Dal.Enums;
 using System;
+using System.Threading.Tasks;
 
 namespace Reco3Xml2Db.Library
 {
@@ -73,8 +74,16 @@ namespace Reco3Xml2Db.Library
       return DataPortal.Create<ComponentEdit>();
     }
 
+    public async static Task<ComponentEdit> NewComponentEditAsync() {
+      return await DataPortal.CreateAsync<ComponentEdit>();
+    }
+
     public static ComponentEdit GetComponent(int componentId) {
       return DataPortal.Fetch<ComponentEdit>(componentId);
+    }
+
+    public async static Task<ComponentEdit> GetComponentAsync(int componentId) {
+      return await DataPortal.FetchAsync<ComponentEdit>(componentId);
     }
 
     /// <summary>
@@ -84,6 +93,14 @@ namespace Reco3Xml2Db.Library
     /// <returns></returns>
     public static ComponentEdit GetComponent(string pdNumber) {
       return DataPortal.Fetch<ComponentEdit>(pdNumber);
+    }
+
+    public async static Task<ComponentEdit> GetComponentAsync(string pdNumber) {
+      return await DataPortal.FetchAsync<ComponentEdit>(pdNumber);
+    }
+
+    public static async void DeleteComponentAsync(int componentId) {
+      await DataPortal.DeleteAsync<ComponentEdit>(componentId);
     }
 
     public static bool Exists(string pdNumber) {
@@ -192,19 +209,19 @@ namespace Reco3Xml2Db.Library
       }
     }
 
-    //protected override void DataPortal_DeleteSelf() {
-    //  using (BypassPropertyChecks)
-    //    DataPortal_Delete(this.Id);
-    //}
+    [DeleteSelf]
+    private void DeleteSelf() {
+      using (BypassPropertyChecks)
+        Delete(ComponentId);
+    }
 
-    //private void DataPortal_Delete(int id) {
-    //  using (var ctx = ProjectTracker.Dal.DalFactory.GetManager()) {
-    //    Resources.Clear();
-    //    FieldManager.UpdateChildren(this);
-    //    var dal = ctx.GetProvider<ProjectTracker.Dal.IProjectDal>();
-    //    dal.Delete(id);
-    //  }
-    //}
+    [Delete]
+    private void Delete(int id) {
+      using (var ctx = DalFactory.GetManager(DalManagerTypes.DalManagerDb)) {
+        var dal = ctx.GetProvider<IComponentDal>();
+        dal.Delete(id);
+      }
+    }
 
     #endregion
   }

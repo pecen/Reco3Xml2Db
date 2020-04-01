@@ -2,6 +2,7 @@
 using Prism.Modularity;
 using Prism.Regions;
 using Reco3Xml2Db.UI.Module.Enums;
+using Reco3Xml2Db.UI.Module.Services;
 using Reco3Xml2Db.UI.Module.Views;
 using Unity;
 
@@ -21,6 +22,8 @@ namespace Reco3Xml2Db.UI.Module {
       //containerRegistry.RegisterForNavigation(typeof(ImportXml), nameof(ImportXml));
       //containerRegistry.RegisterForNavigation(typeof(ComponentsGrid), nameof(ComponentsGrid));
       //containerRegistry.RegisterForNavigation(typeof(Settings), nameof(Settings));
+
+      containerRegistry.RegisterSingleton<IPathProvider, PathProvider>();
     }
   }
 }

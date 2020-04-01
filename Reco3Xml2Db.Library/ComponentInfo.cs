@@ -4,14 +4,42 @@ using Reco3Xml2Db.Dal.Dto;
 using Reco3Xml2Db.Dal.Enums;
 using System;
 using System.Collections;
+using System.ComponentModel;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Xml;
 
 namespace Reco3Xml2Db.Library {
   [Serializable]
-  public class ComponentInfo : ReadOnlyBase<ComponentInfo> {
+  public class ComponentInfo : ReadOnlyBase<ComponentInfo>, INotifyPropertyChanged {
+    #region IsChecked
+
+    private bool _isChecked;
+    public bool IsChecked {
+      get => _isChecked;
+      set {
+        if (value == _isChecked) return;
+        _isChecked = value;
+        OnPropertyChanged(nameof(IsChecked));
+      }
+    }
+
+    //public new event PropertyChangedEventHandler PropertyChanged;
+
+    //protected new virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) {
+    //  PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    //}
+
+    #endregion
+
     #region Properties
+
+    //public static readonly PropertyInfo<bool> IsCheckedProperty = RegisterProperty<bool>(c => c.IsChecked);
+    //public bool IsChecked {
+    //  get { return GetProperty(IsCheckedProperty); }
+    //  set { LoadProperty(IsCheckedProperty, value); }
+    //}
 
     public static readonly PropertyInfo<int> ComponentIdProperty = RegisterProperty<int>(c => c.ComponentId);
     public int ComponentId {

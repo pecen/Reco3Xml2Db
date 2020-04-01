@@ -5,12 +5,22 @@
     xmlns:converters="clr-namespace:Reco3Xml2Db.UI.Module.Converters"
     xmlns:enums="clr-namespace:Reco3Xml2Db.UI.Module.Enums"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:local="clr-namespace:Reco3Xml2Db.UI.Module.Views"
     xmlns:prism="http://prismlibrary.com/"
+    xmlns:prismEvents="clr-namespace:Prism.Events;assembly=Prism"
+    xmlns:services="clr-namespace:Reco3Xml2Db.UI.Module.Services"
+    xmlns:vm="clr-namespace:Reco3Xml2Db.UI.Module.ViewModels"
     prism:ViewModelLocator.AutoWireViewModel="True">
 
     <UserControl.Resources>
         <converters:StatusIntToEnumValueConverter x:Key="StatusIntToEnumValueConverter" />
         <converters:SelectedFilteringToVisibilityConverter x:Key="SelectedFilteringToVisibilityConverter" />
+        <!--<ObjectDataProvider x:Key="componentsGridViewModel" ObjectType="{x:Type vm:ComponentsGridViewModel}">
+            <ObjectDataProvider.ConstructorParameters>
+                <prismEvents:EventAggregator />
+                <services:FilePathProvider />
+            </ObjectDataProvider.ConstructorParameters>
+        </ObjectDataProvider>-->
     </UserControl.Resources>
     <Grid Margin="10">
 
@@ -22,12 +32,29 @@
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <Label Margin="0,2,0,2" Content="Search PDNumber:" />
+            <StackPanel Orientation="Horizontal">
+                <Button
+                    Grid.Column="0"
+                    Width="78"
+                    Margin="0,2,0,2"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Command="{Binding DeleteComponentsCommand}"
+                    Content="Delete"
+                    ToolTip="{Binding DeleteInfo}" />
+                <Separator Margin="6,2,6,2" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+            </StackPanel>
+            <Label
+                Grid.Column="1"
+                Margin="0,2,0,2"
+                Content="Search PDNumber:" />
             <ComboBox
                 x:Name="ColumnNames"
+                Grid.Column="1"
                 Margin="0,2,5,2"
                 ItemsSource="{Binding Columns}"
                 SelectedIndex="{Binding SelectedColumn}">
@@ -38,7 +65,7 @@
                 </i:Interaction.Triggers>
             </ComboBox>
             <TextBox
-                Grid.Column="1"
+                Grid.Column="2"
                 Margin="0,2,0,2"
                 VerticalContentAlignment="Center"
                 Background="White"
@@ -50,7 +77,7 @@
                 </i:Interaction.Triggers>
             </TextBox>
             <ComboBox
-                Grid.Column="1"
+                Grid.Column="2"
                 Margin="0,2,0,2"
                 ItemsSource="{Binding PDStatusList}"
                 SelectedIndex="{Binding SelectedPDStatus}"
@@ -62,7 +89,7 @@
                 </i:Interaction.Triggers>
             </ComboBox>
             <ComboBox
-                Grid.Column="1"
+                Grid.Column="2"
                 Margin="0,2,0,2"
                 ItemsSource="{Binding ComponentTypeList}"
                 SelectedIndex="{Binding SelectedComponentType}"
@@ -74,7 +101,7 @@
                 </i:Interaction.Triggers>
             </ComboBox>
             <ComboBox
-                Grid.Column="1"
+                Grid.Column="2"
                 Margin="0,2,0,2"
                 ItemsSource="{Binding PDSourceList}"
                 SelectedIndex="{Binding SelectedPDSource}"
@@ -86,7 +113,7 @@
                 </i:Interaction.Triggers>
             </ComboBox>
             <StackPanel
-                Grid.Column="2"
+                Grid.Column="3"
                 HorizontalAlignment="Right"
                 Orientation="Horizontal">
                 <Label HorizontalAlignment="Right" Content="Count:" />
@@ -95,12 +122,20 @@
         </Grid>
 
         <DataGrid
+            x:Name="componentGrid"
             Grid.Row="1"
             AutoGenerateColumns="False"
             HorizontalScrollBarVisibility="Auto"
             ItemsSource="{Binding Components, UpdateSourceTrigger=PropertyChanged}">
 
             <DataGrid.Columns>
+                <DataGridCheckBoxColumn Binding="{Binding IsChecked, UpdateSourceTrigger=PropertyChanged}">
+                    <DataGridCheckBoxColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <CheckBox IsChecked="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:ComponentsGrid}, Path=DataContext.AllSelected}">Select All</CheckBox>
+                        </DataTemplate>
+                    </DataGridCheckBoxColumn.HeaderTemplate>
+                </DataGridCheckBoxColumn>
                 <DataGridTextColumn Binding="{Binding ComponentId}" Header="Component Id" />
                 <DataGridTextColumn Binding="{Binding PDNumber}" Header="PDNumber" />
                 <DataGridTextColumn Binding="{Binding DownloadedTimestamp}" Header="Downloaded" />

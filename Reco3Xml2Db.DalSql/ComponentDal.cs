@@ -10,6 +10,10 @@ namespace Reco3Xml2Db.DalSql {
   public class ComponentDal : IComponentDal {
     private readonly string _dbName = "Server";
 
+    public void Delete(int componentId) {
+      throw new NotImplementedException();
+    }
+
     public bool Exists(string pdNumber) {
       using (var ctx = ConnectionManager<SqlConnection>.GetManager(_dbName)) {
         var cm = ctx.Connection.CreateCommand();

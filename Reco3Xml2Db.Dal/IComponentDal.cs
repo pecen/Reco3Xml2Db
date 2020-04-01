@@ -9,6 +9,7 @@ namespace Reco3Xml2Db.Dal {
     List<ComponentDto> FetchAllWSamePDNumber(string pdNumber);
     void Insert(ComponentDto data);
     void Update(ComponentDto data);
+    void Delete(int componentId);
     bool Exists(string pdNumber);
   }
 }
