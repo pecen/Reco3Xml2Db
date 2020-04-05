@@ -369,41 +369,6 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       IsPublished = true;
     }
 
-    private void GetFileDialog() {
-      OpenFileDialog openFileDialog = new OpenFileDialog {
-        InitialDirectory = FilePath,
-        Filter = "Xml files (*.xml)|*.xml|All files (*.*)|*.*",
-        FilterIndex = 1,
-        RestoreDirectory = true
-      };
-
-      if ((bool)openFileDialog.ShowDialog()) {
-        ClearValues();
-
-        //Read the contents of the file into a stream
-        XmlStream = openFileDialog.OpenFile();
-
-        _eventAggregator.GetEvent<GetFilenameCommand>()
-          .Publish(openFileDialog.FileName);
-      }
-    }
-
-    private void GetFolderDialog() {
-      var dialog = new CommonOpenFileDialog {
-        InitialDirectory = (string.IsNullOrEmpty(FileName)
-                              ? FilePath
-                              : Path.GetDirectoryName(FileName)),
-        IsFolderPicker = true,
-      };
-
-      if (dialog.ShowDialog() == CommonFileDialogResult.Ok) {
-        // dialog.FileName below holds the path and not the filename
-        // even though the property FileName is used. 
-        _eventAggregator.GetEvent<GetFilePathCommand>()
-          .Publish(dialog.FileName);
-      }
-    }
-
     private string GetXml() {
       using (StreamReader reader = new StreamReader(XmlStream)) {
         return reader.ReadToEnd();

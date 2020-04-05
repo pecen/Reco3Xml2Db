@@ -157,9 +157,6 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
         foreach (var item in Components) {
           if (item.IsChecked) {
             ComponentEdit.DeleteComponentAsync(item.ComponentId);
-            //Components.RemoveItem(item);
-            //UnFilteredList.RemoveItem(item);
-            //if (Components.Count() == 0) break;
           }
         }
 
@@ -168,7 +165,6 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
           .Publish(ComponentList.GetComponentList());
 
         ClearFields();
-        //RaisePropertyChanged(nameof(Components));
       }
     }
 
@@ -292,6 +288,7 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
     private void NewComponentReceived(ComponentEdit obj) {
       obj.PropertyChanged += ComponentOnPropertyChanged;
       UnFilteredList.AddItem(obj);
+      RaisePropertyChanged(nameof(Components));
 
       // Use the following method to get all the data directly from the database instead 
       // of adding the obj item to the list. 
@@ -311,6 +308,7 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       }
 
       UnFilteredList = Components = obj;
+      RaisePropertyChanged(nameof(Components));
     }
 
     private void FilteredComponentListReceived(ComponentList obj) {
@@ -329,7 +327,6 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
 
         // Set all other CheckBoxes
         AllSelectedChanged();
-        //OnPropertyChanged();
       }
     }
 
