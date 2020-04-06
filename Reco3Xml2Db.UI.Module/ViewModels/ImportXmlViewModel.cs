@@ -214,9 +214,7 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       }
     }
 
-    private void FilePathReceived(string obj) {
-      FilePath = obj;
-    }
+    private void FilePathReceived(string obj) => FilePath = obj;
 
     private void FileNameReceived(string obj) {
       ClearValues();

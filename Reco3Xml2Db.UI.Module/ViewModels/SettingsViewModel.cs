@@ -4,6 +4,7 @@ using Prism.Events;
 using Reco3Xml2Db.Library;
 using Reco3Xml2Db.UI.Module.Commands;
 using Reco3Xml2Db.UI.Module.Enums;
+using Reco3Xml2Db.UI.Module.Services;
 using Reco3Xml2Db.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
@@ -147,37 +148,36 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
     }
 
     private void FilePathReceived(string obj) => XmlFilePath = obj;
+
     private void DbNameReceived(IDictionary<string, string> obj) {
       if (obj != null) {
         Server = obj[ConnectionString.DataSource.ToString()];
         DbName = obj[ConnectionString.InitialCatalog.ToString()];
       }
     }
+
     private void SettingsUpdated(SettingsEdit obj) => Settings = obj;
 
-    private void GetFolderName() {
-      try {
-        _eventAggregator
-          .GetEvent<GetFilePathCommand>()
-          .Publish(GetFolderDialog());
-      }
-      catch (Exception ex) {
-        XmlFilePath = ex.Message;
-      }
-    }
+    private void GetFolderName() 
+      => new PathProvider(_eventAggregator)
+      .FolderPathService(XmlFilePath);
 
-    private void GetDbName() {
-      try {
-        _eventAggregator
-          .GetEvent<GetDbCommand>()
-          .Publish(_eventAggregator
-            .GetEvent<GetDbCommand>()
-            .GetDbDialog());
-      }
-      catch (Exception ex) {
-        DbName = ex.Message;
-      }
-    }
+    //private void GetDbName() {
+    //  try {
+    //    _eventAggregator
+    //      .GetEvent<GetDbCommand>()
+    //      .Publish(_eventAggregator
+    //        .GetEvent<GetDbCommand>()
+    //        .GetDbDialog());
+    //  }
+    //  catch (Exception ex) {
+    //    DbName = ex.Message;
+    //  }
+    //}
+
+    private void GetDbName()
+      => new PathProvider(_eventAggregator)
+      .DbPathService();
 
     private bool CanExecute() {
       return (!string.IsNullOrWhiteSpace(Server)
@@ -211,45 +211,9 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       }
     }
 
-    private string GetFolderDialog() {
-      var dialog = new CommonOpenFileDialog {
-        InitialDirectory = XmlFilePath, 
-        IsFolderPicker = true,
-      };
-
-      if (dialog.ShowDialog() == CommonFileDialogResult.Ok) {
-        return dialog.FileName;
-      }
-
-      return XmlFilePath;
-    }
-
     public SettingsEdit SaveConfig(SettingsEdit data) {
       data = data.Save();
       return data;
-    }
-
-    private static void HandleItem(string entityType, string key, string content, string path) {
-      // User logic starts here
-
-      // for MQ-handling
-      //SendToQueue(content);
-
-      // for file handling
-      //using (var writer = new StreamWriter(Get(path) + "\\" + Guid.NewGuid() + ".xml")) {
-      //  writer.Write(content);
-      //  writer.Flush();
-      //}
-
-      // for xml-handling
-      //XmlDocumentFragment fragment = xmlDoc.CreateDocumentFragment();
-      //fragment.InnerXml = content;
-      ////XmlElement element = xmlDoc.AppendChild()
-      //xmlDoc.FirstChild.AppendChild(fragment);
-    }
-
-    public static string Get(string key) {
-      return ConfigurationManager.AppSettings[key];
     }
   }
 }
