@@ -30,12 +30,6 @@ namespace Reco3Xml2Db.Library {
 
     #region Properties
 
-    //public static readonly PropertyInfo<bool> IsCheckedProperty = RegisterProperty<bool>(c => c.IsChecked);
-    //public bool IsChecked {
-    //  get { return GetProperty(IsCheckedProperty); }
-    //  set { LoadProperty(IsCheckedProperty, value); }
-    //}
-
     public static readonly PropertyInfo<int> ComponentIdProperty = RegisterProperty<int>(c => c.ComponentId);
     public int ComponentId {
       get { return GetProperty(ComponentIdProperty); }
@@ -158,7 +152,7 @@ namespace Reco3Xml2Db.Library {
       Description = item.Description;
       PDStatus = item.PDStatus;
       ComponentType = item.ComponentType;
-      Xml = item.Xml.UnformatXml(); // UnformatXml(item.Xml);
+      Xml = item.Xml.UnformatXml(); 
       PDSource = item.PDSource;
       SourceComponentId = item.SourceComponentId;
     }
@@ -171,7 +165,7 @@ namespace Reco3Xml2Db.Library {
       Description = item.Description;
       PDStatus = item.PDStatus;
       ComponentType = item.ComponentType;
-      Xml = item.Xml;
+      Xml = item.Xml.UnformatXml(); 
       PDSource = item.PDSource;
       SourceComponentId = item.SourceComponentId;
     }

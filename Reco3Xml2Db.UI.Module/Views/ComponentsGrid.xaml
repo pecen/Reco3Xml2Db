@@ -126,6 +126,7 @@
             Grid.Row="1"
             AutoGenerateColumns="False"
             HorizontalScrollBarVisibility="Auto"
+            CanUserAddRows="False"
             ItemsSource="{Binding Components, UpdateSourceTrigger=PropertyChanged}">
 
             <DataGrid.Columns>
