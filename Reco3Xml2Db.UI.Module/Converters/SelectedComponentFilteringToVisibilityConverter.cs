@@ -9,21 +9,21 @@ using System.Windows;
 using System.Windows.Data;
 
 namespace Reco3Xml2Db.UI.Module.Converters {
-  public class SelectedFilteringToVisibilityConverter : IValueConverter {
+  public class SelectedComponentFilteringToVisibilityConverter : IValueConverter {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
-      var v = (FilterableColumns)value;
-      var columnName = parameter as string;
+      var v = (FilterableComponentColumns)value;
+      var columnName = (FilterableComponentColumns)parameter;
 
-      if (columnName == FilterableColumns.PDSource.ToString()
-        && v == FilterableColumns.PDSource) {
+      if (columnName == FilterableComponentColumns.PDSource 
+        && v == FilterableComponentColumns.PDSource) {
         return Visibility.Visible;
       }
-      else if (columnName == FilterableColumns.ComponentType.ToString()
-        && v == FilterableColumns.ComponentType) {
+      else if (columnName == FilterableComponentColumns.ComponentType 
+        && v == FilterableComponentColumns.ComponentType) {
         return Visibility.Visible;
       }
-      else if (columnName == FilterableColumns.PDStatus.ToString()
-        && v == FilterableColumns.PDStatus) {
+      else if (columnName == FilterableComponentColumns.PDStatus 
+        && v == FilterableComponentColumns.PDStatus) {
         return Visibility.Visible;
       }
 

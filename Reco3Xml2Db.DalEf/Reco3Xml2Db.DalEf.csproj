@@ -100,8 +100,10 @@
     <Compile Include="ComponentDal.cs" />
     <Compile Include="DalManager.cs" />
     <Compile Include="Entities\Reco3Component.cs" />
+    <Compile Include="Entities\Vehicle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reco3Xml2DbContext.cs" />
+    <Compile Include="VehicleDal.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Reco3Xml2Db.Dal\Reco3Xml2Db.Dal.csproj">

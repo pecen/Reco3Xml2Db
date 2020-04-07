@@ -2,6 +2,7 @@
 using Reco3Xml2Db.Dal;
 using Reco3Xml2Db.Dal.Dto;
 using Reco3Xml2Db.Dal.Enums;
+using Reco3Xml2Db.Utilities.Extensions;
 using System;
 using System.Collections;
 using System.ComponentModel;
@@ -24,12 +25,6 @@ namespace Reco3Xml2Db.Library {
         OnPropertyChanged(nameof(IsChecked));
       }
     }
-
-    //public new event PropertyChangedEventHandler PropertyChanged;
-
-    //protected new virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) {
-    //  PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    //}
 
     #endregion
 
@@ -163,7 +158,7 @@ namespace Reco3Xml2Db.Library {
       Description = item.Description;
       PDStatus = item.PDStatus;
       ComponentType = item.ComponentType;
-      Xml = item.Xml; // UnformatXml(item.Xml);
+      Xml = item.Xml.UnformatXml(); // UnformatXml(item.Xml);
       PDSource = item.PDSource;
       SourceComponentId = item.SourceComponentId;
     }
@@ -179,55 +174,6 @@ namespace Reco3Xml2Db.Library {
       Xml = item.Xml;
       PDSource = item.PDSource;
       SourceComponentId = item.SourceComponentId;
-    }
-
-    #endregion
-
-    #region Helpers
-
-    private string UnformatXml(string xml) {
-      string result = "";
-
-      StringBuilder sb = new StringBuilder(xml);
-      
-
-      using (MemoryStream stream = new MemoryStream()) {
-        using (XmlTextWriter writer = new XmlTextWriter(stream, Encoding.Unicode)) {
-          XmlDocument doc = new XmlDocument();
-
-          try {
-            // Load the XmlDocument with the XML.
-            doc.LoadXml(xml);
-
-            writer.Formatting = Formatting.None;
-
-            // Write the XML into a formatting XmlTextWriter
-            doc.WriteContentTo(writer);
-            writer.Flush();
-            stream.Flush();
-
-            // Have to rewind the MemoryStream in order to read
-            // its contents.
-            stream.Position = 0;
-
-            // Read MemoryStream contents into a StreamReader.
-            StreamReader sReader = new StreamReader(stream);
-
-            // Extract the text from the StreamReader.
-            string formattedXml = sReader.ReadToEnd();
-
-            result = formattedXml;
-          }
-          catch (XmlException ex) {
-            // Handle the exception
-            throw new XmlException(ex.Message);
-          }
-        }
-      }
-      //stream.Close();
-      //writer.Close();
-
-      return result;
     }
 
     #endregion

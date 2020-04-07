@@ -14,22 +14,26 @@ namespace Reco3Xml2Db.UI.Module.Converters {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
       var s = parameter.ToString();
       string enumValue = string.Empty;
-      string desc = string.Empty;
+      string description = string.Empty;
 
       if (!string.IsNullOrEmpty(s)) {
         s = s.Substring(s.LastIndexOf('.') + 1);
         switch (s) {
           case "PDSource":
-            desc = ((PDSource)value).GetDescription();
-            enumValue = string.IsNullOrEmpty(desc) ? ((PDSource)value).ToString() : desc;
+            description = ((PDSource)value).GetDescription();
+            enumValue = string.IsNullOrEmpty(description) ? ((PDSource)value).ToString() : description;
             break;
           case "PDStatus":
-            desc = ((PDStatus)value).GetDescription();
-            enumValue = string.IsNullOrEmpty(desc) ? ((PDStatus)value).ToString() : desc;
+            description = ((PDStatus)value).GetDescription();
+            enumValue = string.IsNullOrEmpty(description) ? ((PDStatus)value).ToString() : description;
             break;
           case "ComponentType":
-            desc = ((ComponentType)value).GetDescription();
-            enumValue = string.IsNullOrEmpty(desc) ? ((ComponentType)value).ToString() : desc;
+            description = ((ComponentType)value).GetDescription();
+            enumValue = string.IsNullOrEmpty(description) ? ((ComponentType)value).ToString() : description;
+            break;
+          case "VehicleMode":
+            description = ((VehicleMode)value).GetDescription();
+            enumValue = string.IsNullOrEmpty(description) ? ((VehicleMode)value).ToString() : description;
             break;
         }
       }

@@ -6,6 +6,8 @@ namespace Reco3Xml2Db.UI.Module.Enums {
     ImportToDb,
     [Description("Components")]
     ComponentsGrid,
+    [Description("Vehicles")]
+    VehiclesGrid,
     Settings
   }
 }

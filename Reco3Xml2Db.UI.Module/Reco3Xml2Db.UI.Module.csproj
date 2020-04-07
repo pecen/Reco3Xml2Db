@@ -58,6 +58,7 @@
     <Compile Include="Commands\GetFilenameCommand.cs" />
     <Compile Include="Commands\GetFilteredComponentsCommand.cs" />
     <Compile Include="Commands\GetSettingsCommand.cs" />
+    <Compile Include="Commands\GetVehiclesCommand.cs" />
     <Compile Include="Commands\ImportComponentCommand.cs" />
     <Compile Include="Commands\SaveSettingsCommand.cs" />
     <Compile Include="Commands\SearchCommand.cs" />
@@ -74,18 +75,21 @@
     <Compile Include="Converters\EmptyStringToTooltipConverter.cs" />
     <Compile Include="Converters\RemoveFilenameFromPathConverter.cs" />
     <Compile Include="Converters\RemovePathFromFilenameConverter.cs" />
-    <Compile Include="Converters\SelectedFilteringToVisibilityConverter.cs" />
+    <Compile Include="Converters\SelectedComponentFilteringToVisibilityConverter.cs" />
+    <Compile Include="Converters\SelectedVehicleFilteringToVisibilityConverter.cs" />
     <Compile Include="Converters\StatusIntToEnumValueConverter.cs" />
     <Compile Include="Enums\AuthMethod.cs" />
     <Compile Include="Enums\ButtonName.cs" />
-    <Compile Include="Enums\FilterableColumns.cs" />
+    <Compile Include="Enums\FilterableComponentColumns.cs" />
     <Compile Include="Enums\ComponentType.cs" />
     <Compile Include="Enums\ConnectionString.cs" />
     <Compile Include="Enums\ConnectionStringItems.cs" />
+    <Compile Include="Enums\FilterableVehicleColumns.cs" />
     <Compile Include="Enums\PDSource.cs" />
     <Compile Include="Enums\PDStatus.cs" />
     <Compile Include="Enums\TabNames.cs" />
     <Compile Include="Enums\ToolTipText.cs" />
+    <Compile Include="Enums\VehicleMode.cs" />
     <Compile Include="Enums\WindowRegions.cs" />
     <Compile Include="Helpers\PwdHelper.cs" />
     <Compile Include="Models\ComponentUIModel.cs" />
@@ -108,6 +112,7 @@
     <Compile Include="ViewModels\ComponentsGridViewModel.cs" />
     <Compile Include="ViewModels\ImportXmlViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
+    <Compile Include="ViewModels\VehiclesGridViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\ComponentsGrid.xaml.cs">
       <DependentUpon>ComponentsGrid.xaml</DependentUpon>
@@ -117,6 +122,9 @@
     </Compile>
     <Compile Include="Views\Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\VehiclesGrid.xaml.cs">
+      <DependentUpon>VehiclesGrid.xaml</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -164,6 +172,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Settings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\VehiclesGrid.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

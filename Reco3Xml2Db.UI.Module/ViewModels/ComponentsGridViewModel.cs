@@ -19,7 +19,7 @@ using System.Windows.Input;
 namespace Reco3Xml2Db.UI.Module.ViewModels {
   public class ComponentsGridViewModel : ViewModelBase {
     private IEventAggregator _eventAggregator;
-    private IPathProvider _filePathProvider;
+    private IPathProvider _pathProvider;
 
     #region Properties
 
@@ -31,6 +31,17 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
 
     private int LastSearchLength { get; set; }
     public ComponentList UnFilteredList { get; set; }
+
+    private bool? _allSelected;
+    public bool? AllSelected {
+      get => _allSelected;
+      set {
+        SetProperty(ref _allSelected, value);
+
+        // Set all other CheckBoxes
+        AllSelectedChanged();
+      }
+    }
 
     private bool _hasCheckedItem;
     private bool HasCheckedItem {
@@ -100,9 +111,9 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
 
     #endregion
 
-    public ComponentsGridViewModel(IEventAggregator eventAggregator, IPathProvider filePathProvider) {
+    public ComponentsGridViewModel(IEventAggregator eventAggregator, IPathProvider pathProvider) {
       _eventAggregator = eventAggregator;
-      _filePathProvider = filePathProvider;
+      _pathProvider = pathProvider;
 
       Title = TabNames.ComponentsGrid.GetDescription();
 
@@ -111,7 +122,7 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       ComponentTypeList = new ObservableCollection<string>();
       PDSourceList = new ObservableCollection<string>();
 
-      Columns.GetEnumValues<FilterableColumns>();
+      Columns.GetEnumValues<FilterableComponentColumns>();
       PDStatusList.GetEnumValues<PDStatus>();
       ComponentTypeList.GetEnumValues<ComponentType>();
       PDSourceList.GetEnumValues<PDSource>();
@@ -206,28 +217,28 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       if ((bool)AllSelected) {
         AllSelected = false;
       }
-      var column = (FilterableColumns)SelectedColumn;
+      var column = (FilterableComponentColumns)SelectedColumn;
       Func<ComponentInfo, bool> filter;
 
       Mouse.OverrideCursor = Cursors.Wait;
 
-      if (((FilterableColumns)SelectedColumn == FilterableColumns.ComponentType && SelectedComponentType > -1)
-        || ((FilterableColumns)SelectedColumn == FilterableColumns.PDSource && SelectedPDSource > -1)
-        || ((FilterableColumns)SelectedColumn == FilterableColumns.PDStatus && SelectedPDStatus > -1)) {
+      if (((FilterableComponentColumns)SelectedColumn == FilterableComponentColumns.ComponentType && SelectedComponentType > -1)
+        || ((FilterableComponentColumns)SelectedColumn == FilterableComponentColumns.PDSource && SelectedPDSource > -1)
+        || ((FilterableComponentColumns)SelectedColumn == FilterableComponentColumns.PDStatus && SelectedPDStatus > -1)) {
 
         LastSearchLength = 0;
         SearchText = string.Empty;
 
         switch (column) {
-          case FilterableColumns.PDStatus:
+          case FilterableComponentColumns.PDStatus:
             filter = c => c.PDStatus == SelectedPDStatus;
             SelectedPDSource = SelectedComponentType = -1;
             break;
-          case FilterableColumns.ComponentType:
+          case FilterableComponentColumns.ComponentType:
             filter = c => c.ComponentType == SelectedComponentType;
             SelectedPDSource = SelectedPDStatus = -1;
             break;
-          case FilterableColumns.PDSource:
+          case FilterableComponentColumns.PDSource:
             filter = c => c.PDSource == SelectedPDSource;
             SelectedPDStatus = SelectedComponentType = -1;
             break;
@@ -245,13 +256,13 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
 
         if (!string.IsNullOrEmpty(SearchText) || Components.Count() != UnFilteredList.Count()) {
           switch (column) {
-            case FilterableColumns.ComponentId:
+            case FilterableComponentColumns.ComponentId:
               filter = c => c.ComponentId.ToString().Contains(SearchText);
               break;
-            case FilterableColumns.PDNumber:
+            case FilterableComponentColumns.PDNumber:
               filter = c => c.PDNumber.Contains(SearchText);
               break;
-            case FilterableColumns.SourceComponentId:
+            case FilterableComponentColumns.SourceComponentId:
               filter = c => c.SourceComponentId.ToString().Contains(SearchText);
               break;
             default:
@@ -317,17 +328,6 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       }
 
       Components = obj;
-    }
-
-    private bool? _allSelected;
-    public bool? AllSelected {
-      get => _allSelected;
-      set {
-        SetProperty(ref _allSelected, value);
-
-        // Set all other CheckBoxes
-        AllSelectedChanged();
-      }
     }
 
     private void RecheckAllSelected() {

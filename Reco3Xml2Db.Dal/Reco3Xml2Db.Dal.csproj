@@ -48,6 +48,7 @@
     <Compile Include="DalFactory.cs" />
     <Compile Include="Dto\SettingsDto.cs" />
     <Compile Include="Dto\ComponentDto.cs" />
+    <Compile Include="Dto\VehicleDto.cs" />
     <Compile Include="Enums\DalManagerTypes.cs" />
     <Compile Include="Exceptions\ConcurrencyException.cs" />
     <Compile Include="Exceptions\DataNotFoundException.cs" />
@@ -55,6 +56,7 @@
     <Compile Include="ISettingsDal.cs" />
     <Compile Include="IComponentDal.cs" />
     <Compile Include="IDalManager.cs" />
+    <Compile Include="IVehicleDal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

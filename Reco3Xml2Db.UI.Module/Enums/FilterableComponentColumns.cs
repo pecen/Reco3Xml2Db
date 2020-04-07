@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Reco3Xml2Db.UI.Module.Enums {
-  public enum FilterableColumns {
+  public enum FilterableComponentColumns {
     ComponentId,
     PDNumber,
     PDStatus,
