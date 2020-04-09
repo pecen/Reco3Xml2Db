@@ -84,14 +84,7 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
     private string _fileName;
     public string FileName {
       get { return _fileName; }
-      set {
-        SetProperty(ref _fileName, value);
-        //SetProperty(ref _fileName, Path.IsPathRooted(value)
-        //  ? value
-        //  : string.Empty);
-        ////: string.IsNullOrEmpty(FilePath) 
-        ////  ? value
-        ////  : FilePath + "\\" + value);
+      set {SetProperty(ref _fileName, value);
       }
     }
 
