@@ -92,6 +92,9 @@
     <Compile Include="ComponentList.cs" />
     <Compile Include="ComponentExistsCmd.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RoadmapGroupEdit.cs" />
+    <Compile Include="RoadmapGroupInfo.cs" />
+    <Compile Include="RoadmapGroupList.cs" />
     <Compile Include="SettingsEdit.cs" />
     <Compile Include="VehicleEdit.cs" />
     <Compile Include="VehicleInfo.cs" />

@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{0728DEB0-011D-44AE-8730-6858DF910C40}</ProjectGuid>
+    <ProjectGuid>{0C7E2627-ADC3-4B18-9082-37DB1EB9C1C3}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Reco3Xml2Db.Dal</RootNamespace>
-    <AssemblyName>Reco3Xml2Db.Dal</AssemblyName>
+    <RootNamespace>Reco3Xml2Db.DalAWS</RootNamespace>
+    <AssemblyName>Reco3Xml2Db.DalAWS</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -21,7 +21,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -30,37 +29,27 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Csla">
-      <HintPath>..\..\lib\Csla.5.0.1\lib\net461\Csla.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DalFactory.cs" />
-    <Compile Include="Dto\RoadmapGroupDto.cs" />
-    <Compile Include="Dto\SettingsDto.cs" />
-    <Compile Include="Dto\ComponentDto.cs" />
-    <Compile Include="Dto\VehicleDto.cs" />
-    <Compile Include="Enums\DalManagerTypes.cs" />
-    <Compile Include="Exceptions\ConcurrencyException.cs" />
-    <Compile Include="Exceptions\DataNotFoundException.cs" />
-    <Compile Include="Exceptions\UpdateFailureException.cs" />
-    <Compile Include="IRoadmapGroupDal.cs" />
-    <Compile Include="ISettingsDal.cs" />
-    <Compile Include="IComponentDal.cs" />
-    <Compile Include="IDalManager.cs" />
-    <Compile Include="IVehicleDal.cs" />
+    <Compile Include="ComponentDal.cs" />
+    <Compile Include="DalManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Reco3Xml2Db.Dal\Reco3Xml2Db.Dal.csproj">
+      <Project>{0728DEB0-011D-44AE-8730-6858DF910C40}</Project>
+      <Name>Reco3Xml2Db.Dal</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -57,6 +57,7 @@
     <Compile Include="Commands\GetFilePathCommand.cs" />
     <Compile Include="Commands\GetFilenameCommand.cs" />
     <Compile Include="Commands\GetFilteredComponentsCommand.cs" />
+    <Compile Include="Commands\GetRoadmapGroupsCommand.cs" />
     <Compile Include="Commands\GetSettingsCommand.cs" />
     <Compile Include="Commands\GetVehiclesCommand.cs" />
     <Compile Include="Commands\ImportComponentCommand.cs" />
@@ -76,19 +77,23 @@
     <Compile Include="Converters\RemoveFilenameFromPathConverter.cs" />
     <Compile Include="Converters\RemovePathFromFilenameConverter.cs" />
     <Compile Include="Converters\SelectedComponentFilteringToVisibilityConverter.cs" />
+    <Compile Include="Converters\SelectedRoadmapGroupFilteringToVisibilityConverter.cs" />
     <Compile Include="Converters\SelectedVehicleFilteringToVisibilityConverter.cs" />
     <Compile Include="Converters\StatusIntToEnumValueConverter.cs" />
     <Compile Include="Enums\AuthMethod.cs" />
     <Compile Include="Enums\ButtonName.cs" />
+    <Compile Include="Enums\ConvertToVehicleStatus.cs" />
     <Compile Include="Enums\FilterableComponentColumns.cs" />
     <Compile Include="Enums\ComponentType.cs" />
     <Compile Include="Enums\ConnectionString.cs" />
     <Compile Include="Enums\ConnectionStringItems.cs" />
+    <Compile Include="Enums\FilterableRoadmapGroupColumns.cs" />
     <Compile Include="Enums\FilterableVehicleColumns.cs" />
     <Compile Include="Enums\PDSource.cs" />
     <Compile Include="Enums\PDStatus.cs" />
     <Compile Include="Enums\TabNames.cs" />
     <Compile Include="Enums\ToolTipText.cs" />
+    <Compile Include="Enums\ValidationStatus.cs" />
     <Compile Include="Enums\VehicleMode.cs" />
     <Compile Include="Enums\WindowRegions.cs" />
     <Compile Include="Helpers\PwdHelper.cs" />
@@ -111,6 +116,7 @@
     <Compile Include="Services\IPathProvider.cs" />
     <Compile Include="ViewModels\ComponentsGridViewModel.cs" />
     <Compile Include="ViewModels\ImportXmlViewModel.cs" />
+    <Compile Include="ViewModels\RoadmapGroupsGridViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\VehiclesGridViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
@@ -119,6 +125,9 @@
     </Compile>
     <Compile Include="Views\ImportXml.xaml.cs">
       <DependentUpon>ImportXml.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\RoadmapGroupsGrid.xaml.cs">
+      <DependentUpon>RoadmapGroupsGrid.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
@@ -168,6 +177,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ImportXml.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\RoadmapGroupsGrid.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

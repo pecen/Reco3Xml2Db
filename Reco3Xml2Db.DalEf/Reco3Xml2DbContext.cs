@@ -17,8 +17,8 @@ namespace Reco3Xml2Db.DalEf {
     }
 
     public DbSet<Reco3Component> Components { get; set; }
-    public DbSet<Vehicle> Vehicles
-      { get; set; }
+    public DbSet<Vehicle> Vehicles { get; set; }
+    public DbSet<RoadmapGroups> RoadmapGroups { get; set; }
 
     protected override void OnModelCreating(DbModelBuilder modelBuilder) {
       // Regarding the row below: The modelBuilder.Conventions.Remove statement in the OnModelCreating 

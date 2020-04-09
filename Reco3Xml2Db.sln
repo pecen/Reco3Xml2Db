@@ -29,6 +29,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resources", "Resources", "{
 		..\assets\water-1330252_1920.jpg = ..\assets\water-1330252_1920.jpg
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reco3Xml2Db.DalAWS", "Reco3Xml2Db.DalAWS\Reco3Xml2Db.DalAWS.csproj", "{0C7E2627-ADC3-4B18-9082-37DB1EB9C1C3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,6 +69,10 @@ Global
 		{0E27B9DC-DB64-4FDB-A9B1-FBEB4FCF7395}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E27B9DC-DB64-4FDB-A9B1-FBEB4FCF7395}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0E27B9DC-DB64-4FDB-A9B1-FBEB4FCF7395}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C7E2627-ADC3-4B18-9082-37DB1EB9C1C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C7E2627-ADC3-4B18-9082-37DB1EB9C1C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C7E2627-ADC3-4B18-9082-37DB1EB9C1C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C7E2627-ADC3-4B18-9082-37DB1EB9C1C3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

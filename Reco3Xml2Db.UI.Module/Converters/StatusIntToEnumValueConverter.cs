@@ -35,6 +35,14 @@ namespace Reco3Xml2Db.UI.Module.Converters {
             description = ((VehicleMode)value).GetDescription();
             enumValue = string.IsNullOrEmpty(description) ? ((VehicleMode)value).ToString() : description;
             break;
+          case "ValidationStatus":
+            description = ((ValidationStatus)value).GetDescription();
+            enumValue = string.IsNullOrEmpty(description) ? ((ValidationStatus)value).ToString() : description;
+            break;
+          case "ConvertToVehicleStatus":
+            description = ((ConvertToVehicleStatus)value).GetDescription();
+            enumValue = string.IsNullOrEmpty(description) ? ((ConvertToVehicleStatus)value).ToString() : description;
+            break;
         }
       }
 
