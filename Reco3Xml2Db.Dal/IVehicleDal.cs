@@ -10,5 +10,7 @@ namespace Reco3Xml2Db.Dal {
     List<VehicleDto> Fetch();
     VehicleDto Fetch(int vehicleId);
     VehicleDto Fetch(string vin);
+
+    void Delete(int vehicleId);
   }
 }

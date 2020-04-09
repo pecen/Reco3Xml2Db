@@ -8,6 +8,8 @@ namespace Reco3Xml2Db.UI.Module.Enums {
     ComponentsGrid,
     [Description("Vehicles")]
     VehiclesGrid,
+    [Description("Roadmap Groups")]
+    RoadmapGroupd,
     Settings
   }
 }

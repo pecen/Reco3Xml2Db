@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Windows;
 
 namespace Reco3Xml2Db.UI.Module.ViewModels {
   public class VehiclesGridViewModel : ViewModelBase {
@@ -128,7 +129,25 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
     }
 
     private void Execute() {
-      throw new NotImplementedException();
+      var count = Vehicles.Where(c => c.IsChecked).Count();
+
+      if (MessageBox.Show($"Are you sure you want to delete {(count > 1 ? "these vehicles" : "this vehicle")}?",
+        "Delete Vehicle?",
+        MessageBoxButton.YesNo,
+        MessageBoxImage.Warning) == MessageBoxResult.Yes) {
+
+        foreach (var item in Vehicles) {
+          if (item.IsChecked) {
+            VehicleEdit.DeleteVehicleAsync(item.VehicleId);
+          }
+        }
+
+        _eventAggregator
+          .GetEvent<GetVehiclesCommand>()
+          .Publish(VehicleList.GetVehicleList());
+
+        ClearFields();
+      }
     }
 
     private void RecheckAllSelected() {
@@ -184,5 +203,11 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
         _allSelectedChanging = false;
       }
     }
+    private void ClearFields() {
+      AllSelected = false;
+      SearchText = string.Empty;
+      SelectedVehicleMode = -1;
+    }
+
   }
 }

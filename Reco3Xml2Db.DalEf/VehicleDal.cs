@@ -32,5 +32,17 @@ namespace Reco3Xml2Db.DalEf {
     public VehicleDto Fetch(string vin) {
       throw new NotImplementedException();
     }
+
+    public void Delete(int vehicleId) {
+      using (var ctx = DbContextManager<Reco3Xml2DbContext>.GetManager(_dbName)) {
+        var data = (from r in ctx.DbContext.Vehicles
+                    where r.VehicleId == vehicleId
+                    select r).FirstOrDefault();
+        if (data != null) {
+          ctx.DbContext.Vehicles.Remove(data);
+          ctx.DbContext.SaveChanges();
+        }
+      }
+    }
   }
 }
