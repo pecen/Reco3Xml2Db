@@ -152,7 +152,7 @@ namespace Reco3Xml2Db.Library {
       Description = item.Description;
       PDStatus = item.PDStatus;
       ComponentType = item.ComponentType;
-      Xml = item.Xml.UnformatXml(); 
+      Xml = item.Xml.UnformatXml();
       PDSource = item.PDSource;
       SourceComponentId = item.SourceComponentId;
     }
@@ -165,7 +165,7 @@ namespace Reco3Xml2Db.Library {
       Description = item.Description;
       PDStatus = item.PDStatus;
       ComponentType = item.ComponentType;
-      Xml = item.Xml.UnformatXml(); 
+      Xml = item.Xml.UnformatXml();
       PDSource = item.PDSource;
       SourceComponentId = item.SourceComponentId;
     }

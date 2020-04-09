@@ -92,6 +92,7 @@
             x:Name="componentGrid"
             Grid.Row="1"
             AutoGenerateColumns="False"
+            CanUserAddRows="False"
             HorizontalScrollBarVisibility="Auto"
             ItemsSource="{Binding Vehicles, UpdateSourceTrigger=PropertyChanged}">
 

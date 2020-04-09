@@ -36,8 +36,6 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
     public DelegateCommand GetFilenameCommand { get; set; }
     public DelegateCommand ImportComponentCommand { get; set; }
     public DelegateCommand UpdateComponentCommand { get; set; }
-    //public ComponentEdit Component { get; set; }
-    //public ComponentList Components { get; set; }
     public DelegateCommand PublishedCommand { get; set; }
 
     private Stream XmlStream { get; set; }

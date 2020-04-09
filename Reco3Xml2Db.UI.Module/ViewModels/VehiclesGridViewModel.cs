@@ -114,7 +114,7 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
 
     private void VehicleOnPropertyChanged(object sender, PropertyChangedEventArgs args) {
       // Only re-check if the IsChecked property changed
-      if (args.PropertyName == nameof(ComponentInfo.IsChecked)) {
+      if (args.PropertyName == nameof(VehicleInfo.IsChecked)) {
         RecheckAllSelected();
       }
     }
@@ -168,14 +168,14 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
 
         // this can of course be simplified
         if (AllSelected == true) {
-          foreach (var component in Vehicles) {
-            component.IsChecked = true;
+          foreach (var vehicle in Vehicles) {
+            vehicle.IsChecked = true;
           }
           HasCheckedItem = true;
         }
         else if (AllSelected == false) {
-          foreach (var component in Vehicles) {
-            component.IsChecked = false;
+          foreach (var vehicle in Vehicles) {
+            vehicle.IsChecked = false;
           }
           HasCheckedItem = false;
         }

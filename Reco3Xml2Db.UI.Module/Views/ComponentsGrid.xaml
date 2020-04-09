@@ -125,8 +125,8 @@
             x:Name="componentGrid"
             Grid.Row="1"
             AutoGenerateColumns="False"
-            HorizontalScrollBarVisibility="Auto"
             CanUserAddRows="False"
+            HorizontalScrollBarVisibility="Auto"
             ItemsSource="{Binding Components, UpdateSourceTrigger=PropertyChanged}">
 
             <DataGrid.Columns>

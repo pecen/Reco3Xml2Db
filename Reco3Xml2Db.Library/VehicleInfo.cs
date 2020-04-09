@@ -25,12 +25,6 @@ namespace Reco3Xml2Db.Library {
 
     #region Properties
 
-    //public static readonly PropertyInfo<bool> IsCheckedProperty = RegisterProperty<bool>(c => c.IsChecked);
-    //public bool IsChecked {
-    //  get { return GetProperty(IsCheckedProperty); }
-    //  set { LoadProperty(IsCheckedProperty, value); }
-    //}
-
     public static readonly PropertyInfo<int> VehicleIdProperty = RegisterProperty<int>(c => c.VehicleId);
     public int VehicleId {
       get { return GetProperty(VehicleIdProperty); }
