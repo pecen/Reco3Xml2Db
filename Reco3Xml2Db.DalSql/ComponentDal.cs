@@ -27,11 +27,77 @@ namespace Reco3Xml2Db.DalSql {
     }
 
     public List<ComponentDto> Fetch() {
-      throw new NotImplementedException();
+      using (var ctx = ConnectionManager<SqlConnection>.GetManager(_dbName)) {
+        using (var cm = ctx.Connection.CreateCommand()) {
+          cm.CommandType = CommandType.Text;
+          cm.CommandText = "SELECT * FROM Reco3Component";
+
+          using (var dr = cm.ExecuteReader()) {
+            if (dr.HasRows) {
+              var result = new List<ComponentDto>();
+              while (dr.Read()) {
+                var component = new ComponentDto {
+                  ComponentId = dr.GetInt32(0),
+                  PDNumber = dr.GetString(1),
+                  DownloadedTimestamp = dr.GetDateTime(2),
+                  Description = dr.GetString(3),
+                  PDStatus = dr.GetInt32(4),
+                  ComponentType = dr.GetInt32(5),
+                  Xml = dr.GetString(6),
+                  PDSource = dr.GetInt32(7)
+                };
+
+                if (!dr.IsDBNull(8)) {
+                  component.SourceComponentId = dr.GetInt32(8);
+                }
+
+                result.Add(component);
+              }
+
+              return result;
+            }
+            else {
+              return null;
+            }
+          }
+        }
+      }
     }
 
     public ComponentDto Fetch(int componentId) {
-      throw new NotImplementedException();
+      using (var ctx = ConnectionManager<SqlConnection>.GetManager(_dbName)) {
+        using (var cm = ctx.Connection.CreateCommand()) {
+          cm.CommandType = CommandType.Text;
+          cm.CommandText = "SELECT * FROM Reco3Component WHERE PDNumber = @componentId";
+          cm.Parameters.AddWithValue("@componentId", componentId);
+
+          using (var dr = cm.ExecuteReader()) {
+            if (dr.HasRows) {
+              dr.Read();
+
+              var result = new ComponentDto {
+                ComponentId = dr.GetInt32(0),
+                PDNumber = dr.GetString(1),
+                DownloadedTimestamp = dr.GetDateTime(2),
+                Description = dr.GetString(3),
+                PDStatus = dr.GetInt32(4),
+                ComponentType = dr.GetInt32(5),
+                Xml = dr.GetString(6),
+                PDSource = dr.GetInt32(7)
+              };
+
+              if (!dr.IsDBNull(8)) {
+                result.SourceComponentId = dr.GetInt32(8);
+              }
+
+              return result;
+            }
+            else {
+              return null;
+            }
+          }
+        }
+      }
     }
 
     // Fetch the first record with the given PDNumber
