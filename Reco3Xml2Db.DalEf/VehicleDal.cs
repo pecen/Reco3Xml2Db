@@ -13,7 +13,7 @@ namespace Reco3Xml2Db.DalEf {
 
     public List<VehicleDto> Fetch() {
       using (var ctx = DbContextManager<Reco3Xml2DbContext>.GetManager(_dbName)) {
-        var result = from r in ctx.DbContext.Vehicles
+        var result = from r in ctx.DbContext.Vehicles.Take(1000)
                      select new VehicleDto {
                        VehicleId = r.VehicleId,
                        VIN = r.VIN,

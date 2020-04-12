@@ -1,5 +1,6 @@
 ﻿using Csla;
 using Reco3Xml2Db.Dal.Dto;
+using Reco3Xml2Db.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -65,6 +66,15 @@ namespace Reco3Xml2Db.Library {
       VehicleId = item.VehicleId;
       VIN = item.VIN;
       Xml = item.Xml;
+      VehicleMode = item.VehicleMode;
+      GroupId = item.GroupId;
+    }
+
+    [FetchChild]
+    private void Child_Fetch(VehicleInfo item) {
+      VehicleId = item.VehicleId;
+      VIN = item.VIN;
+      Xml = item.Xml.UnformatXml();
       VehicleMode = item.VehicleMode;
       GroupId = item.GroupId;
     }

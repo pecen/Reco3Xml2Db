@@ -11,6 +11,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
+using System.Windows.Input;
 
 namespace Reco3Xml2Db.UI.Module.ViewModels {
   public class VehiclesGridViewModel : ViewModelBase {
@@ -22,6 +23,10 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
 
     public DelegateCommand DeleteVehiclesCommand { get; set; }
     public DelegateCommand SearchCommand { get; set; }
+    //public DelegateCommand UpdateVehicleSetCommand { get; set; }
+
+    private int LastSearchLength { get; set; }
+    public VehicleList UnFilteredList { get; set; }
 
     private bool? _allSelected;
     public bool? AllSelected {
@@ -99,17 +104,39 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       DeleteVehiclesCommand = new DelegateCommand(Execute, CanExecute)
         .ObservesProperty(() => HasCheckedItem);
       SearchCommand = new DelegateCommand(GetFilteredVehicleList);
+      //UpdateVehicleSetCommand = new DelegateCommand(PublishVehicleId);
 
       _eventAggregator.GetEvent<GetVehiclesCommand>().Subscribe(VehicleListReceived);
       _eventAggregator.GetEvent<GetVehiclesCommand>().Publish(VehicleList.GetVehicleList());
+      _eventAggregator.GetEvent<GetFilteredVehiclesCommand>().Subscribe(FilteredVehicleListReceived);
     }
+
+    private void FilteredVehicleListReceived(VehicleList obj) {
+      foreach (var vehicle in obj) {
+        vehicle.PropertyChanged += VehicleOnPropertyChanged;
+      }
+
+      Vehicles = obj;
+    }
+
+    //private void PublishVehicleId() {
+    //  int id = 0;
+
+    //  if (Vehicles.Count() == 1) {
+    //    id = Vehicles[0].VehicleId;
+    //  }
+
+    //  _eventAggregator
+    //    .GetEvent<UpdateVehicleSetCommand>()
+    //    .Publish(id);
+    //}
 
     private void VehicleListReceived(VehicleList obj) {
       foreach (var vehicle in obj) {
         vehicle.PropertyChanged += VehicleOnPropertyChanged;
       }
 
-      Vehicles = obj;
+      UnFilteredList = Vehicles = obj;
       RaisePropertyChanged(nameof(Vehicles));
     }
 
@@ -120,8 +147,76 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       }
     }
 
-    private void GetFilteredVehicleList() {
-      throw new NotImplementedException();
+    private async void GetFilteredVehicleList() {
+      if (SelectedVehicleMode == -1
+        && string.IsNullOrEmpty(SearchText)
+        && LastSearchLength == 0) {
+        return;
+      }
+
+      if ((bool)AllSelected) {
+        AllSelected = false;
+      }
+
+      var column = (FilterableVehicleColumns)SelectedColumn;
+      Func<VehicleInfo, bool> filter;
+
+      Mouse.OverrideCursor = Cursors.Wait;
+
+      if ((FilterableVehicleColumns)SelectedColumn == FilterableVehicleColumns.VehicleMode && SelectedVehicleMode > -1) {
+        LastSearchLength = 0;
+        SearchText = string.Empty;
+
+        switch (column) {
+          case FilterableVehicleColumns.VehicleMode:
+            filter = v => v.VehicleMode == SelectedVehicleMode;
+            break;
+          default:
+            filter = c => c.VIN.Contains(SearchText);
+            break;
+        }
+
+        _eventAggregator
+          .GetEvent<GetFilteredVehiclesCommand>()
+          .Publish(await VehicleList.GetFilteredListAsync(UnFilteredList.Where(filter)));
+      }
+      else {
+        SelectedVehicleMode = -1;
+
+        if (!string.IsNullOrEmpty(SearchText) || Vehicles.Count() != UnFilteredList.Count()) {
+          switch (column) {
+            case FilterableVehicleColumns.VehicleId:
+              filter = v => v.VehicleId.ToString().Contains(SearchText);
+              break;
+            case FilterableVehicleColumns.VIN:
+              filter = v => v.VIN.Contains(SearchText);
+              break;
+            case FilterableVehicleColumns.GroupId:
+              filter = v => v.GroupId.ToString().Contains(SearchText);
+              break;
+            default:
+              filter = c => c.VIN.Contains(SearchText);
+              break;
+          }
+
+          if (LastSearchLength < SearchText.Length) {
+            _eventAggregator
+              .GetEvent<GetFilteredVehiclesCommand>()
+              .Publish(await VehicleList.GetFilteredListAsync(Vehicles.Where(filter)));
+          }
+          else {
+            _eventAggregator
+              .GetEvent<GetFilteredVehiclesCommand>()
+              .Publish(await VehicleList.GetFilteredListAsync(UnFilteredList.Where(filter)));
+          }
+
+          LastSearchLength = SearchText.Length;
+        }
+
+        //UpdateVehicleSetCommand.Execute();
+      }
+
+      Mouse.OverrideCursor = Cursors.Arrow;
     }
 
     private bool CanExecute() {

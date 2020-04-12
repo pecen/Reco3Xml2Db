@@ -90,6 +90,18 @@ namespace Reco3Xml2Db.Library {
       ConvertToVehicleInputStatus = item.ConvertToVehicleInputStatus;
     }
 
+    [FetchChild]
+    private void Child_Fetch(RoadmapGroupInfo item) {
+      RoadmapGroupId = item.RoadmapGroupId;
+      OwnerSss = item.OwnerSss;
+      RoadmapName = item.RoadmapName;
+      Protected = item.Protected;
+      CreationTime = item.CreationTime;
+      //Xml = item.Xml;
+      ValidationStatus = item.ValidationStatus;
+      ConvertToVehicleInputStatus = item.ConvertToVehicleInputStatus;
+    }
+
     #endregion
   }
 }
