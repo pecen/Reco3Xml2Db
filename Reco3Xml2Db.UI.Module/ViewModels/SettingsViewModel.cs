@@ -31,6 +31,7 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
     public string PasswordToolTip { get; } = "Enter your password";
 
     public DelegateCommand GetDbCommand { get; set; }
+    public DelegateCommand GetFilePathCommand { get; set; }
     public DelegateCommand SaveSettingsCommand { get; set; }
 
     public bool HasServerValue {

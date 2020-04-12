@@ -15,7 +15,6 @@ using System.Threading.Tasks;
 namespace Reco3Xml2Db.UI.Module.Services {
   public class PathProvider : IPathProvider {
     private IEventAggregator _eventAggregator;
-    public DelegateCommand GetFilenameCommand { get; set; }
 
     public PathProvider(IEventAggregator eventAggregator) {
       _eventAggregator = eventAggregator;

@@ -214,7 +214,7 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
         return;
       }
 
-      if ((bool)AllSelected) {
+      if (AllSelected != null && (bool)AllSelected) {
         AllSelected = false;
       }
       var column = (FilterableComponentColumns)SelectedColumn;

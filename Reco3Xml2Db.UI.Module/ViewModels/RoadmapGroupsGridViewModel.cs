@@ -19,7 +19,8 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
 
     #region Properties
 
-    public string DeleteInfo { get; } = "Delete the selected Roadmap Groups in the grid";
+    public string DeleteInfo { get; } = "Delete the selected Roadmap Group(s) in the grid";
+    public string SearchTextInfo { get; } = "Filter out which Roadmap Group(s) you want to see";
 
     public DelegateCommand DeleteRoadmapGroupsCommand { get; set; }
     public DelegateCommand SearchCommand { get; set; }
@@ -166,7 +167,7 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
         return;
       }
 
-      if ((bool)AllSelected) {
+      if (AllSelected != null && (bool)AllSelected) {
         AllSelected = false;
       }
 

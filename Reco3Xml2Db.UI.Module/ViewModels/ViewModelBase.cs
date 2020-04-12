@@ -7,8 +7,6 @@ using System.Collections.ObjectModel;
 
 namespace Reco3Xml2Db.UI.Module.ViewModels {
   public class ViewModelBase : BindableBase {
-    public DelegateCommand GetFilePathCommand { get; set; }
-
     string _title;
     public string Title {
       get { return _title; }

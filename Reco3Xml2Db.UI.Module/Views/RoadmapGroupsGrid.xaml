@@ -63,7 +63,8 @@
                 Margin="0,2,0,2"
                 VerticalContentAlignment="Center"
                 Background="White"
-                Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}">
+                Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                ToolTip="{Binding SearchTextInfo}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="TextChanged">
                         <i:InvokeCommandAction Command="{Binding SearchCommand}" />

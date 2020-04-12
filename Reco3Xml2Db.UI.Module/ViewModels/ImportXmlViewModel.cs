@@ -34,6 +34,7 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       "as opposed to updating an existing component by adding this file, which is not present in the database, and referring to a source component";
 
     public DelegateCommand GetFilenameCommand { get; set; }
+    public DelegateCommand GetFilePathCommand { get; set; }
     public DelegateCommand ImportComponentCommand { get; set; }
     public DelegateCommand UpdateComponentCommand { get; set; }
     public DelegateCommand PublishedCommand { get; set; }
