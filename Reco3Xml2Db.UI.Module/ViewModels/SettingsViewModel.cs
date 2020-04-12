@@ -162,19 +162,6 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       => new PathProvider(_eventAggregator)
       .FolderPathService(XmlFilePath);
 
-    //private void GetDbName() {
-    //  try {
-    //    _eventAggregator
-    //      .GetEvent<GetDbCommand>()
-    //      .Publish(_eventAggregator
-    //        .GetEvent<GetDbCommand>()
-    //        .GetDbDialog());
-    //  }
-    //  catch (Exception ex) {
-    //    DbName = ex.Message;
-    //  }
-    //}
-
     private void GetDbName()
       => new PathProvider(_eventAggregator)
       .DbPathService();

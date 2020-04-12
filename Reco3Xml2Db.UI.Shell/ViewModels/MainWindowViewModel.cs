@@ -13,7 +13,8 @@ namespace Reco3Xml2Db.UI.Shell.ViewModels {
     public string TabRegion { get; } = WindowRegions.TabRegion.ToString();
 
     public MainWindowViewModel(IRegionManager regionManager, IUnityContainer container) {
-      Title = "Reco3 Xml to Db";
+      //Title = "Reco3 Xml to Db";
+      Title = "Reco Improvement Manager";
 
       _regionManager = regionManager;
       _container = container;
