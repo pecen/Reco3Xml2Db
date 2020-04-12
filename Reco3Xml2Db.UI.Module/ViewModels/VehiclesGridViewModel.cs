@@ -23,7 +23,6 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
 
     public DelegateCommand DeleteVehiclesCommand { get; set; }
     public DelegateCommand SearchCommand { get; set; }
-    //public DelegateCommand UpdateVehicleSetCommand { get; set; }
 
     private int LastSearchLength { get; set; }
     public VehicleList UnFilteredList { get; set; }
@@ -94,7 +93,7 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       Columns.GetEnumValues<FilterableVehicleColumns>();
       VehicleModeList.GetEnumValues<VehicleMode>();
 
-      SelectedColumn = 0;
+      SelectedColumn = 1;
       SelectedVehicleMode = -1;
       SearchText = string.Empty;
       HasCheckedItem = false;
@@ -104,7 +103,6 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       DeleteVehiclesCommand = new DelegateCommand(Execute, CanExecute)
         .ObservesProperty(() => HasCheckedItem);
       SearchCommand = new DelegateCommand(GetFilteredVehicleList);
-      //UpdateVehicleSetCommand = new DelegateCommand(PublishVehicleId);
 
       _eventAggregator.GetEvent<GetVehiclesCommand>().Subscribe(VehicleListReceived);
       _eventAggregator.GetEvent<GetVehiclesCommand>().Publish(VehicleList.GetVehicleList());
@@ -118,18 +116,6 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
 
       Vehicles = obj;
     }
-
-    //private void PublishVehicleId() {
-    //  int id = 0;
-
-    //  if (Vehicles.Count() == 1) {
-    //    id = Vehicles[0].VehicleId;
-    //  }
-
-    //  _eventAggregator
-    //    .GetEvent<UpdateVehicleSetCommand>()
-    //    .Publish(id);
-    //}
 
     private void VehicleListReceived(VehicleList obj) {
       foreach (var vehicle in obj) {
@@ -172,7 +158,7 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
             filter = v => v.VehicleMode == SelectedVehicleMode;
             break;
           default:
-            filter = c => c.VIN.Contains(SearchText);
+            filter = v => v.VIN.Contains(SearchText);
             break;
         }
 
@@ -195,7 +181,7 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
               filter = v => v.GroupId.ToString().Contains(SearchText);
               break;
             default:
-              filter = c => c.VIN.Contains(SearchText);
+              filter = v => v.VIN.Contains(SearchText);
               break;
           }
 
@@ -212,8 +198,6 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
 
           LastSearchLength = SearchText.Length;
         }
-
-        //UpdateVehicleSetCommand.Execute();
       }
 
       Mouse.OverrideCursor = Cursors.Arrow;

@@ -119,10 +119,10 @@
                         </DataTemplate>
                     </DataGridCheckBoxColumn.HeaderTemplate>
                 </DataGridCheckBoxColumn>
-                <DataGridTextColumn Binding="{Binding RoadmapGroupId}" Header="Component Id" />
-                <DataGridTextColumn Binding="{Binding OwnerSss}" Header="PDNumber" />
-                <DataGridTextColumn Binding="{Binding RoadmapName}" Header="Downloaded" />
-                <DataGridTextColumn Binding="{Binding Protected}" Header="Description" />
+                <DataGridTextColumn Binding="{Binding RoadmapGroupId}" Header="Roadmap Group Id" />
+                <DataGridTextColumn Binding="{Binding OwnerSss}" Header="Owner SSS" />
+                <DataGridTextColumn Binding="{Binding RoadmapName}" Header="Roadmap Name" />
+                <DataGridTextColumn Binding="{Binding Protected}" Header="Protected" />
                 <DataGridTextColumn Binding="{Binding CreationTime}" Header="Creation Time" />
                 <DataGridTextColumn Binding="{Binding ValidationStatus, Converter={StaticResource StatusIntToEnumValueConverter}, ConverterParameter={x:Type enums:ValidationStatus}}" Header="Validation Status" />
                 <DataGridTextColumn Binding="{Binding ConvertToVehicleInputStatus, Converter={StaticResource StatusIntToEnumValueConverter}, ConverterParameter={x:Type enums:ConvertToVehicleStatus}}" Header="Convert to Vehicle Status" />

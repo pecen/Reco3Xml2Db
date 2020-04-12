@@ -57,6 +57,7 @@
     <Compile Include="Commands\GetFilePathCommand.cs" />
     <Compile Include="Commands\GetFilenameCommand.cs" />
     <Compile Include="Commands\GetFilteredComponentsCommand.cs" />
+    <Compile Include="Commands\GetFilteredRoadmapGroupsCommand.cs" />
     <Compile Include="Commands\GetFilteredVehiclesCommand.cs" />
     <Compile Include="Commands\GetRoadmapGroupsCommand.cs" />
     <Compile Include="Commands\GetSettingsCommand.cs" />
@@ -67,7 +68,6 @@
     <Compile Include="Commands\UpdateComponentSetCommand.cs" />
     <Compile Include="Commands\UpdateFilePathCommand.cs" />
     <Compile Include="Commands\UpdateComponentCommand.cs" />
-    <Compile Include="Commands\UpdateVehicleSetCommand.cs" />
     <Compile Include="Converters\BoolToButtonTextConverter.cs" />
     <Compile Include="Converters\BoolToButtonToolTipTextConverter.cs" />
     <Compile Include="Converters\BoolToDescriptionHeightConverter.cs" />

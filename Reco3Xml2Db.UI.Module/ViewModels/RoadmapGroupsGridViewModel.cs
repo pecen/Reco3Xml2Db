@@ -11,6 +11,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
+using System.Windows.Input;
 
 namespace Reco3Xml2Db.UI.Module.ViewModels {
   public class RoadmapGroupsGridViewModel : ViewModelBase {
@@ -22,6 +23,9 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
 
     public DelegateCommand DeleteRoadmapGroupsCommand { get; set; }
     public DelegateCommand SearchCommand { get; set; }
+
+    private int LastSearchLength { get; set; }
+    public RoadmapGroupList UnFilteredList { get; set; }
 
     private bool? _allSelected;
     public bool? AllSelected {
@@ -103,10 +107,13 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       ValidationStatusList.GetEnumValues<ValidationStatus>();
       ConvertToVehicleStatusList.GetEnumValues<ConvertToVehicleStatus>();
 
+      SelectedColumn = 0;
       SelectedValidationStatus = -1;
       SelectedConvertToVehicleStatus = -1;
       SearchText = string.Empty;
       HasCheckedItem = false;
+
+      _allSelected = false;
 
       DeleteRoadmapGroupsCommand = new DelegateCommand(Execute, CanExecute)
         .ObservesProperty(() => HasCheckedItem);
@@ -114,8 +121,15 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
 
       _eventAggregator.GetEvent<GetRoadmapGroupsCommand>().Subscribe(RoadmapGroupListReceived);
       _eventAggregator.GetEvent<GetRoadmapGroupsCommand>().Publish(RoadmapGroupList.GetRoadmapGroups());
+      _eventAggregator.GetEvent<GetFilteredRoadmapGroupsCommand>().Subscribe(FilteredVehicleListReceived);
+    }
 
-      _allSelected = false;
+    private void FilteredVehicleListReceived(RoadmapGroupList obj) {
+      foreach (var roadmapGroup in obj) {
+        roadmapGroup.PropertyChanged += RoadmapGroupOnPropertyChanged;
+      }
+
+      RoadmapGroups = obj;
     }
 
     private bool CanExecute() {
@@ -144,8 +158,78 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       }
     }
 
-      private void GetFilteredRoadmapGroupList() {
-      throw new NotImplementedException();
+    private async void GetFilteredRoadmapGroupList() {
+      if (SelectedConvertToVehicleStatus == -1
+        && SelectedValidationStatus == -1
+        && string.IsNullOrEmpty(SearchText)
+        && LastSearchLength == 0) {
+        return;
+      }
+
+      if ((bool)AllSelected) {
+        AllSelected = false;
+      }
+
+      var column = (FilterableRoadmapGroupColumns)SelectedColumn;
+      Func<RoadmapGroupInfo, bool> filter;
+
+      Mouse.OverrideCursor = Cursors.Wait;
+
+      if (((FilterableRoadmapGroupColumns)SelectedColumn == FilterableRoadmapGroupColumns.ConvertToVehicleStatus && SelectedConvertToVehicleStatus > -1)
+        || ((FilterableRoadmapGroupColumns)SelectedColumn == FilterableRoadmapGroupColumns.ValidationStatus && SelectedValidationStatus > -1)) {
+        LastSearchLength = 0;
+        SearchText = string.Empty;
+
+        switch (column) {
+          case FilterableRoadmapGroupColumns.ValidationStatus:
+            filter = r => r.ValidationStatus == SelectedValidationStatus;
+            SelectedConvertToVehicleStatus = -1;
+            break;
+          case FilterableRoadmapGroupColumns.ConvertToVehicleStatus:
+            filter = r => r.ConvertToVehicleInputStatus == SelectedConvertToVehicleStatus;
+            SelectedValidationStatus = -1;
+            break;
+          default:
+            filter = r => r.RoadmapName.Contains(SearchText);
+            break;
+        }
+
+        _eventAggregator
+          .GetEvent<GetFilteredRoadmapGroupsCommand>()
+          .Publish(await RoadmapGroupList.GetFilteredListAsync(UnFilteredList.Where(filter)));
+      }
+      else {
+        SelectedValidationStatus = SelectedConvertToVehicleStatus = -1;
+
+        if (!string.IsNullOrEmpty(SearchText) || RoadmapGroups.Count() != UnFilteredList.Count()) {
+          switch (column) {
+            case FilterableRoadmapGroupColumns.RoadmapGroupId:
+              filter = r => r.RoadmapGroupId.ToString().Contains(SearchText);
+              break;
+            case FilterableRoadmapGroupColumns.OwnerSss:
+              filter = r => r.OwnerSss.Contains(SearchText);
+              break;
+            default:
+              filter = r => r.RoadmapName.Contains(SearchText);
+              break;
+          }
+
+          if (LastSearchLength < SearchText.Length) {
+            _eventAggregator
+              .GetEvent<GetFilteredRoadmapGroupsCommand>()
+              .Publish(await RoadmapGroupList.GetFilteredListAsync(RoadmapGroups.Where(filter)));
+          }
+          else {
+            _eventAggregator
+              .GetEvent<GetFilteredRoadmapGroupsCommand>()
+              .Publish(await RoadmapGroupList.GetFilteredListAsync(UnFilteredList.Where(filter)));
+          }
+
+          LastSearchLength = SearchText.Length;
+        }
+      }
+
+      Mouse.OverrideCursor = Cursors.Arrow;
     }
 
     private void RoadmapGroupListReceived(RoadmapGroupList obj) {
@@ -153,7 +237,7 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
         roadmapGroup.PropertyChanged += RoadmapGroupOnPropertyChanged;
       }
 
-      RoadmapGroups = obj;
+      UnFilteredList = RoadmapGroups = obj;
       RaisePropertyChanged(nameof(RoadmapGroups));
     }
 

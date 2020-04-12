@@ -12,7 +12,7 @@
     <Window.Resources>
         <Style TargetType="TabItem">
             <Setter Property="Header" Value="{Binding DataContext.Title}" />
-            <Setter Property="Width" Value="85" />
+            <Setter Property="Width" Value="100" />
         </Style>
         <Style TargetType="ToolTip">
             <Setter Property="Background" Value="LightYellow" />
