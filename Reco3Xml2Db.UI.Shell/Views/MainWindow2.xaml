@@ -4,12 +4,12 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:prism="http://prismlibrary.com/"
     Title="{Binding Title}"
-    Width="1050"
+    Width="900"
     Height="700"
     prism:ViewModelLocator.AutoWireViewModel="True"
     ResizeMode="CanMinimize"
     WindowStartupLocation="CenterScreen">
-    <Window.Background>
+    <!--<Window.Background>
         <ImageBrush ImageSource="pack://siteoforigin:,,,/Resources/water-1330252_1920.jpg">
             <ImageBrush.RelativeTransform>
                 <TransformGroup>
@@ -20,26 +20,24 @@
                 </TransformGroup>
             </ImageBrush.RelativeTransform>
         </ImageBrush>
-    </Window.Background>
+    </Window.Background>-->
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="300" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
+        <!--<Grid.ColumnDefinitions>
             <ColumnDefinition Width="512" />
             <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
+        </Grid.ColumnDefinitions>-->
         <Grid>
             <ContentControl prism:RegionManager.RegionName="{Binding ComponentRegion}" />
         </Grid>
-        <Grid Grid.Column="1">
+        <!--<Grid Grid.Column="1">
             <ContentControl prism:RegionManager.RegionName="{Binding SettingsRegion}" />
-        </Grid>
-        <Grid
-            Grid.Row="1"
-            Grid.Column="0"
-            Grid.ColumnSpan="2">
+        </Grid>-->
+        <Grid Grid.Row="1" Grid.Column="0">
+            <!--  Grid.ColumnSpan="2">  -->
             <ContentControl prism:RegionManager.RegionName="{Binding ListRegion}" />
         </Grid>
     </Grid>

@@ -26,6 +26,7 @@ namespace Reco3Xml2Db.UI.Module {
       //containerRegistry.RegisterForNavigation(typeof(Settings), nameof(Settings));
 
       containerRegistry.RegisterSingleton<IPathProvider, PathProvider>();
+      containerRegistry.RegisterSingleton<IXmlProvider, XmlProvider>();
     }
   }
 }

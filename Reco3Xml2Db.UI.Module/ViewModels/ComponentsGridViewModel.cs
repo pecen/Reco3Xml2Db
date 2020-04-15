@@ -1,25 +1,24 @@
-﻿using Csla;
-using Prism.Commands;
+﻿using Prism.Commands;
 using Prism.Events;
-using Prism.Mvvm;
 using Reco3Xml2Db.Library;
 using Reco3Xml2Db.UI.Module.Commands;
 using Reco3Xml2Db.UI.Module.Enums;
 using Reco3Xml2Db.UI.Module.Services;
-using Reco3Xml2Db.Utilities.Comparers;
 using Reco3Xml2Db.Utilities.Extensions;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace Reco3Xml2Db.UI.Module.ViewModels {
   public class ComponentsGridViewModel : ViewModelBase {
     private IEventAggregator _eventAggregator;
     private IPathProvider _pathProvider;
+    private IXmlProvider _xmlProvider;
 
     #region Properties
 
@@ -28,6 +27,7 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
     public DelegateCommand SearchCommand { get; set; }
     public DelegateCommand UpdateComponentSetCommand { get; set; }
     public DelegateCommand DeleteComponentsCommand { get; set; }
+    public DelegateCommand<string> ViewComponentXmlCommand { get; set; }
 
     private int LastSearchLength { get; set; }
     public ComponentList UnFilteredList { get; set; }
@@ -59,6 +59,12 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
     public string SearchText {
       get { return _searchText; }
       set { SetProperty(ref _searchText, value); }
+    }
+
+    private ComponentInfo _selectedItem;
+    public ComponentInfo SelectedItem {
+      get { return _selectedItem; }
+      set { SetProperty(ref _selectedItem, value); }
     }
 
     private ObservableCollection<string> _columns;
@@ -111,9 +117,10 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
 
     #endregion
 
-    public ComponentsGridViewModel(IEventAggregator eventAggregator, IPathProvider pathProvider) {
+    public ComponentsGridViewModel(IEventAggregator eventAggregator, IPathProvider pathProvider, IXmlProvider xmlProvider) {
       _eventAggregator = eventAggregator;
       _pathProvider = pathProvider;
+      _xmlProvider = xmlProvider;
 
       Title = TabNames.ComponentsGrid.GetDescription();
 
@@ -127,18 +134,13 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       ComponentTypeList.GetEnumValues<ComponentType>();
       PDSourceList.GetEnumValues<PDSource>();
 
-      SelectedColumn = 1;
-      SelectedPDStatus = -1;
-      SelectedComponentType = -1;
-      SelectedPDSource = -1;
-      SearchText = string.Empty;
-      LastSearchLength = 0;
-      HasCheckedItem = false;
+      Initialize();
 
       SearchCommand = new DelegateCommand(GetFilteredComponentList);
       UpdateComponentSetCommand = new DelegateCommand(PublishComponentId);
       DeleteComponentsCommand = new DelegateCommand(Execute, CanExecute)
         .ObservesProperty(() => HasCheckedItem);
+      ViewComponentXmlCommand = new DelegateCommand<string>(HyperlinkClicked);
 
       _eventAggregator.GetEvent<GetComponentsCommand>().Subscribe(ComponentListReceived);
       _eventAggregator.GetEvent<GetComponentsCommand>().Publish(ComponentList.GetComponentList());
@@ -148,6 +150,22 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       _eventAggregator.GetEvent<GetFilteredComponentsCommand>().Subscribe(FilteredComponentListReceived);
 
       _allSelected = false;
+    }
+
+    private void HyperlinkClicked(string xml) {
+      var ms = new MemoryStream();
+
+      using (StreamWriter writer = new StreamWriter(ms)) {
+        writer.Write(xml);
+        writer.Flush();
+        ms.Position = 0;
+
+        _xmlProvider.XmlViewService(ms);
+      }
+
+      _eventAggregator
+        .GetEvent<GetPDNumber>()
+        .Publish($"PDNumber: {SelectedItem.PDNumber}");
     }
 
     private bool CanExecute() {
@@ -160,9 +178,9 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
     private void Execute() {
       var count = Components.Where(c => c.IsChecked).Count();
 
-      if (MessageBox.Show($"Are you sure you want to delete {(count > 1 ? "these components" : "this component")}?", 
-        "Delete Component?", 
-        MessageBoxButton.YesNo, 
+      if (MessageBox.Show($"Are you sure you want to delete {(count > 1 ? "these components" : "this component")}?",
+        "Delete Component?",
+        MessageBoxButton.YesNo,
         MessageBoxImage.Warning) == MessageBoxResult.Yes) {
 
         foreach (var item in Components) {
@@ -205,10 +223,21 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
         .Publish(id);
     }
 
+    private void Initialize() {
+      SelectedColumn = 1;
+      SelectedPDStatus = -1;
+      SelectedComponentType = -1;
+      SelectedPDSource = -1;
+      SearchText = string.Empty;
+      LastSearchLength = 0;
+      HasCheckedItem = false;
+
+    }
+
     private async void GetFilteredComponentList() {
-      if(SelectedPDSource == -1 
-        && SelectedPDStatus == -1 
-        && SelectedComponentType == -1 
+      if (SelectedPDSource == -1
+        && SelectedPDStatus == -1
+        && SelectedComponentType == -1
         && string.IsNullOrEmpty(SearchText)
         && LastSearchLength == 0) {
         return;

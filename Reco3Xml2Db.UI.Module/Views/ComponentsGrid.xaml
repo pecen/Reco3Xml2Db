@@ -6,22 +6,14 @@
     xmlns:enums="clr-namespace:Reco3Xml2Db.UI.Module.Enums"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:prism="http://prismlibrary.com/"
-    xmlns:prismEvents="clr-namespace:Prism.Events;assembly=Prism"
-    xmlns:services="clr-namespace:Reco3Xml2Db.UI.Module.Services"
     xmlns:views="clr-namespace:Reco3Xml2Db.UI.Module.Views"
-    xmlns:vm="clr-namespace:Reco3Xml2Db.UI.Module.ViewModels"
     prism:ViewModelLocator.AutoWireViewModel="True">
 
     <UserControl.Resources>
         <converters:StatusIntToEnumValueConverter x:Key="StatusIntToEnumValueConverter" />
         <converters:SelectedComponentFilteringToVisibilityConverter x:Key="SelectedFilteringToVisibilityConverter" />
-        <!--<ObjectDataProvider x:Key="componentsGridViewModel" ObjectType="{x:Type vm:ComponentsGridViewModel}">
-            <ObjectDataProvider.ConstructorParameters>
-                <prismEvents:EventAggregator />
-                <services:FilePathProvider />
-            </ObjectDataProvider.ConstructorParameters>
-        </ObjectDataProvider>-->
     </UserControl.Resources>
+
     <Grid Margin="10">
 
         <Grid.RowDefinitions>
@@ -127,8 +119,13 @@
             AutoGenerateColumns="False"
             CanUserAddRows="False"
             HorizontalScrollBarVisibility="Auto"
-            ItemsSource="{Binding Components, UpdateSourceTrigger=PropertyChanged}">
-
+            ItemsSource="{Binding Components, UpdateSourceTrigger=PropertyChanged}"
+            SelectedItem="{Binding SelectedItem}">
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Copy" />
+                </ContextMenu>
+            </DataGrid.ContextMenu>
             <DataGrid.Columns>
                 <DataGridCheckBoxColumn Binding="{Binding IsChecked, UpdateSourceTrigger=PropertyChanged}">
                     <DataGridCheckBoxColumn.HeaderTemplate>
@@ -145,12 +142,18 @@
                 <DataGridTextColumn Binding="{Binding ComponentType, Converter={StaticResource StatusIntToEnumValueConverter}, ConverterParameter={x:Type enums:ComponentType}}" Header="Type" />
                 <DataGridTextColumn Binding="{Binding PDSource, Converter={StaticResource StatusIntToEnumValueConverter}, ConverterParameter={x:Type enums:PDSource}}" Header="PD Source" />
                 <DataGridTextColumn Binding="{Binding SourceComponentId}" Header="Source Component Id" />
-                <DataGridTextColumn
-                    Width="200"
-                    Binding="{Binding Xml}"
-                    Header="Xml" />
+                <DataGridTemplateColumn Width="200" Header="Xml Data">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock>
+                                <Hyperlink Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=views:ComponentsGrid}, Path=DataContext.ViewComponentXmlCommand}" CommandParameter="{Binding Xml}">
+                                    <TextBlock Text="{Binding Xml}" />
+                                </Hyperlink>
+                            </TextBlock>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
-
     </Grid>
 </UserControl>

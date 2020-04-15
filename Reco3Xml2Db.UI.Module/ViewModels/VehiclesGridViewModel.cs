@@ -282,11 +282,11 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
         _allSelectedChanging = false;
       }
     }
+
     private void ClearFields() {
       AllSelected = false;
       SearchText = string.Empty;
       SelectedVehicleMode = -1;
     }
-
   }
 }

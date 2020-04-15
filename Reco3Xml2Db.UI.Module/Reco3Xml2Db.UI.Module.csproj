@@ -37,6 +37,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -49,6 +50,7 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\ComponentExistsCommand.cs" />
@@ -59,6 +61,7 @@
     <Compile Include="Commands\GetFilteredComponentsCommand.cs" />
     <Compile Include="Commands\GetFilteredRoadmapGroupsCommand.cs" />
     <Compile Include="Commands\GetFilteredVehiclesCommand.cs" />
+    <Compile Include="Commands\GetPDNumber.cs" />
     <Compile Include="Commands\GetRoadmapGroupsCommand.cs" />
     <Compile Include="Commands\GetSettingsCommand.cs" />
     <Compile Include="Commands\GetVehiclesCommand.cs" />
@@ -68,6 +71,12 @@
     <Compile Include="Commands\UpdateComponentSetCommand.cs" />
     <Compile Include="Commands\UpdateFilePathCommand.cs" />
     <Compile Include="Commands\UpdateComponentCommand.cs" />
+    <Compile Include="Controls\XmlGridView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\XmlGridView.Designer.cs">
+      <DependentUpon>XmlGridView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Converters\BoolToButtonTextConverter.cs" />
     <Compile Include="Converters\BoolToButtonToolTipTextConverter.cs" />
     <Compile Include="Converters\BoolToDescriptionHeightConverter.cs" />
@@ -114,14 +123,17 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Services\IXmlProvider.cs" />
     <Compile Include="Services\PathProvider.cs" />
     <Compile Include="Services\IPathProvider.cs" />
+    <Compile Include="Services\XmlProvider.cs" />
     <Compile Include="ViewModels\ComponentsGridViewModel.cs" />
     <Compile Include="ViewModels\ImportXmlViewModel.cs" />
     <Compile Include="ViewModels\RoadmapGroupsGridViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\VehiclesGridViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
+    <Compile Include="ViewModels\XmlViewerViewModel.cs" />
     <Compile Include="Views\ComponentsGrid.xaml.cs">
       <DependentUpon>ComponentsGrid.xaml</DependentUpon>
     </Compile>
@@ -136,6 +148,9 @@
     </Compile>
     <Compile Include="Views\VehiclesGrid.xaml.cs">
       <DependentUpon>VehiclesGrid.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\XmlViewer.xaml.cs">
+      <DependentUpon>XmlViewer.xaml</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -191,6 +206,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\VehiclesGrid.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\XmlViewer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -17,6 +17,7 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
   public class ImportXmlViewModel : ViewModelBase {
     private IEventAggregator _eventAggregator;
     private IPathProvider _filePathProvider;
+    private IXmlProvider _xmlProvider;
 
     private readonly string _header = "Fill in the information below and press ";
 
@@ -76,9 +77,6 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       get { return _filePath; }
       set {
         SetProperty(ref _filePath, value);
-        //SetProperty(ref _filePath, Directory.Exists(value)
-        //  ? value
-        //  : Environment.CurrentDirectory);
       }
     }
 
@@ -156,9 +154,10 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
 
     #endregion
 
-    public ImportXmlViewModel(IEventAggregator eventAggregator, IPathProvider filePathProvider) {
+    public ImportXmlViewModel(IEventAggregator eventAggregator, IPathProvider filePathProvider, IXmlProvider xmlProvider) {
       _eventAggregator = eventAggregator;
       _filePathProvider = filePathProvider;
+      _xmlProvider = xmlProvider;
 
       Title = TabNames.ImportToDb.GetDescription();
       SourceComponentExists = false;
@@ -272,7 +271,7 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       component.PDStatus = SelectedPDStatus;
       component.ComponentType = SelectedComponentType;
       component.PDSource = SelectedPDSource;
-      component.Xml = GetXml();
+      component.Xml = _xmlProvider.GetXmlStringService(XmlStream); 
 
       component = component.Save();
 
@@ -298,7 +297,7 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       component.PDStatus = SelectedPDStatus;
       component.ComponentType = SelectedComponentType;
       component.PDSource = SelectedPDSource;
-      component.Xml = GetXml();
+      component.Xml = _xmlProvider.GetXmlStringService(XmlStream); 
 
       var sourceComponent = ComponentEdit.GetComponent(component.PDNumber);
 
@@ -357,12 +356,6 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
         .Publish(ComponentInfo.GetComponent(fileNameWOutExt));
 
       IsPublished = true;
-    }
-
-    private string GetXml() {
-      using (StreamReader reader = new StreamReader(XmlStream)) {
-        return reader.ReadToEnd();
-      }
     }
 
     private void ClearValues() {

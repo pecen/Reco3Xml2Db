@@ -95,7 +95,6 @@
             CanUserAddRows="False"
             HorizontalScrollBarVisibility="Auto"
             ItemsSource="{Binding Vehicles, UpdateSourceTrigger=PropertyChanged}">
-
             <DataGrid.Columns>
                 <DataGridCheckBoxColumn Binding="{Binding IsChecked, UpdateSourceTrigger=PropertyChanged}">
                     <DataGridCheckBoxColumn.HeaderTemplate>

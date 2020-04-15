@@ -11,7 +11,7 @@ namespace Reco3Xml2Db.UI.Shell.ViewModels {
 
     //public DelegateCommand<string> NavigateCommand { get; set; }
     public string ComponentRegion { get; } = WindowRegions.ComponentRegion.ToString();
-    public string SettingsRegion { get; } = WindowRegions.SettingsRegion.ToString();
+    //public string SettingsRegion { get; } = WindowRegions.SettingsRegion.ToString();
     public string ListRegion { get; } = WindowRegions.ListRegion.ToString();
 
     public MainWindow2ViewModel(IRegionManager regionManager, IUnityContainer container)
