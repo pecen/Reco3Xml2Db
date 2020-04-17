@@ -2,13 +2,21 @@
     x:Class="Reco3Xml2Db.UI.Shell.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:Reco3Xml2Db.UI.Shell"
     xmlns:prism="http://prismlibrary.com/">
     <Application.Resources>
-        <!--<ResourceDictionary>
+        <ResourceDictionary>
+            <!--  The following styles makes the One-Click selection for row in the datagrids  -->
+            <!--  instead of the default behaviour of double-click to select a row  -->
+            <Style TargetType="DataGridCell">
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="IsEditing" Value="True" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
             <Style TargetType="ToolTip">
                 <Setter Property="Background" Value="LightYellow" />
             </Style>
-        </ResourceDictionary>-->
+        </ResourceDictionary>
     </Application.Resources>
 </prism:PrismApplication>

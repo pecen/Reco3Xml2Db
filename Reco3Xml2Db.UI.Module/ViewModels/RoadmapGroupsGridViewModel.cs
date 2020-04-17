@@ -1,6 +1,7 @@
 ﻿using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
+using Prism.Regions;
 using Reco3Xml2Db.Library;
 using Reco3Xml2Db.UI.Module.Commands;
 using Reco3Xml2Db.UI.Module.Enums;
@@ -121,7 +122,7 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       SearchCommand = new DelegateCommand(GetFilteredRoadmapGroupList);
 
       _eventAggregator.GetEvent<GetRoadmapGroupsCommand>().Subscribe(RoadmapGroupListReceived);
-      _eventAggregator.GetEvent<GetRoadmapGroupsCommand>().Publish(RoadmapGroupList.GetRoadmapGroups());
+      //_eventAggregator.GetEvent<GetRoadmapGroupsCommand>().Publish(RoadmapGroupList.GetRoadmapGroups());
       _eventAggregator.GetEvent<GetFilteredRoadmapGroupsCommand>().Subscribe(FilteredVehicleListReceived);
     }
 
@@ -134,7 +135,8 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
     }
 
     private bool CanExecute() {
-      return RoadmapGroups.Any(c => c.IsChecked);
+      return RoadmapGroups != null 
+          && RoadmapGroups.Any(c => c.IsChecked);
     }
 
     private void Execute() {
@@ -246,6 +248,14 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       AllSelected = false;
       SearchText = string.Empty;
       SelectedValidationStatus = SelectedConvertToVehicleStatus = -1;
+    }
+
+    public override void OnNavigatedTo(NavigationContext navigationContext) {
+      base.OnNavigatedTo(navigationContext);
+
+      Mouse.OverrideCursor = Cursors.Wait;
+      _eventAggregator.GetEvent<GetRoadmapGroupsCommand>().Publish(RoadmapGroupList.GetRoadmapGroups());
+      Mouse.OverrideCursor = Cursors.Arrow;
     }
 
     #region Row Select Checkbox handling

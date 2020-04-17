@@ -7,6 +7,7 @@
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
+    xmlns:properties="clr-namespace:Reco3Xml2Db.UI.Module.Properties"
     d:DesignHeight="300"
     d:DesignWidth="525"
     prism:ViewModelLocator.AutoWireViewModel="True"
@@ -20,14 +21,10 @@
         <converters:BoolToButtonToolTipTextConverter x:Key="BoolToButtonToolTipTextConverter" />
         <converters:RemovePathFromFilenameConverter x:Key="RemovePathFromFilenameConverter" />
         <converters:EmptyStringToTooltipConverter x:Key="EmptyStringToTooltipConverter" />
-
-        <!--<Style TargetType="ToolTip">
-            <Setter Property="Background" Value="LightYellow" />
-        </Style>-->
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="100" />
+            <ColumnDefinition Width="102" />
             <ColumnDefinition Width="50*" />
             <ColumnDefinition Width="7*" />
             <ColumnDefinition Width="Auto" />
@@ -56,7 +53,7 @@
             Margin="5,5,0,5"
             HorizontalAlignment="Right"
             VerticalAlignment="Center"
-            Text="Filename: "
+            Text="{x:Static properties:ImportXml.Filename}"
             Visibility="{Binding AllFilesIsNotChecked, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
         <TextBlock
@@ -64,7 +61,7 @@
             Margin="5,5,0,5"
             HorizontalAlignment="Right"
             VerticalAlignment="Center"
-            Text="Path: "
+            Text="{x:Static properties:ImportXml.Path}"
             Visibility="{Binding IsChecked, ElementName=filesChkbox, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
         <TextBlock
@@ -72,28 +69,19 @@
             Margin="5,5,0,5"
             HorizontalAlignment="Right"
             VerticalAlignment="Center"
-            Text="PD Status: " />
+            Text="{x:Static properties:ImportXml.PDStatus}" />
         <TextBlock
             Grid.Row="4"
             Margin="5,5,0,5"
             HorizontalAlignment="Right"
             VerticalAlignment="Center"
-            Text="PD Source: " />
+            Text="{x:Static properties:ImportXml.PDSource}" />
         <TextBlock
             Grid.Row="5"
             Margin="5,5,0,5"
             HorizontalAlignment="Right"
             VerticalAlignment="Center"
-            Text="Component type: " />
-
-        <!--<TextBox
-            Grid.Row="2"
-            Grid.Column="1"
-            Margin="0,5,-8,5"
-            FontStyle="{Binding SourceComponentExists, Converter={StaticResource BoolToItalicConverter}, UpdateSourceTrigger=PropertyChanged}"
-            Text="{Binding FileName, Converter={StaticResource RemovePathFromFilenameConverter}, UpdateSourceTrigger=PropertyChanged}"
-            ToolTip="{Binding FileNameToolTip}"
-            Visibility="{Binding AllFilesIsNotChecked, Converter={StaticResource BooleanToVisibilityConverter}}" />-->
+            Text="{x:Static properties:ImportXml.ComponentType}" />
 
         <TextBox
             Grid.Row="2"
@@ -139,8 +127,8 @@
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
             Command="{Binding GetFilenameCommand}"
-            Content="..."
-            ToolTip="{Binding XmlFileDialogButtonToolTip}"
+            Content="{x:Static properties:ImportXml.OpenFileDialogButton}"
+            ToolTip="{x:Static properties:ImportXml.XmlFileDialogButtonToolTip}"
             Visibility="{Binding AllFilesIsNotChecked, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
         <Button
@@ -152,8 +140,8 @@
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
             Command="{Binding GetFilePathCommand}"
-            Content="..."
-            ToolTip="{Binding XmlFileDialogButtonToolTip}"
+            Content="{x:Static properties:ImportXml.OpenPathDialogButton}"
+            ToolTip="{x:Static properties:ImportXml.XmlFilePathButtonToolTip}"
             Visibility="{Binding IsChecked, ElementName=filesChkbox, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
         <CheckBox
@@ -162,11 +150,9 @@
             Grid.Column="3"
             Margin="5,0,0,0"
             VerticalAlignment="Center"
-            Content="All files"
+            Content="{x:Static properties:ImportXml.AllFilesCheckbox}"
             IsChecked="{Binding AllFilesIsChecked}"
-            ToolTip="{Binding AllFilesToolTip}" />
-        <!--<TextBox Text="All files in directory" Background="Transparent" TextWrapping="Wrap" Width="50" />
-        </CheckBox>-->
+            ToolTip="{x:Static properties:ImportXml.AllFilesToolTip}" />
 
         <TextBox
             Grid.Row="1"
@@ -180,17 +166,9 @@
             FontSize="10"
             FontStyle="Italic"
             IsReadOnly="True"
-            Text="{Binding SourceComponentExistsInfo, Mode=OneWay}"
+            Text="{x:Static properties:ImportXml.SourceComponentExistsInfo}"
             TextWrapping="Wrap"
             Visibility="{Binding SourceComponentExists, Converter={StaticResource BooleanToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}" />
-
-        <!--<TextBlock
-            Grid.Row="1"
-            Grid.Column="1"
-            Margin="0,5,5,5"
-            Foreground="{StaticResource brushWatermarkForeground}"
-            Text="Type something..."
-            Visibility="{Binding ElementName=txtUserEntry, Path=Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}" />-->
 
         <ComboBox
             Grid.Row="3"
@@ -222,17 +200,26 @@
             Grid.Column="3"
             Margin="5,0,0,0"
             VerticalAlignment="Center"
-            Content="Replace"
+            Content="{x:Static properties:ImportXml.ReplaceCheckbox}"
             IsChecked="{Binding ReplaceIsChecked}"
-            ToolTip="{Binding UpdateExistingToolTip}"
-            Visibility="{Binding ReplaceIsActive, Converter={StaticResource BooleanToVisibilityConverter}}" />
+            ToolTipService.ShowDuration="20000"
+            Visibility="{Binding ReplaceIsActive, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <CheckBox.ToolTip>
+                <ToolTip>
+                    <TextBlock
+                        Width="200"
+                        Text="{x:Static properties:ImportXml.UpdateExistingToolTip}"
+                        TextWrapping="Wrap" />
+                </ToolTip>
+            </CheckBox.ToolTip>
+        </CheckBox>
 
         <TextBlock
             Grid.Row="6"
             Margin="5,5,0,5"
             HorizontalAlignment="Right"
             VerticalAlignment="Top"
-            Text="Description: " />
+            Text="{x:Static properties:ImportXml.Description}" />
 
         <TextBox
             Grid.Row="6"
@@ -253,6 +240,5 @@
             Command="{Binding ImportComponentCommand}"
             Content="{Binding SourceComponentExists, Converter={StaticResource BoolToButtonTextConverter}, UpdateSourceTrigger=PropertyChanged}"
             ToolTip="{Binding SourceComponentExists, Converter={StaticResource BoolToButtonToolTipTextConverter}, UpdateSourceTrigger=PropertyChanged}" />
-        <!--  ToolTip="{Binding ImportUpdateButtonToolTip}" />  -->
     </Grid>
 </UserControl>

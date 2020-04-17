@@ -117,4 +117,52 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AllFilesCheckbox" xml:space="preserve">
+    <value>All Files</value>
+  </data>
+  <data name="AllFilesToolTip" xml:space="preserve">
+    <value>Process all files in the chosen directory with the same settings</value>
+  </data>
+  <data name="ComponentExistsInfo" xml:space="preserve">
+    <value>This component exists. If you continue, an update will take place</value>
+  </data>
+  <data name="ComponentType" xml:space="preserve">
+    <value>Component Type: </value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Description: </value>
+  </data>
+  <data name="Filename" xml:space="preserve">
+    <value>Filename: </value>
+  </data>
+  <data name="OpenFileDialogButton" xml:space="preserve">
+    <value>...</value>
+  </data>
+  <data name="OpenPathDialogButton" xml:space="preserve">
+    <value>...</value>
+  </data>
+  <data name="Path" xml:space="preserve">
+    <value>Path: </value>
+  </data>
+  <data name="PDSource" xml:space="preserve">
+    <value>PD Source: </value>
+  </data>
+  <data name="PDStatus" xml:space="preserve">
+    <value>PD Status: </value>
+  </data>
+  <data name="ReplaceCheckbox" xml:space="preserve">
+    <value>Replace</value>
+  </data>
+  <data name="SourceComponentExistsInfo" xml:space="preserve">
+    <value>This PD number exists in the database. The component will be added with reference to the source component</value>
+  </data>
+  <data name="UpdateExistingToolTip" xml:space="preserve">
+    <value>This PD number already exists in the database. If this checkbox is checked, an Update will take place by replacing existing data for the existing component, as opposed to just adding this file, which is not present in the database, and referring to the existing component's PD Number</value>
+  </data>
+  <data name="XmlFileDialogButtonToolTip" xml:space="preserve">
+    <value>Click the button to open a file dialog to browse for the Xml file(s)</value>
+  </data>
+  <data name="XmlFilePathButtonToolTip" xml:space="preserve">
+    <value>Click the button to select file path to the Xml file(s)</value>
+  </data>
 </root>

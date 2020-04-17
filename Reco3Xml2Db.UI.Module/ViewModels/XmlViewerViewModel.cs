@@ -13,7 +13,7 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
     public XmlViewerViewModel(IEventAggregator eventAggregator) {
       _eventAggregator = eventAggregator;
 
-      _eventAggregator.GetEvent<GetPDNumber>().Subscribe(PDNumberReceived);
+      _eventAggregator.GetEvent<GetPDNumberCommand>().Subscribe(PDNumberReceived);
     }
 
     private void PDNumberReceived(string obj) => Title = obj;

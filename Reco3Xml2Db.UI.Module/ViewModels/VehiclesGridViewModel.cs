@@ -1,14 +1,14 @@
 ﻿using Prism.Commands;
 using Prism.Events;
-using Prism.Mvvm;
 using Reco3Xml2Db.Library;
 using Reco3Xml2Db.UI.Module.Commands;
 using Reco3Xml2Db.UI.Module.Enums;
+using Reco3Xml2Db.UI.Module.Services;
 using Reco3Xml2Db.Utilities.Extensions;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -16,6 +16,7 @@ using System.Windows.Input;
 namespace Reco3Xml2Db.UI.Module.ViewModels {
   public class VehiclesGridViewModel : ViewModelBase {
     private IEventAggregator _eventAggregator;
+    private IXmlProvider _xmlProvider;
 
     #region Properties
 
@@ -23,6 +24,7 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
 
     public DelegateCommand DeleteVehiclesCommand { get; set; }
     public DelegateCommand SearchCommand { get; set; }
+    public DelegateCommand<string> ViewXmlCommand { get; set; }
 
     private int LastSearchLength { get; set; }
     public VehicleList UnFilteredList { get; set; }
@@ -42,6 +44,12 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
     private bool HasCheckedItem {
       get => _hasCheckedItem;
       set { SetProperty(ref _hasCheckedItem, value); }
+    }
+
+    private VehicleInfo _selectedItem;
+    public VehicleInfo SelectedItem {
+      get { return _selectedItem; }
+      set { SetProperty(ref _selectedItem, value); }
     }
 
     private ObservableCollection<string> _columns;
@@ -82,8 +90,9 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
 
     #endregion
 
-    public VehiclesGridViewModel(IEventAggregator eventAggregator) {
+    public VehiclesGridViewModel(IEventAggregator eventAggregator, IXmlProvider xmlProvider) {
       _eventAggregator = eventAggregator;
+      _xmlProvider = xmlProvider;
 
       Title = TabNames.VehiclesGrid.GetDescription();
 
@@ -103,10 +112,27 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       DeleteVehiclesCommand = new DelegateCommand(Execute, CanExecute)
         .ObservesProperty(() => HasCheckedItem);
       SearchCommand = new DelegateCommand(GetFilteredVehicleList);
+      ViewXmlCommand = new DelegateCommand<string>(HyperlinkClicked);
 
       _eventAggregator.GetEvent<GetVehiclesCommand>().Subscribe(VehicleListReceived);
       _eventAggregator.GetEvent<GetVehiclesCommand>().Publish(VehicleList.GetVehicleList());
       _eventAggregator.GetEvent<GetFilteredVehiclesCommand>().Subscribe(FilteredVehicleListReceived);
+    }
+
+    private void HyperlinkClicked(string xml) {
+      var ms = new MemoryStream();
+
+      using (StreamWriter writer = new StreamWriter(ms)) {
+        writer.Write(xml);
+        writer.Flush();
+        ms.Position = 0;
+
+        _xmlProvider.XmlViewService(ms);
+      }
+
+      _eventAggregator
+        .GetEvent<GetVINCommand>()
+        .Publish($"VIN: {SelectedItem.VIN}");
     }
 
     private void FilteredVehicleListReceived(VehicleList obj) {
@@ -204,7 +230,8 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
     }
 
     private bool CanExecute() {
-      return Vehicles.Any(v => v.IsChecked);
+      return Vehicles != null
+          && Vehicles.Any(v => v.IsChecked);
     }
 
     private void Execute() {

@@ -6,6 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Reco3Xml2Db.UI.Module.Commands {
-  public class GetPDNumber : PubSubEvent<string> {
+  public class GetPDNumberCommand : PubSubEvent<string> {
   }
 }

@@ -24,6 +24,7 @@ namespace Reco3Xml2Db.UI.Module {
       //containerRegistry.RegisterForNavigation(typeof(ImportXml), nameof(ImportXml));
       //containerRegistry.RegisterForNavigation(typeof(ComponentsGrid), nameof(ComponentsGrid));
       //containerRegistry.RegisterForNavigation(typeof(Settings), nameof(Settings));
+      //containerRegistry.RegisterForNavigation(typeof(RoadmapGroupsGrid), nameof(RoadmapGroupsGrid));
 
       containerRegistry.RegisterSingleton<IPathProvider, PathProvider>();
       containerRegistry.RegisterSingleton<IXmlProvider, XmlProvider>();

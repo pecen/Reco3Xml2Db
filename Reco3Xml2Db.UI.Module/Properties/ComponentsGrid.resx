@@ -117,4 +117,49 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="CheckboxInfo" xml:space="preserve">
+    <value>Check this box to mark all Components for deletion</value>
+  </data>
+  <data name="ComponentId" xml:space="preserve">
+    <value>Component Id</value>
+  </data>
+  <data name="Copy" xml:space="preserve">
+    <value>Copy...</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="DeleteInfo" xml:space="preserve">
+    <value>Delete the selected components in the grid</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="Downloaded" xml:space="preserve">
+    <value>Downloaded</value>
+  </data>
+  <data name="PDNumber" xml:space="preserve">
+    <value>PD Number</value>
+  </data>
+  <data name="PDSource" xml:space="preserve">
+    <value>PD Source</value>
+  </data>
+  <data name="PDStatus" xml:space="preserve">
+    <value>PD Status</value>
+  </data>
+  <data name="SearchPDNumber" xml:space="preserve">
+    <value>Search PDNumber:</value>
+  </data>
+  <data name="SelectAll" xml:space="preserve">
+    <value>Select All</value>
+  </data>
+  <data name="SourceComponentId" xml:space="preserve">
+    <value>Source Component Id</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="Xml" xml:space="preserve">
+    <value>Xml Data</value>
+  </data>
 </root>

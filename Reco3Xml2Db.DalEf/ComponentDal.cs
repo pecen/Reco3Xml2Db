@@ -138,14 +138,11 @@ namespace Reco3Xml2Db.DalEf {
         if (!item.DownloadedTimestamp.Matches(data.DownloadedTimestamp))
           throw new ConcurrencyException("ConcurrencyException: DownloadedTimeStamp mismatch.");
 
-        //item.PDNumber = data.PDNumber;
-        //item.DownloadedTimestamp = data.DownloadedTimestamp;
         item.Description = data.Description;
         item.PD_Status = data.PDStatus;
         item.Component_Type = data.ComponentType;
         item.XML = data.Xml;
         item.PD_Source = data.PDSource;
-        //item.SourceComponentId = data.SourceComponentId;
 
         var count = ctx.DbContext.SaveChanges();
         if (count == 0)

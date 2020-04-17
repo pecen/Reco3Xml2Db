@@ -94,7 +94,13 @@
             AutoGenerateColumns="False"
             CanUserAddRows="False"
             HorizontalScrollBarVisibility="Auto"
-            ItemsSource="{Binding Vehicles, UpdateSourceTrigger=PropertyChanged}">
+            ItemsSource="{Binding Vehicles, UpdateSourceTrigger=PropertyChanged}"
+            SelectedItem="{Binding SelectedItem}">
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Copy" />
+                </ContextMenu>
+            </DataGrid.ContextMenu>
             <DataGrid.Columns>
                 <DataGridCheckBoxColumn Binding="{Binding IsChecked, UpdateSourceTrigger=PropertyChanged}">
                     <DataGridCheckBoxColumn.HeaderTemplate>
@@ -107,10 +113,17 @@
                 <DataGridTextColumn Binding="{Binding VIN}" Header="VIN" />
                 <DataGridTextColumn Binding="{Binding VehicleMode, Converter={StaticResource StatusIntToEnumValueConverter}, ConverterParameter={x:Type enums:VehicleMode}}" Header="Vehicle Mode" />
                 <DataGridTextColumn Binding="{Binding GroupId}" Header="Group Id" />
-                <DataGridTextColumn
-                    Width="200"
-                    Binding="{Binding Xml}"
-                    Header="Xml" />
+                <DataGridTemplateColumn Width="200" Header="Xml Data">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock>
+                                <Hyperlink Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=views:VehiclesGrid}, Path=DataContext.ViewXmlCommand}" CommandParameter="{Binding Xml}">
+                                    <TextBlock Text="{Binding Xml}" />
+                                </Hyperlink>
+                            </TextBlock>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
 

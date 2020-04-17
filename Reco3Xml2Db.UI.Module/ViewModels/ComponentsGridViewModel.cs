@@ -11,7 +11,6 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace Reco3Xml2Db.UI.Module.ViewModels {
@@ -22,12 +21,10 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
 
     #region Properties
 
-    public string DeleteInfo { get; } = "Delete the selected components in the grid";
-
     public DelegateCommand SearchCommand { get; set; }
     public DelegateCommand UpdateComponentSetCommand { get; set; }
     public DelegateCommand DeleteComponentsCommand { get; set; }
-    public DelegateCommand<string> ViewComponentXmlCommand { get; set; }
+    public DelegateCommand<string> ViewXmlCommand { get; set; }
 
     private int LastSearchLength { get; set; }
     public ComponentList UnFilteredList { get; set; }
@@ -140,7 +137,7 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       UpdateComponentSetCommand = new DelegateCommand(PublishComponentId);
       DeleteComponentsCommand = new DelegateCommand(Execute, CanExecute)
         .ObservesProperty(() => HasCheckedItem);
-      ViewComponentXmlCommand = new DelegateCommand<string>(HyperlinkClicked);
+      ViewXmlCommand = new DelegateCommand<string>(HyperlinkClicked);
 
       _eventAggregator.GetEvent<GetComponentsCommand>().Subscribe(ComponentListReceived);
       _eventAggregator.GetEvent<GetComponentsCommand>().Publish(ComponentList.GetComponentList());
@@ -164,12 +161,13 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       }
 
       _eventAggregator
-        .GetEvent<GetPDNumber>()
+        .GetEvent<GetPDNumberCommand>()
         .Publish($"PDNumber: {SelectedItem.PDNumber}");
     }
 
     private bool CanExecute() {
-      return Components.Any(c => c.IsChecked);
+      return Components != null
+          && Components.Any(c => c.IsChecked);
     }
 
     /// <summary>

@@ -15,24 +15,23 @@ using System.Windows;
 
 namespace Reco3Xml2Db.UI.Module.ViewModels {
   public class ImportXmlViewModel : ViewModelBase {
-    private IEventAggregator _eventAggregator;
-    private IPathProvider _filePathProvider;
-    private IXmlProvider _xmlProvider;
+    private readonly IEventAggregator _eventAggregator;
+    private readonly IPathProvider _filePathProvider;
+    private readonly IXmlProvider _xmlProvider;
 
     private readonly string _header = "Fill in the information below and press ";
 
     #region Properties
 
-    public string ComponentExistsInfo { get; } = "This component exists. If you continue, an update will take place.";
-    public string SourceComponentExistsInfo { get; } = "This PD number exists in the database. The component will be added with reference to the source component.";
-
     public string FileNameToolTip { get; } = "Type in a valid Component filename (*.Xml), or click the button to the right to select file.";
     public string FilePathToolTip { get; } = "Type in a valid path to the Component files, or click the button to the right to select path.";
-    public string XmlFileDialogButtonToolTip { get; } = "Click the button to open a file dialog to browse for the Xml file(s)";
-    public string AuthToolTip { get; } = "Select Authentication method for Sql Server";
-    public string AllFilesToolTip { get; } = "Process all files in the chosen directory with the same settings";
-    public string UpdateExistingToolTip { get; } = "This component already exists in the database. An Update will take place by replacing existing data for component, " +
-      "as opposed to updating an existing component by adding this file, which is not present in the database, and referring to a source component";
+
+    //public string SourceComponentExistsInfo { get; } = "This PD number exists in the database. The component will be added with reference to the source component.";
+    //public string ComponentExistsInfo { get; } = "This component exists. If you continue, an update will take place.";
+    //public string XmlFileDialogButtonToolTip { get; } = "Click the button to open a file dialog to browse for the Xml file(s)";
+    //public string AllFilesToolTip { get; } = "Process all files in the chosen directory with the same settings";
+    //public string UpdateExistingToolTip { get; } = "This component already exists in the database. An Update will take place by replacing existing data for component, " +
+    //  "as opposed to updating an existing component by adding this file, which is not present in the database, and referring to a source component";
 
     public DelegateCommand GetFilenameCommand { get; set; }
     public DelegateCommand GetFilePathCommand { get; set; }
@@ -215,6 +214,8 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       if (dir != FilePath) {
         _eventAggregator.GetEvent<GetFilePathCommand>().Publish(dir);
       }
+
+      RaisePropertyChanged(nameof(ReplaceIsActive));
     }
 
     private void UpdateComponentIdReceived(int obj) {
@@ -225,6 +226,7 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
 
     private void ExistingComponentReceived(ComponentInfo obj) {
       if (obj.ComponentId > 0) {
+        UpdateComponentId = obj.ComponentId;
         SourceComponentExists = true;
         SelectedComponentType = obj.ComponentType;
         SelectedPDSource = obj.PDSource;
@@ -359,6 +361,7 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
     }
 
     private void ClearValues() {
+      UpdateComponentId = 0;
       FileName = string.Empty;
       Description = string.Empty;
       SelectedPDStatus = 0;

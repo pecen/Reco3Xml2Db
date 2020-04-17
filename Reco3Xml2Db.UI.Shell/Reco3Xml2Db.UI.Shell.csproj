@@ -166,6 +166,10 @@
       <Project>{673DF9DC-DF4A-4B13-AE27-6E15D6AF827A}</Project>
       <Name>Reco3Xml2Db.UI.Module</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Reco3Xml2Db.Utilities\Reco3Xml2Db.Utilities.csproj">
+      <Project>{94403781-eea0-4f56-9522-8b8c6d1178c7}</Project>
+      <Name>Reco3Xml2Db.Utilities</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="logo.ico" />

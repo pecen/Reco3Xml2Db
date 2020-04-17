@@ -1,0 +1,117 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:clr="clr-namespace:System;assembly=mscorlib">
+    <FontFamily x:Key="glyph_Reco3Xml2DbFontFamily">/Reco3Xml2Db.Utilities;component/Resources/Fonts/#Reco3Xml2Db-Font-Icon-Library</FontFamily>
+    <clr:Double x:Key="glyph_FontSize">14</clr:Double>
+
+    <clr:String x:Key="glyph-icon-default-location">&#xe600;</clr:String>
+    <clr:String x:Key="glyph-icon-location">&#xe601;</clr:String>
+    <clr:String x:Key="glyph-icon-location-2">&#xe602;</clr:String>
+    <clr:String x:Key="glyph-icon-send-mail">&#xe603;</clr:String>
+    <clr:String x:Key="glyph-icon-test-server">&#xe604;</clr:String>
+    <clr:String x:Key="glyph-icon-bookmark">&#xe605;</clr:String>
+    <clr:String x:Key="glyph-icon-link">&#xe606;</clr:String>
+    <clr:String x:Key="glyph-icon-page-first">&#xe607;</clr:String>
+    <clr:String x:Key="glyph-icon-page-back">&#xe608;</clr:String>
+    <clr:String x:Key="glyph-icon-page-next">&#xe609;</clr:String>
+    <clr:String x:Key="glyph-icon-page-last">&#xe60a;</clr:String>
+    <clr:String x:Key="glyph-icon-comments">&#xe60b;</clr:String>
+    <clr:String x:Key="glyph-icon-user">&#xe60c;</clr:String>
+    <clr:String x:Key="glyph-icon-product">&#xe60d;</clr:String>
+    <clr:String x:Key="glyph-icon-new">&#xe650;</clr:String>
+    <clr:String x:Key="glyph-icon-save">&#xe651;</clr:String>
+    <clr:String x:Key="glyph-icon-open">&#xe652;</clr:String>
+    <clr:String x:Key="glyph-icon-copy">&#xe653;</clr:String>
+    <clr:String x:Key="glyph-icon-cut">&#xe654;</clr:String>
+    <clr:String x:Key="glyph-icon-paste">&#xe655;</clr:String>
+    <clr:String x:Key="glyph-icon-redo">&#xe656;</clr:String>
+    <clr:String x:Key="glyph-icon-undo">&#xe657;</clr:String>
+    <clr:String x:Key="glyph-icon-clear">&#xe660;</clr:String>
+    <clr:String x:Key="glyph-icon-delete">&#xe661;</clr:String>
+    <clr:String x:Key="glyph-icon-add">&#xe662;</clr:String>
+    <clr:String x:Key="glyph-icon-remove">&#xe663;</clr:String>
+    <clr:String x:Key="glyph-icon-expand-plus">&#xe670;</clr:String>
+    <clr:String x:Key="glyph-icon-collapse-minus">&#xe671;</clr:String>
+    <clr:String x:Key="glyph-icon-expand-down">&#xe672;</clr:String>
+    <clr:String x:Key="glyph-icon-collapse-up">&#xe673;</clr:String>
+    <clr:String x:Key="glyph-icon-select">&#xe674;</clr:String>
+    <clr:String x:Key="glyph-icon-deselect">&#xe675;</clr:String>
+    <clr:String x:Key="glyph-icon-close">&#xe676;</clr:String>
+    <clr:String x:Key="glyph-icon-filter">&#xe677;</clr:String>
+    <clr:String x:Key="glyph-icon-calendar">&#xe678;</clr:String>
+    <clr:String x:Key="glyph-icon-settings">&#xe679;</clr:String>
+    <clr:String x:Key="glyph-icon-menu">&#xe67a;</clr:String>
+    <clr:String x:Key="glyph-icon-refresh">&#xe680;</clr:String>
+    <clr:String x:Key="glyph-icon-search">&#xe690;</clr:String>
+    <clr:String x:Key="glyph-icon-edit">&#xe691;</clr:String>
+    <clr:String x:Key="glyph-icon-breakdown">&#xe692;</clr:String>
+    <clr:String x:Key="glyph-icon-distribute">&#xe693;</clr:String>
+    <clr:String x:Key="glyph-icon-ESW-notifications">&#xe694;</clr:String>
+    <clr:String x:Key="glyph-icon-consistency-check">&#xe695;</clr:String>
+    <clr:String x:Key="glyph-icon-send-to-VDA">&#xe696;</clr:String>
+    <clr:String x:Key="glyph-icon-export">&#xe697;</clr:String>
+    <clr:String x:Key="glyph-icon-import">&#xe698;</clr:String>
+    <clr:String x:Key="glyph-icon-compare">&#xe699;</clr:String>
+    <clr:String x:Key="glyph-icon-exchange">&#xe69a;</clr:String>
+    <clr:String x:Key="glyph-icon-error">&#xe6a0;</clr:String>
+    <clr:String x:Key="glyph-icon-action-needed">&#xe6a0;</clr:String>
+    <clr:String x:Key="glyph-icon-failed">&#xe6a0;</clr:String>
+    <clr:String x:Key="glyph-icon-inconsistent">&#xe6a0;</clr:String>
+    <clr:String x:Key="glyph-icon-warning">&#xe6a1;</clr:String>
+    <clr:String x:Key="glyph-icon-information">&#xe6a2;</clr:String>
+    <clr:String x:Key="glyph-icon-help">&#xe6a3;</clr:String>
+    <clr:String x:Key="glyph-icon-deviation-box">&#xe700;</clr:String>
+    <clr:String x:Key="glyph-icon-ok-filled">&#xe701;</clr:String>
+    <clr:String x:Key="glyph-icon-finished-completed">&#xe701;</clr:String>
+    <clr:String x:Key="glyph-icon-finished-consistent">&#xe701;</clr:String>
+    <clr:String x:Key="glyph-icon-ok-not-filled">&#xe702;</clr:String>
+    <clr:String x:Key="glyph-icon-compatible">&#xe703;</clr:String>
+    <clr:String x:Key="glyph-icon-manually-updated">&#xe704;</clr:String>
+    <clr:String x:Key="glyph-icon-manually-edited">&#xe704;</clr:String>
+    <clr:String x:Key="glyph-icon-manually-restored">&#xe704;</clr:String>
+    <clr:String x:Key="glyph-icon-manually-approved">&#xe704;</clr:String>
+    <clr:String x:Key="glyph-icon-manually-updated-2">&#xe705;</clr:String>
+    <clr:String x:Key="glyph-icon-in-progress">&#xe706;</clr:String>
+    <clr:String x:Key="glyph-icon-timeout">&#xe707;</clr:String>
+    <clr:String x:Key="glyph-icon-not-started">&#xe708;</clr:String>
+    <clr:String x:Key="glyph-icon-cancelled">&#xe708;</clr:String>
+    <clr:String x:Key="glyph-icon-avoided">&#xe708;</clr:String>
+    <clr:String x:Key="glyph-icon-ok-2">&#xe709;</clr:String>
+    <clr:String x:Key="glyph-icon-ok-3">&#xe70a;</clr:String>
+    <clr:String x:Key="glyph-icon-clock">&#xe70b;</clr:String>
+    <clr:String x:Key="glyph-icon-clock-filled">&#xe70c;</clr:String>
+    <clr:String x:Key="glyph-icon-big-anchor">&#xe611;</clr:String>
+    <clr:String x:Key="glyph-icon-big-anchor-edit">&#xe612;</clr:String>
+    <clr:String x:Key="glyph-icon-bulletlist">&#xe613;</clr:String>
+    <clr:String x:Key="glyph-icon-bulletlist-edit">&#xe614;</clr:String>
+    <clr:String x:Key="glyph-icon-thumb-down">&#xe615;</clr:String>
+    <clr:String x:Key="glyph-icon-thumb-up">&#xe616;</clr:String>
+    <clr:String x:Key="glyph-icon-edited">&#xe617;</clr:String>
+
+    <Style x:Key="GlyphTextStyle">
+        <Setter Property="TextElement.FontFamily" Value="{StaticResource glyph_Reco3Xml2DbFontFamily}" />
+        <Setter Property="TextElement.FontSize" Value="{StaticResource glyph_FontSize}" />
+        <Setter Property="TextOptions.TextRenderingMode" Value="Aliased" />
+        <Setter Property="TextOptions.TextFormattingMode" Value="Ideal" />
+        <Setter Property="TextBlock.VerticalAlignment" Value="Center" />
+        <Setter Property="TextBlock.HorizontalAlignment" Value="Center" />
+        <Setter Property="TextBlock.SnapsToDevicePixels" Value="True" />
+    </Style>
+
+    <Style x:Key="GlyphTextErrorStyle" BasedOn="{StaticResource GlyphTextStyle}">
+        <Setter Property="TextElement.Foreground" Value="Red" />
+    </Style>
+
+    <Style x:Key="GlyphTextWarningStyle" BasedOn="{StaticResource GlyphTextStyle}">
+        <Setter Property="TextElement.Foreground" Value="Orange" />
+    </Style>
+
+    <Style x:Key="GlyphTextInformationStyle" BasedOn="{StaticResource GlyphTextStyle}">
+        <Setter Property="TextElement.Foreground" Value="Blue" />
+    </Style>
+
+    <Style x:Key="GlyphTextOkStyle" BasedOn="{StaticResource GlyphTextStyle}">
+        <Setter Property="TextElement.Foreground" Value="Green" />
+    </Style>
+</ResourceDictionary>
