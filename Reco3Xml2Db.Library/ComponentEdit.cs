@@ -82,7 +82,7 @@ namespace Reco3Xml2Db.Library
       return DataPortal.Fetch<ComponentEdit>(componentId);
     }
 
-    public async static Task<ComponentEdit> GetComponentAsync(int componentId) {
+    public static async Task<ComponentEdit> GetComponentAsync(int componentId) {
       return await DataPortal.FetchAsync<ComponentEdit>(componentId);
     }
 
@@ -95,8 +95,12 @@ namespace Reco3Xml2Db.Library
       return DataPortal.Fetch<ComponentEdit>(pdNumber);
     }
 
-    public async static Task<ComponentEdit> GetComponentAsync(string pdNumber) {
+    public static async Task<ComponentEdit> GetComponentAsync(string pdNumber) {
       return await DataPortal.FetchAsync<ComponentEdit>(pdNumber);
+    }
+
+    public static void DeleteComponent(int componentId) {
+      DataPortal.Delete<ComponentEdit>(componentId);
     }
 
     public static async void DeleteComponentAsync(int componentId) {

@@ -244,7 +244,14 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
     private void Execute() {
       try {
         if (ReplaceIsChecked) {
-          ReplaceComponent();
+          try {
+            ReplaceComponent();
+
+            MessageBox.Show("Component updated!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+          }
+          catch (Exception ex) {
+            MessageBox.Show(ex.Message, "Error when updating component", MessageBoxButton.OK, MessageBoxImage.Error);
+          }
         }
         else if (AllFilesIsChecked) {
           ExecuteMany();
@@ -263,11 +270,12 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       }
       finally {
         ClearValues();
+        RaisePropertyChanged(nameof(ReplaceIsActive));
       }
     }
 
     private void ReplaceComponent() {
-      var component = ComponentEdit.GetComponentAsync(UpdateComponentId).Result;
+      var component = ComponentEdit.GetComponent(UpdateComponentId);
 
       component.Description = Description;
       component.PDStatus = SelectedPDStatus;

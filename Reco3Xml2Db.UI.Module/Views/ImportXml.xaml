@@ -200,10 +200,15 @@
             Grid.Column="3"
             Margin="5,0,0,0"
             VerticalAlignment="Center"
-            Content="{x:Static properties:ImportXml.ReplaceCheckbox}"
             IsChecked="{Binding ReplaceIsChecked}"
             ToolTipService.ShowDuration="20000"
             Visibility="{Binding ReplaceIsActive, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <CheckBox.Content>
+                <TextBlock
+                    Width="50"
+                    Text="{x:Static properties:ImportXml.ReplaceCheckbox}"
+                    TextWrapping="Wrap" />
+            </CheckBox.Content>
             <CheckBox.ToolTip>
                 <ToolTip>
                     <TextBlock

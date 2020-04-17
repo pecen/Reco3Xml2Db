@@ -160,7 +160,7 @@ namespace Reco3Xml2Db.UI.Module.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Replace.
+        ///   Looks up a localized string similar to Replace existing.
         /// </summary>
         public static string ReplaceCheckbox {
             get {

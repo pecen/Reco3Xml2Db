@@ -151,7 +151,7 @@
     <value>PD Status: </value>
   </data>
   <data name="ReplaceCheckbox" xml:space="preserve">
-    <value>Replace</value>
+    <value>Replace existing</value>
   </data>
   <data name="SourceComponentExistsInfo" xml:space="preserve">
     <value>This PD number exists in the database. The component will be added with reference to the source component</value>

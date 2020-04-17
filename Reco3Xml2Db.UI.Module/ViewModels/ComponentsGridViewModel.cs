@@ -6,6 +6,7 @@ using Reco3Xml2Db.UI.Module.Enums;
 using Reco3Xml2Db.UI.Module.Services;
 using Reco3Xml2Db.Utilities.Extensions;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
@@ -175,23 +176,46 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
     /// </summary>
     private void Execute() {
       var count = Components.Where(c => c.IsChecked).Count();
+      int successfulDeletes = 0;
+      int firstErrorId = 0;
 
       if (MessageBox.Show($"Are you sure you want to delete {(count > 1 ? "these components" : "this component")}?",
         "Delete Component?",
         MessageBoxButton.YesNo,
         MessageBoxImage.Warning) == MessageBoxResult.Yes) {
 
-        foreach (var item in Components) {
-          if (item.IsChecked) {
-            ComponentEdit.DeleteComponentAsync(item.ComponentId);
+        Mouse.OverrideCursor = Cursors.Wait;
+
+        try {
+          foreach (var item in Components) {
+            if (item.IsChecked) {
+              firstErrorId = item.ComponentId;
+              ComponentEdit.DeleteComponent(item.ComponentId);
+              successfulDeletes += 1;
+            }
           }
+
+          MessageBox.Show($"{count} Component{(count > 1 ? "s" : string.Empty)} deleted!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+
+          _eventAggregator
+            .GetEvent<GetComponentsCommand>()
+            .Publish(ComponentList.GetComponentList());
         }
+        catch (Exception ex) {
+          Mouse.OverrideCursor = Cursors.Arrow;
 
-        _eventAggregator
-          .GetEvent<GetComponentsCommand>()
-          .Publish(ComponentList.GetComponentList());
+          string s = count == 0 || count > 1 ? "s" : string.Empty;
+          string extendedInfo = "The " + (count == 1 ? string.Empty : "first ") + "faulting Component has an id of " + firstErrorId;
 
-        ClearFields();
+          string msg = $"Error when deleting Component{s}." + Environment.NewLine
+            + $"{successfulDeletes} Component{s} deleted."
+            + $"{(successfulDeletes == 0 ? "No Components deleted" : Environment.NewLine + extendedInfo)}";
+
+          MessageBox.Show(ex.Message, msg, MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+        finally {
+          ClearFields();
+        }
       }
     }
 
@@ -347,6 +371,8 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
 
       UnFilteredList = Components = obj;
       RaisePropertyChanged(nameof(Components));
+
+      Mouse.OverrideCursor = Cursors.Arrow;
     }
 
     private void FilteredComponentListReceived(ComponentList obj) {
