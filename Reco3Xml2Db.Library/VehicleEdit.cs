@@ -47,8 +47,16 @@ namespace Reco3Xml2Db.Library {
 
     #region Factory Methods
 
+    public static void DeleteVehicle(int vehicleId) {
+      DataPortal.Delete<VehicleEdit>(vehicleId);
+    }
+
     public static async void DeleteVehicleAsync(int vehicleId) {
       await DataPortal.DeleteAsync<VehicleEdit>(vehicleId);
+    }
+
+    public static void DeleteOnGroupId(int groupId) {
+      DataPortal.Delete<VehicleEdit>(groupId.ToString());
     }
 
     #endregion
@@ -60,6 +68,13 @@ namespace Reco3Xml2Db.Library {
       using (var ctx = DalFactory.GetManager(DalManagerTypes.DalManagerDb)) {
         var dal = ctx.GetProvider<IVehicleDal>();
         dal.Delete(id);
+      }
+    }
+
+    private void Delete(string groupId) {
+      using (var ctx = DalFactory.GetManager(DalManagerTypes.DalManagerDb)) {
+        var dal = ctx.GetProvider<IVehicleDal>();
+        dal.DeleteOnGroupId(int.Parse(groupId));
       }
     }
 

@@ -20,6 +20,8 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
 
     #region Properties
 
+    public bool DeleteOnGroupId { get; set; }
+
     public string DeleteInfo { get; } = "Delete the selected vehicles in the grid";
 
     public DelegateCommand DeleteVehiclesCommand { get; set; }
@@ -242,9 +244,17 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
         MessageBoxButton.YesNo,
         MessageBoxImage.Warning) == MessageBoxResult.Yes) {
 
-        foreach (var item in Vehicles) {
-          if (item.IsChecked) {
-            VehicleEdit.DeleteVehicleAsync(item.VehicleId);
+        if (DeleteOnGroupId) {
+          VehicleEdit.DeleteOnGroupId(Vehicles
+            .Where(c => c.IsChecked)
+            .Select(v => v.GroupId)
+            .FirstOrDefault());
+        }
+        else {
+          foreach (var item in Vehicles) {
+            if (item.IsChecked) {
+              VehicleEdit.DeleteVehicle(item.VehicleId);
+            }
           }
         }
 

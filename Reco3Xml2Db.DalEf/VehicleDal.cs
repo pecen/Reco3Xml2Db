@@ -44,5 +44,17 @@ namespace Reco3Xml2Db.DalEf {
         }
       }
     }
+
+    public void DeleteOnGroupId(int groupId) {
+      using (var ctx = DbContextManager<Reco3Xml2DbContext>.GetManager(_dbName)) {
+        var data = (from r in ctx.DbContext.Vehicles
+                    where r.GroupId == groupId
+                    select r);
+        if (data != null) {
+          ctx.DbContext.Vehicles.RemoveRange(data);
+          ctx.DbContext.SaveChanges();
+        }
+      }
+    }
   }
 }

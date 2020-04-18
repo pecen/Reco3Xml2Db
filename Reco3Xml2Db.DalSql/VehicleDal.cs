@@ -17,6 +17,10 @@ namespace Reco3Xml2Db.DalSql {
       throw new NotImplementedException();
     }
 
+    public void DeleteOnGroupId(int groupId) {
+      throw new NotImplementedException();
+    }
+
     public List<VehicleDto> Fetch() {
       using (var ctx = ConnectionManager<SqlConnection>.GetManager(_dbName)) {
         using (var cm = ctx.Connection.CreateCommand()) {

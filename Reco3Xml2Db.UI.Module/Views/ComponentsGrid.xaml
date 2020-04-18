@@ -135,6 +135,11 @@
                         <MenuItem.Icon>
                             <commonControls:IconDisplayer HorizontalAlignment="Center" Icon="{x:Static commonIcons:StandardActionIcons.Copy}" />
                         </MenuItem.Icon>
+                        <!--<MenuItem Header="{x:Static properties:ParameterListView.CellText}" Command="{x:Static commandsGesp:StandardCommands.CopyToClipboardCommand}">
+                            <interactivity:Interaction.Behaviors>
+                                <localbehaviors:SetCellValueToCommandParameterBehavior />
+                            </interactivity:Interaction.Behaviors>
+                        </MenuItem>-->
                     </MenuItem>
                 </ContextMenu>
             </DataGrid.ContextMenu>

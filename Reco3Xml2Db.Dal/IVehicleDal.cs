@@ -12,5 +12,6 @@ namespace Reco3Xml2Db.Dal {
     VehicleDto Fetch(string vin);
 
     void Delete(int vehicleId);
+    void DeleteOnGroupId(int groupId);
   }
 }
