@@ -8,6 +8,8 @@ using Unity;
 
 namespace Reco3Xml2Db.UI.Module {
   public class Reco3Xml2DbModule : IModule {
+    public static IContainerProvider Container { get; set; }
+
     public void OnInitialized(IContainerProvider containerProvider) {
       var regionManager = containerProvider.Resolve<IRegionManager>();
       //regionManager.RegisterViewWithRegion(WindowRegions.ComponentRegion.ToString(), typeof(ImportXml));
@@ -16,8 +18,10 @@ namespace Reco3Xml2Db.UI.Module {
       regionManager.RegisterViewWithRegion(WindowRegions.TabRegion.ToString(), typeof(ImportXml));
       regionManager.RegisterViewWithRegion(WindowRegions.TabRegion.ToString(), typeof(ComponentsGrid));
       //regionManager.RegisterViewWithRegion(WindowRegions.TabRegion.ToString(), typeof(RoadmapGroupsGrid));
-      regionManager.RegisterViewWithRegion(WindowRegions.TabRegion.ToString(), typeof(VehiclesGrid));
+      //regionManager.RegisterViewWithRegion(WindowRegions.TabRegion.ToString(), typeof(VehiclesGrid));
       regionManager.RegisterViewWithRegion(WindowRegions.TabRegion.ToString(), typeof(Settings));
+
+      Container = containerProvider;
     }
 
     public void RegisterTypes(IContainerRegistry containerRegistry) {
@@ -28,6 +32,7 @@ namespace Reco3Xml2Db.UI.Module {
 
       containerRegistry.RegisterSingleton<IPathProvider, PathProvider>();
       containerRegistry.RegisterSingleton<IXmlProvider, XmlProvider>();
+      containerRegistry.RegisterSingleton<IGridViewService, GridViewService>();
     }
   }
 }

@@ -12,13 +12,14 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace Reco3Xml2Db.UI.Module.ViewModels {
   public class ComponentsGridViewModel : ViewModelBase {
-    private IEventAggregator _eventAggregator;
-    private IPathProvider _pathProvider;
-    private IXmlProvider _xmlProvider;
+    private readonly IEventAggregator _eventAggregator;
+    private readonly IPathProvider _pathProvider;
+    private readonly IXmlProvider _xmlProvider;
 
     #region Properties
 
@@ -26,6 +27,7 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
     public DelegateCommand UpdateComponentSetCommand { get; set; }
     public DelegateCommand DeleteComponentsCommand { get; set; }
     public DelegateCommand<string> ViewXmlCommand { get; set; }
+    public DelegateCommand<object> CopyToClipboard { get; set; }
 
     private int LastSearchLength { get; set; }
     public ComponentList UnFilteredList { get; set; }
@@ -139,6 +141,7 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       DeleteComponentsCommand = new DelegateCommand(Execute, CanExecute)
         .ObservesProperty(() => HasCheckedItem);
       ViewXmlCommand = new DelegateCommand<string>(HyperlinkClicked);
+      CopyToClipboard = new DelegateCommand<object>(CopiedContentReceived);
 
       _eventAggregator.GetEvent<GetComponentsCommand>().Subscribe(ComponentListReceived);
       _eventAggregator.GetEvent<GetComponentsCommand>().Publish(ComponentList.GetComponentList());
@@ -148,6 +151,10 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       _eventAggregator.GetEvent<GetFilteredComponentsCommand>().Subscribe(FilteredComponentListReceived);
 
       _allSelected = false;
+    }
+
+    private void CopiedContentReceived(object obj) {
+      var o = obj;
     }
 
     private void HyperlinkClicked(string xml) {

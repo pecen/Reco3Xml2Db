@@ -9,11 +9,12 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Reco3Xml2Db.UI.Module</RootNamespace>
     <AssemblyName>Reco3Xml2Db.UI.Module</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -53,7 +54,9 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Behaviors\SetCellValueToCommandParameterBehavior.cs" />
     <Compile Include="Commands\ComponentExistsCommand.cs" />
+    <Compile Include="Commands\CopyToClipboardCommand.cs" />
     <Compile Include="Commands\GetComponentsCommand.cs" />
     <Compile Include="Commands\GetDbCommand.cs" />
     <Compile Include="Commands\GetFilePathCommand.cs" />
@@ -134,9 +137,13 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Services\GridViewService.cs" />
+    <Compile Include="Services\IGridViewService.cs" />
+    <Compile Include="Services\IUnityService.cs" />
     <Compile Include="Services\IXmlProvider.cs" />
     <Compile Include="Services\PathProvider.cs" />
     <Compile Include="Services\IPathProvider.cs" />
+    <Compile Include="Services\UnityService.cs" />
     <Compile Include="Services\XmlProvider.cs" />
     <Compile Include="ViewModels\ComponentsGridViewModel.cs" />
     <Compile Include="ViewModels\ImportXmlViewModel.cs" />
