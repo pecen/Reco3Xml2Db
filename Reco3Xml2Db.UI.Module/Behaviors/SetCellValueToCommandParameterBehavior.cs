@@ -1,14 +1,8 @@
-﻿using Reco3Xml2Db.UI.Module.Services;
-using Reco3Xml2Db.UI.Module.ViewModels;
+﻿using Reco3Xml2Db.Library;
+using Reco3Xml2Db.UI.Module.Services;
 using Reco3Xml2Db.Utilities.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using System.Windows.Interactivity;
 
 namespace Reco3Xml2Db.UI.Module.Behaviors {
@@ -36,7 +30,6 @@ namespace Reco3Xml2Db.UI.Module.Behaviors {
       base.OnAttached();
       AssociatedObject.Click += AssociatedObject_Click;
       AssociatedObject.Loaded += AssociatedObject_Loaded; 
-      //AssociatedObject.MouseRightButtonDown += AssociatedObject_OnMouseRightButtonDown;
     }
 
     /// <summary>
@@ -56,28 +49,6 @@ namespace Reco3Xml2Db.UI.Module.Behaviors {
     }
 
     private void AssociatedObject_Loaded(object sender, RoutedEventArgs e) {
-      //ContextMenu menu = AssociatedObject.ContextMenu as ContextMenu;
-      var menuItem = AssociatedObject as MenuItem;
-
-      MenuItem menu = AssociatedObject;
-      if (menuItem.IsNotNull()) {
-        var clickedMenuItem = sender as MenuItem;
-        
-        
-        //DataGridCell cell = menu.GetClickedElement<GridViewCell>();
-        //if (cell.IsNotNull()
-        //    && cell.Value.IsNotNull()
-        //    && cell.IsSelected) {
-        //  TextBlock provider = cell.Content as TextBlock;
-
-        //  if (provider.IsNull()) {
-        //    AssociatedObject.CommandParameter = cell.Value.ToString();
-        //  }
-        //  else {
-        //    AssociatedObject.CommandParameter = provider.Text == @"\0" ? string.Empty : provider.Text;
-        //  }
-        //}
-      }
     }
 
     /// <summary>
@@ -88,39 +59,14 @@ namespace Reco3Xml2Db.UI.Module.Behaviors {
       var menuItem = AssociatedObject as MenuItem;
       var parent = menuItem.Parent as ContextMenu;
       var grid = parent.PlacementTarget as DataGrid;
-      //var textBlock = grid.InputHitTest(e.GetPosition(grid)) as TextBlock;
-      //if (textBlock.IsNotNull()) {
-      //  return textBlock.Text;
-      //}
 
-      //if (menuItem.IsNotNull()) {
-      //  var clickedMenuItem = sender as MenuItem;
-      //  var dc = clickedMenuItem.DataContext as ComponentsGridViewModel;
-      //var xml = dc.SelectedItem.Xml;
+      if (grid.IsNotNull()) {
+        var componentInfo = grid.CurrentItem as ComponentInfo;
+        if (componentInfo.IsNotNull()) {
+          return componentInfo.Xml;
+        }
+      }
 
-      //var parent = clickedMenuItem.Parent as ContextMenu;
-      //var grid = parent.PlacementTarget as DataGrid;
-      //var cell = grid.CurrentCell;
-      //var v = grid.CurrentItem;
-      //string s = string.Empty;
-
-
-      //DataGridCell cell = menu.GetClickedElement<DataGridCell>();
-
-      //if (cell.IsNotNull() && cell.Value.IsNotNull()) {
-      //  TextBlock provider = cell.Content as TextBlock;
-
-      //  if (provider.IsNull()) {
-      //    return cell.Value.ToString();
-      //  }
-
-      //  if (provider.FontFamily.ToString() == NodeListItemTypes.IconFontFamily.GetEnumDescription()) {
-      //    return GetIconCellValue(cell.Column.UniqueName, Convert.ToChar(provider.Text));
-      //  }
-
-      //  return _gridViewService.GetText(cell);
-      //}
-    //}
       return string.Empty;
     }
   }

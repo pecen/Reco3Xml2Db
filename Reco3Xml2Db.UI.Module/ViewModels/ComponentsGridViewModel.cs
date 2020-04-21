@@ -27,7 +27,7 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
     public DelegateCommand UpdateComponentSetCommand { get; set; }
     public DelegateCommand DeleteComponentsCommand { get; set; }
     public DelegateCommand<string> ViewXmlCommand { get; set; }
-    public DelegateCommand<object> CopyToClipboard { get; set; }
+    public DelegateCommand<string> CopyToClipboard { get; set; }
 
     private int LastSearchLength { get; set; }
     public ComponentList UnFilteredList { get; set; }
@@ -141,7 +141,7 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       DeleteComponentsCommand = new DelegateCommand(Execute, CanExecute)
         .ObservesProperty(() => HasCheckedItem);
       ViewXmlCommand = new DelegateCommand<string>(HyperlinkClicked);
-      CopyToClipboard = new DelegateCommand<object>(CopiedContentReceived);
+      CopyToClipboard = new DelegateCommand<string>(CopiedContentReceived);
 
       _eventAggregator.GetEvent<GetComponentsCommand>().Subscribe(ComponentListReceived);
       _eventAggregator.GetEvent<GetComponentsCommand>().Publish(ComponentList.GetComponentList());
@@ -153,8 +153,13 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       _allSelected = false;
     }
 
-    private void CopiedContentReceived(object obj) {
-      var o = obj;
+    private void CopiedContentReceived(string xml) {
+      lock (new object()) {
+        if (!string.IsNullOrEmpty(xml)) {
+          Clipboard.Clear();
+          Clipboard.SetText(xml.Trim() + Environment.NewLine);
+        }
+      }
     }
 
     private void HyperlinkClicked(string xml) {
