@@ -138,6 +138,15 @@
             SelectedItem="{Binding SelectedItem}">
             <DataGrid.ContextMenu>
                 <ContextMenu>
+                    <!--
+                        The below Path has the value CurrentItem, which is not shown in the selectable items list, because
+                        the PlacementTarget in this case is a DataGrid, which in turn has the item CurrentItem. This gives us
+                        the ComponentInfo object which has the property Xml, i.e. the selected Xml.
+                    -->
+                    <!--<MenuItem
+                        Command="{Binding CopyToClipboard}"
+                        CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent.PlacementTarget.CurrentItem}"
+                        Header="{x:Static properties:ComponentsGrid.Copy}">-->
                     <MenuItem Command="{Binding CopyToClipboard}" Header="{x:Static properties:ComponentsGrid.Copy}">
                         <MenuItem.Icon>
                             <commonControls:IconDisplayer HorizontalAlignment="Center" Icon="{x:Static commonIcons:StandardActionIcons.Copy}" />
