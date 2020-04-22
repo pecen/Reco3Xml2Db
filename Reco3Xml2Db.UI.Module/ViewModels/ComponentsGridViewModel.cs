@@ -154,12 +154,12 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
     }
 
     private void CopiedContentReceived(string xml) {
-      lock (new object()) {
-        if (!string.IsNullOrEmpty(xml)) {
-          Clipboard.Clear();
-          Clipboard.SetText(xml.Trim() + Environment.NewLine);
+        lock (new object()) {
+          if (!string.IsNullOrEmpty(xml)) {
+            Clipboard.Clear();
+            Clipboard.SetText(xml.Trim() + Environment.NewLine);
+          }
         }
-      }
     }
 
     private void HyperlinkClicked(string xml) {

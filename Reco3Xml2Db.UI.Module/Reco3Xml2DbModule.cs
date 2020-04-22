@@ -8,7 +8,7 @@ using Unity;
 
 namespace Reco3Xml2Db.UI.Module {
   public class Reco3Xml2DbModule : IModule {
-    public static IContainerProvider Container { get; set; }
+    public static IContainerProvider Container { get; private set; }
 
     public void OnInitialized(IContainerProvider containerProvider) {
       var regionManager = containerProvider.Resolve<IRegionManager>();
@@ -30,6 +30,7 @@ namespace Reco3Xml2Db.UI.Module {
       //containerRegistry.RegisterForNavigation(typeof(Settings), nameof(Settings));
       //containerRegistry.RegisterForNavigation(typeof(RoadmapGroupsGrid), nameof(RoadmapGroupsGrid));
 
+      containerRegistry.RegisterSingleton<IUnityService, UnityService>();
       containerRegistry.RegisterSingleton<IPathProvider, PathProvider>();
       containerRegistry.RegisterSingleton<IXmlProvider, XmlProvider>();
       containerRegistry.RegisterSingleton<IGridViewService, GridViewService>();

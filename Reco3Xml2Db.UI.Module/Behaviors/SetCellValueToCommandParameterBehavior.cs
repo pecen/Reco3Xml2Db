@@ -1,4 +1,5 @@
-﻿using Reco3Xml2Db.Library;
+﻿using Prism.Ioc;
+using Reco3Xml2Db.Library;
 using Reco3Xml2Db.UI.Module.Services;
 using Reco3Xml2Db.Utilities.Extensions;
 using System.Windows;

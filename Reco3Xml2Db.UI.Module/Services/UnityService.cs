@@ -1,6 +1,9 @@
-﻿using System;
+﻿using Prism.Ioc;
+using Prism.Unity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 using Unity;
 using Unity.Injection;
 using Unity.Lifetime;
@@ -41,8 +44,11 @@ namespace Reco3Xml2Db.UI.Module.Services {
     /// <summary>
     /// To make it thread-safe without using locks.
     /// </summary>
-    public static UnityService Get() {
-      return _instance;
+    //public static UnityService Get() {
+    //  return _instance;
+    //}
+    public static IContainerProvider Get() {
+      return (Application.Current as PrismApplication).Container; // _instance;
     }
 
     /// <summary>

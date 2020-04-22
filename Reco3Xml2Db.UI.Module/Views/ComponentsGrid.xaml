@@ -145,7 +145,7 @@
                     -->
                     <!--<MenuItem
                         Command="{Binding CopyToClipboard}"
-                        CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent.PlacementTarget.CurrentItem}"
+                        CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent.PlacementTarget.CurrentItem.Xml}"
                         Header="{x:Static properties:ComponentsGrid.Copy}">-->
                     <MenuItem Command="{Binding CopyToClipboard}" Header="{x:Static properties:ComponentsGrid.Copy}">
                         <MenuItem.Icon>
