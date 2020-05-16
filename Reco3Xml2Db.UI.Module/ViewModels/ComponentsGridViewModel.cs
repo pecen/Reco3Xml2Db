@@ -122,7 +122,7 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       _pathProvider = pathProvider;
       _xmlProvider = xmlProvider;
 
-      Title = TabNames.ComponentsGrid.GetDescription();
+      Title = Titles.ComponentsGrid.GetDescription();
 
       Columns = new ObservableCollection<string>();
       PDStatusList = new ObservableCollection<string>();

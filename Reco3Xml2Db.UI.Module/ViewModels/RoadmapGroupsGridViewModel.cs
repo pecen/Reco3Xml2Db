@@ -99,7 +99,7 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
     public RoadmapGroupsGridViewModel(IEventAggregator eventAggregator) {
       _eventAggregator = eventAggregator;
 
-      Title = TabNames.RoadmapGroupsGrid.GetDescription();
+      Title = Titles.RoadmapGroupsGrid.GetDescription();
 
       Columns = new ObservableCollection<string>();
       ValidationStatusList = new ObservableCollection<string>();
@@ -122,7 +122,7 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       SearchCommand = new DelegateCommand(GetFilteredRoadmapGroupList);
 
       _eventAggregator.GetEvent<GetRoadmapGroupsCommand>().Subscribe(RoadmapGroupListReceived);
-      //_eventAggregator.GetEvent<GetRoadmapGroupsCommand>().Publish(RoadmapGroupList.GetRoadmapGroups());
+      _eventAggregator.GetEvent<GetRoadmapGroupsCommand>().Publish(RoadmapGroupList.GetRoadmapGroups());
       _eventAggregator.GetEvent<GetFilteredRoadmapGroupsCommand>().Subscribe(FilteredVehicleListReceived);
     }
 

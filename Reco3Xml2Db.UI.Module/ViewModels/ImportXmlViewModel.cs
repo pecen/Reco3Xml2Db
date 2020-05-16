@@ -16,7 +16,7 @@ using System.Windows;
 namespace Reco3Xml2Db.UI.Module.ViewModels {
   public class ImportXmlViewModel : ViewModelBase {
     private readonly IEventAggregator _eventAggregator;
-    private readonly IPathProvider _filePathProvider;
+    private readonly IPathProvider _pathProvider;
     private readonly IXmlProvider _xmlProvider;
 
     private readonly string _header = "Fill in the information below and press ";
@@ -153,12 +153,12 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
 
     #endregion
 
-    public ImportXmlViewModel(IEventAggregator eventAggregator, IPathProvider filePathProvider, IXmlProvider xmlProvider) {
+    public ImportXmlViewModel(IEventAggregator eventAggregator, IPathProvider pathProvider, IXmlProvider xmlProvider) {
       _eventAggregator = eventAggregator;
-      _filePathProvider = filePathProvider;
+      _pathProvider = pathProvider;
       _xmlProvider = xmlProvider;
 
-      Title = TabNames.ImportToDb.GetDescription();
+      Title = Titles.ImportToDb.GetDescription();
       SourceComponentExists = false;
       ReplaceIsChecked = false;
 
@@ -188,20 +188,23 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
     }
 
     private void GetFolder() {
-      var pathProvider = new PathProvider(_eventAggregator);
+      //var pathProvider = new PathProvider(_eventAggregator);
       var folderPath = string.IsNullOrEmpty(FileName)
                               ? FilePath
                               : Path.GetDirectoryName(FileName);
-      pathProvider.FolderPathService(folderPath);
+      //pathProvider.FolderPathService(folderPath);
+      _pathProvider.FolderPathService(folderPath);
     }
 
     private void GetFileName() {
-      var pathProvider = new PathProvider(_eventAggregator);
-      var tmpStream = pathProvider.FilePathService(FilePath);
+      //var pathProvider = new PathProvider(_eventAggregator);
+      //var tmpStream = pathProvider.FilePathService(FilePath);
 
-      if(tmpStream != null) {
-        XmlStream = tmpStream;
-      }
+      //if(tmpStream != null) {
+      //  XmlStream = tmpStream;
+      //}
+
+      XmlStream = _pathProvider.FilePathService(FilePath) ?? XmlStream;
     }
 
     private void FilePathReceived(string obj) => FilePath = obj;

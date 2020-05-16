@@ -96,7 +96,7 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
       _eventAggregator = eventAggregator;
       _xmlProvider = xmlProvider;
 
-      Title = TabNames.VehiclesGrid.GetDescription();
+      Title = Titles.VehiclesGrid.GetDescription();
 
       Columns = new ObservableCollection<string>();
       VehicleModeList = new ObservableCollection<string>();

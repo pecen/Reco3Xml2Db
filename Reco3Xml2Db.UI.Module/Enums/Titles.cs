@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel;
 
 namespace Reco3Xml2Db.UI.Module.Enums {
-  public enum TabNames {
+  public enum Titles {
+    [Description("Reco Improvement Manager")]
+    AppTitle,
     [Description("Import")]
     ImportToDb,
     [Description("Components")]

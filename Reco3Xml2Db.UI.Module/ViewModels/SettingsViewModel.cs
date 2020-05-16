@@ -110,7 +110,7 @@ namespace Reco3Xml2Db.UI.Module.ViewModels {
     public SettingsViewModel(IEventAggregator eventAggregator) {
       _eventAggregator = eventAggregator;
 
-      Title = TabNames.Settings.ToString();
+      Title = Titles.Settings.ToString();
 
       AuthenticationList = new ObservableCollection<string>();
       AuthenticationList.GetEnumValues<AuthMethod>();

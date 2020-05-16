@@ -17,8 +17,8 @@ namespace Reco3Xml2Db.UI.Module {
       //regionManager.RegisterViewWithRegion(WindowRegions.ListRegion.ToString(), typeof(ComponentsGrid));
       regionManager.RegisterViewWithRegion(WindowRegions.TabRegion.ToString(), typeof(ImportXml));
       regionManager.RegisterViewWithRegion(WindowRegions.TabRegion.ToString(), typeof(ComponentsGrid));
-      //regionManager.RegisterViewWithRegion(WindowRegions.TabRegion.ToString(), typeof(RoadmapGroupsGrid));
-      //regionManager.RegisterViewWithRegion(WindowRegions.TabRegion.ToString(), typeof(VehiclesGrid));
+      regionManager.RegisterViewWithRegion(WindowRegions.TabRegion.ToString(), typeof(RoadmapGroupsGrid));
+      regionManager.RegisterViewWithRegion(WindowRegions.TabRegion.ToString(), typeof(VehiclesGrid));
       regionManager.RegisterViewWithRegion(WindowRegions.TabRegion.ToString(), typeof(Settings));
 
       Container = containerProvider;

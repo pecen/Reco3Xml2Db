@@ -106,7 +106,7 @@
     <Compile Include="Enums\FilterableVehicleColumns.cs" />
     <Compile Include="Enums\PDSource.cs" />
     <Compile Include="Enums\PDStatus.cs" />
-    <Compile Include="Enums\TabNames.cs" />
+    <Compile Include="Enums\Titles.cs" />
     <Compile Include="Enums\ToolTipText.cs" />
     <Compile Include="Enums\ValidationStatus.cs" />
     <Compile Include="Enums\VehicleMode.cs" />
