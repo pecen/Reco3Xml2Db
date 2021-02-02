@@ -5,65 +5,79 @@ using System.Configuration;
 using System.Linq;
 
 namespace Reco3Xml2Db.DalAppConfig {
-  public class SettingsDal : ISettingsDal {
-    public SettingsDto Fetch() {
-      var connStr = ConfigurationManager.ConnectionStrings["Server"].ConnectionString;
-      var dto = HandleItemLine(connStr);
+	public class SettingsDal : ISettingsDal {
+		public SettingsDto Fetch() {
+			var connStr = ConfigurationManager.ConnectionStrings["Server"].ConnectionString;
+			var dto = HandleItemLine(connStr);
 
-      dto.XmlFilePath = ConfigurationManager.AppSettings["XmlFilePath"];
+			dto.XmlFilePath = ConfigurationManager.AppSettings["XmlFilePath"];
 
-      return dto;
-    }
+			return dto;
+		}
 
-    public void Update(SettingsDto data) {
-      // Open App.Config of executable
-      Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-      // Add Application Settings.
-      config.AppSettings.Settings.Remove("XmlFilePath");
-      config.AppSettings.Settings.Add("XmlFilePath", data.XmlFilePath);
-      // Add the ConnectionString
-      var conn = $"Data Source={data.Server};Initial Catalog={data.Database};Integrated Security={(data.Authentication == 0 ? "False" : "True")}";
-      config.ConnectionStrings.ConnectionStrings["Server"].ConnectionString = conn;
-      config.ConnectionStrings.ConnectionStrings["Server"].ProviderName = "System.Data.SqlClient";
-      // Save the configuration file.
-      config.Save(ConfigurationSaveMode.Modified);
-      // Force a reload of a changed section.
-      ConfigurationManager.RefreshSection("appSettings");
-      ConfigurationManager.RefreshSection("connectionStrings");
-    }
+		public void Update(SettingsDto data) {
+			// Open App.Config of executable
+			Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+			// Add Application Settings.
+			config.AppSettings.Settings.Remove("XmlFilePath");
+			config.AppSettings.Settings.Add("XmlFilePath", data.XmlFilePath);
+			// Add the ConnectionString
+			string conn;
+			if (data.Authentication == 0) {
+				conn = $"Data Source={data.Server};Initial Catalog={data.Database};Integrated Security=False;User Id={data.UserName};Password={data.Password}";
+			}
+			else {
+				conn = $"Data Source={data.Server};Initial Catalog={data.Database};Integrated Security=True";
+			}
 
-    private SettingsDto HandleItemLine(string line) {
-      var strarr = line
-        .Split(new char[] { ';' })
-        .Where(c => !string.IsNullOrEmpty(c))
-        .ToArray();
+			config.ConnectionStrings.ConnectionStrings["Server"].ConnectionString = conn;
+			config.ConnectionStrings.ConnectionStrings["Server"].ProviderName = "System.Data.SqlClient";
+			// Save the configuration file.
+			config.Save(ConfigurationSaveMode.Modified);
+			// Force a reload of a changed section.
+			ConfigurationManager.RefreshSection("appSettings");
+			ConfigurationManager.RefreshSection("connectionStrings");
+		}
 
-      ListDictionary list = new ListDictionary();
-      for(int i = 0; i < strarr.Count(); i++) {
-        var v = strarr[i].Split(new char[] { '=' });
-        list.Add(v[0],v[1]);
-      }
+		private SettingsDto HandleItemLine(string line) {
+			var strarr = line
+				.Split(new char[] { ';' })
+				.Where(c => !string.IsNullOrEmpty(c))
+				.ToArray();
 
-      //var entityType = strarr[0];
-      //var key = strarr[1];
-      //var content = strarr[2];
+			ListDictionary list = new ListDictionary();
+			for (int i = 0; i < strarr.Count(); i++) {
+				var v = strarr[i].Split(new char[] { '=' });
+				list.Add(v[0], v[1]);
+			}
 
-      // Newline characters are stated as "<!--NEWLINE-->" in the file
-      // Tab characters are stated as "<!--TAB-->"
-      //content = content.Replace("<!--NEWLINE-->", Environment.NewLine);
-      //content = content.Replace("<!--TAB-->", "\t");
+			//var entityType = strarr[0];
+			//var key = strarr[1];
+			//var content = strarr[2];
 
-      // Now we have the three relevant things - let developer of receiving system implement what
-      // he or she wants...
-      //HandleItem(entityType, key, content);
+			// Newline characters are stated as "<!--NEWLINE-->" in the file
+			// Tab characters are stated as "<!--TAB-->"
+			//content = content.Replace("<!--NEWLINE-->", Environment.NewLine);
+			//content = content.Replace("<!--TAB-->", "\t");
 
-      var auth = (string)list["Integrated Security"];
+			// Now we have the three relevant things - let developer of receiving system implement what
+			// he or she wants...
+			//HandleItem(entityType, key, content);
 
-      return new SettingsDto {
-        Server = (string)list["Data Source"],
-        Database = (string)list["Initial Catalog"],
-        Authentication = auth == "True" ? 1 : 0
-      };
-    }
-  }
+			var auth = (string)list["Integrated Security"];
+
+			var dto = new SettingsDto {
+				Server = (string)list["Data Source"],
+				Database = (string)list["Initial Catalog"],
+				Authentication = auth == "True" ? 1 : 0
+			};
+
+			if (dto.Authentication == 0) {
+				dto.UserName = (string)list["User Id"];
+				dto.Password = (string)list["Password"];
+			}
+
+			return dto;
+		}
+	}
 }

@@ -77,6 +77,8 @@ namespace Reco3Xml2Db.Library {
           Database = data.Database;
           Authentication = data.Authentication;
           XmlFilePath = data.XmlFilePath;
+					UserName = data.UserName;
+					Password = data.Password;
         }
       }
     }

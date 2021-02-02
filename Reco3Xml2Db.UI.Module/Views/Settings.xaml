@@ -1,194 +1,200 @@
 ﻿<UserControl
-    x:Class="Reco3Xml2Db.UI.Module.Views.Settings"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:converters="clr-namespace:Reco3Xml2Db.UI.Module.Converters"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:helpers="clr-namespace:Reco3Xml2Db.UI.Module.Helpers"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:prism="http://prismlibrary.com/"
-    d:DesignHeight="300"
-    d:DesignWidth="450"
-    prism:ViewModelLocator.AutoWireViewModel="True"
-    mc:Ignorable="d">
-    <UserControl.Resources>
-        <converters:BoolToOpacityConverter x:Key="BoolToOpacity" />
-        <converters:BoolToItalicConverter x:Key="BoolToItalic" />
-        <converters:BoolToGreyForegroundConverter x:Key="BoolToGreyForeground" />
-        <converters:EmptyStringToTooltipConverter x:Key="EmptyStringToTooltipConverter" />
+  x:Class="Reco3Xml2Db.UI.Module.Views.Settings"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:converters="clr-namespace:Reco3Xml2Db.UI.Module.Converters"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:helpers="clr-namespace:Reco3Xml2Db.UI.Module.Helpers"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:prism="http://prismlibrary.com/"
+  d:DesignHeight="300"
+  d:DesignWidth="450"
+  prism:ViewModelLocator.AutoWireViewModel="True"
+  mc:Ignorable="d">
+  <UserControl.Resources>
+    <converters:BoolToOpacityConverter x:Key="BoolToOpacity" />
+    <converters:BoolToItalicConverter x:Key="BoolToItalic" />
+    <converters:BoolToGreyForegroundConverter x:Key="BoolToGreyForeground" />
+    <converters:EmptyStringToTooltipConverter x:Key="EmptyStringToTooltipConverter" />
 
-        <!--<Style TargetType="ToolTip">
+    <!--<Style TargetType="ToolTip">
             <Setter Property="Background" Value="LightYellow" />
         </Style>-->
-    </UserControl.Resources>
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="100" />
-            <ColumnDefinition Width="50*" />
-            <ColumnDefinition Width="7*" />
-            <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
+  </UserControl.Resources>
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="100" />
+      <ColumnDefinition Width="50*" />
+      <ColumnDefinition Width="7*" />
+      <ColumnDefinition Width="Auto" />
+    </Grid.ColumnDefinitions>
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="30" />
-            <RowDefinition Height="30" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="30" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-        <Label
-            Grid.ColumnSpan="4"
-            Margin="0,5"
-            HorizontalAlignment="Center"
-            Content="{Binding PageHeader}"
-            FontSize="20" />
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="30" />
+      <RowDefinition Height="30" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="30" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+    <Label
+      Grid.ColumnSpan="4"
+      Margin="0,5"
+      HorizontalAlignment="Center"
+      Content="{Binding PageHeader}"
+      FontSize="20" />
 
-        <!--  Here goes Server row  -->
-        <TextBlock
-            Grid.Row="1"
-            Margin="5,5,0,5"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Center"
-            Text="Server: " />
-        <TextBox
-            Grid.Row="1"
-            Grid.Column="1"
-            Margin="0,5,-8,5"
-            Text="{Binding Server, UpdateSourceTrigger=PropertyChanged}"
-            ToolTip="{Binding ServerToolTip}" />
+    <!--  Here goes Server row  -->
+    <TextBlock
+      Grid.Row="1"
+      Margin="5,5,0,5"
+      HorizontalAlignment="Right"
+      VerticalAlignment="Center"
+      Text="Server: " />
+    <TextBox
+      Grid.Row="1"
+      Grid.Column="1"
+      Margin="0,5,-8,5"
+      Text="{Binding Server, UpdateSourceTrigger=PropertyChanged}"
+      ToolTip="{Binding ServerToolTip}" />
 
-        <Button
-            Grid.Row="1"
-            Grid.Column="2"
-            Width="25"
-            Height="20"
-            Margin="0,-1,-13,0"
-            HorizontalAlignment="Stretch"
-            VerticalAlignment="Stretch"
-            Command="{Binding GetDbCommand}"
-            Content="..."
-            ToolTip="{Binding DbDialogButtonToolTip}" />
+    <Button
+      Grid.Row="1"
+      Grid.Column="2"
+      Width="25"
+      Height="20"
+      Margin="0,-1,-13,0"
+      HorizontalAlignment="Stretch"
+      VerticalAlignment="Stretch"
+      Command="{Binding GetDbCommand}"
+      Content="..."
+      ToolTip="{Binding DbDialogButtonToolTip}" />
 
-        <!--  Here goes database row  -->
-        <TextBlock
-            Grid.Row="2"
-            Margin="5,5,0,5"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Center"
-            FontStyle="{Binding HasServerValue, Converter={StaticResource BoolToItalic}}"
-            Foreground="{Binding HasServerValue, Converter={StaticResource BoolToGreyForeground}}"
-            Text="Database: " />
-        <TextBox
-            Grid.Row="2"
-            Grid.Column="1"
-            Grid.ColumnSpan="2"
-            Margin="0,5,0,5"
-            FontStyle="{Binding HasServerValue, Converter={StaticResource BoolToItalic}}"
-            IsEnabled="{Binding HasServerValue}"
-            Text="{Binding DbName, UpdateSourceTrigger=PropertyChanged}"
-            ToolTip="{Binding DbToolTip}" />
+    <!--  Here goes database row  -->
+    <TextBlock
+      Grid.Row="2"
+      Margin="5,5,0,5"
+      HorizontalAlignment="Right"
+      VerticalAlignment="Center"
+      FontStyle="{Binding HasServerValue, Converter={StaticResource BoolToItalic}}"
+      Foreground="{Binding HasServerValue, Converter={StaticResource BoolToGreyForeground}}"
+      Text="Database: " />
+    <TextBox
+      Grid.Row="2"
+      Grid.Column="1"
+      Grid.ColumnSpan="2"
+      Margin="0,5,0,5"
+      FontStyle="{Binding HasServerValue, Converter={StaticResource BoolToItalic}}"
+      IsEnabled="{Binding HasServerValue}"
+      Text="{Binding DbName, UpdateSourceTrigger=PropertyChanged}"
+      ToolTip="{Binding DbToolTip}" />
 
-        <!--  Here goes Authentication row  -->
-        <TextBlock
-            Grid.Row="4"
-            Margin="5,5,0,5"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Center"
-            Text="Authentication: " />
-        <ComboBox
-            Grid.Row="4"
-            Grid.Column="1"
-            Grid.ColumnSpan="2"
-            Margin="0,5,0,5"
-            ItemsSource="{Binding AuthenticationList}"
-            SelectedIndex="{Binding Authentication}"
-            ToolTip="{Binding AuthToolTip}" />
+    <!--  Here goes Authentication row  -->
+    <TextBlock
+      Grid.Row="4"
+      Margin="5,5,0,5"
+      HorizontalAlignment="Right"
+      VerticalAlignment="Center"
+      Text="Authentication: " />
+    <ComboBox
+      Grid.Row="4"
+      Grid.Column="1"
+      Grid.ColumnSpan="2"
+      Margin="0,5,0,5"
+      ItemsSource="{Binding AuthenticationList}"
+      SelectedIndex="{Binding Authentication}"
+      ToolTip="{Binding AuthToolTip}" />
 
-        <!--  Here goes the User name row  -->
-        <TextBlock
-            Grid.Row="5"
-            Margin="5,5,0,5"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Center"
-            FontStyle="{Binding IsUidPwdAuth, Converter={StaticResource BoolToItalic}}"
-            Foreground="{Binding IsUidPwdAuth, Converter={StaticResource BoolToGreyForeground}}"
-            Text="User name: " />
-        <TextBox
-            Grid.Row="5"
-            Grid.Column="1"
-            Grid.ColumnSpan="2"
-            Margin="0,5,0,5"
-            FontStyle="{Binding IsUidPwdAuth, Converter={StaticResource BoolToItalic}}"
-            IsEnabled="{Binding IsUidPwdAuth}"
-            ToolTip="{Binding UserNameToolTip}" />
+    <!--  Here goes the User name row  -->
+    <TextBlock
+      Grid.Row="5"
+      Margin="5,5,0,5"
+      HorizontalAlignment="Right"
+      VerticalAlignment="Center"
+      FontStyle="{Binding IsUidPwdAuth, Converter={StaticResource BoolToItalic}}"
+      Foreground="{Binding IsUidPwdAuth, Converter={StaticResource BoolToGreyForeground}}"
+      Text="User name: " />
+    <TextBox
+      Grid.Row="5"
+      Grid.Column="1"
+      Grid.ColumnSpan="2"
+      Margin="0,5,0,5"
+      FontStyle="{Binding IsUidPwdAuth, Converter={StaticResource BoolToItalic}}"
+      IsEnabled="{Binding IsUidPwdAuth}"
+      Text="{Binding UserName}"
+      ToolTip="{Binding UserNameToolTip}" />
 
-        <!--  Here goes the Password row  -->
-        <TextBlock
-            Grid.Row="6"
-            Margin="5,5,0,5"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Center"
-            FontStyle="{Binding IsUidPwdAuth, Converter={StaticResource BoolToItalic}}"
-            Foreground="{Binding IsUidPwdAuth, Converter={StaticResource BoolToGreyForeground}}"
-            Text="Password: " />
-        <PasswordBox
-            Grid.Row="6"
-            Grid.Column="1"
-            Grid.ColumnSpan="2"
-            Margin="0,5,0,5"
-            helpers:PasswordHelper.Attach="True"
-            helpers:PasswordHelper.Password="{Binding Text, ElementName=plain, Mode=TwoWay}"
-            FontStyle="{Binding IsUidPwdAuth, Converter={StaticResource BoolToItalic}}"
-            IsEnabled="{Binding IsUidPwdAuth}"
-            ToolTip="{Binding PasswordToolTip}" />
+    <!--  Here goes the Password row  -->
+    <TextBlock
+      Grid.Row="6"
+      Margin="5,5,0,5"
+      HorizontalAlignment="Right"
+      VerticalAlignment="Center"
+      FontStyle="{Binding IsUidPwdAuth, Converter={StaticResource BoolToItalic}}"
+      Foreground="{Binding IsUidPwdAuth, Converter={StaticResource BoolToGreyForeground}}"
+      Text="Password: " />
+    <StackPanel
+      Grid.Row="6"
+      Grid.Column="1"
+      Grid.ColumnSpan="2"
+      Margin="0,5,0,5">
+      <PasswordBox
+        helpers:PasswordHelper.Attach="True"
+        helpers:PasswordHelper.Password="{Binding Text, ElementName=plain, Mode=TwoWay}"
+        FontStyle="{Binding IsUidPwdAuth, Converter={StaticResource BoolToItalic}}"
+        IsEnabled="{Binding IsUidPwdAuth}"
+        ToolTip="{Binding PasswordToolTip}" />
+      <TextBlock
+        Name="plain"
+        Height="0"
+        Text="{Binding Password, Mode=TwoWay}" />
+    </StackPanel>
+    <!--  Here goes XmlFilePath row  -->
+    <TextBlock
+      Grid.Row="3"
+      Margin="5,5,0,5"
+      HorizontalAlignment="Right"
+      VerticalAlignment="Center"
+      Text="Xml File Path: " />
+    <TextBox
+      Grid.Row="3"
+      Grid.Column="1"
+      Margin="0,5,-8,5"
+      DataContext="{Binding}"
+      Text="{Binding XmlFilePath}">
+      <TextBox.ToolTip>
+        <MultiBinding Converter="{StaticResource EmptyStringToTooltipConverter}">
+          <Binding Path="XmlFilePath" />
+          <Binding Path="XmlFilePathToolTip" />
+        </MultiBinding>
+      </TextBox.ToolTip>
+    </TextBox>
+    <!--  ToolTip="{Binding XmlFilePath, Converter={StaticResource EmptyStringToTooltipConverter}}" />  -->
 
-        <!--  Here goes XmlFilePath row  -->
-        <TextBlock
-            Grid.Row="3"
-            Margin="5,5,0,5"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Center"
-            Text="Xml File Path: " />
-        <TextBox
-            Grid.Row="3"
-            Grid.Column="1"
-            Margin="0,5,-8,5"
-            DataContext="{Binding}"
-            Text="{Binding XmlFilePath}">
-            <TextBox.ToolTip>
-                <MultiBinding Converter="{StaticResource EmptyStringToTooltipConverter}">
-                    <Binding Path="XmlFilePath" />
-                    <Binding Path="XmlFilePathToolTip" />
-                </MultiBinding>
-            </TextBox.ToolTip>
-        </TextBox>
-        <!--  ToolTip="{Binding XmlFilePath, Converter={StaticResource EmptyStringToTooltipConverter}}" />  -->
+    <Button
+      Grid.Row="3"
+      Grid.Column="2"
+      Width="25"
+      Height="20"
+      Margin="0,-1,-13,0"
+      HorizontalAlignment="Stretch"
+      VerticalAlignment="Stretch"
+      Command="{Binding GetFilePathCommand}"
+      Content="..."
+      ToolTip="{Binding XmlFileDialogButtonToolTip}" />
 
-        <Button
-            Grid.Row="3"
-            Grid.Column="2"
-            Width="25"
-            Height="20"
-            Margin="0,-1,-13,0"
-            HorizontalAlignment="Stretch"
-            VerticalAlignment="Stretch"
-            Command="{Binding GetFilePathCommand}"
-            Content="..."
-            ToolTip="{Binding XmlFileDialogButtonToolTip}" />
-
-        <Button
-            Grid.Row="2"
-            Grid.RowSpan="2"
-            Grid.Column="3"
-            Width="75"
-            Margin="5,5,10,5"
-            HorizontalAlignment="Stretch"
-            VerticalAlignment="Stretch"
-            Command="{Binding SaveSettingsCommand}"
-            Content="Save"
-            ToolTip="{Binding SaveButtonToolTip}" />
-    </Grid>
+    <Button
+      Grid.Row="2"
+      Grid.RowSpan="2"
+      Grid.Column="3"
+      Width="75"
+      Margin="5,5,10,5"
+      HorizontalAlignment="Stretch"
+      VerticalAlignment="Stretch"
+      Command="{Binding SaveSettingsCommand}"
+      Content="Save"
+      ToolTip="{Binding SaveButtonToolTip}" />
+  </Grid>
 </UserControl>

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.902
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reco3Xml2Db.Dal", "Reco3Xml2Db.Dal\Reco3Xml2Db.Dal.csproj", "{0728DEB0-011D-44AE-8730-6858DF910C40}"
 EndProject
@@ -11,6 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reco3Xml2Db.Library", "Reco
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{142F08C1-A94B-4930-B5A1-ED618DD50B20}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		nuget.config = nuget.config
 	EndProjectSection
 EndProject
