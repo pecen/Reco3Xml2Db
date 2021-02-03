@@ -2,9 +2,13 @@
 using Reco3Xml2Db.Library;
 using Reco3Xml2Db.UI.Module.Services;
 using Reco3Xml2Db.Utilities.Extensions;
+using System;
 using System.Windows;
 using System.Windows.Controls;
+// The below using should be changed to Microsoft.Xaml.Behaviors. 
+// System.Windows.Interactivity is deprecated.
 using System.Windows.Interactivity;
+//using Microsoft.Xaml.Behaviors;
 
 namespace Reco3Xml2Db.UI.Module.Behaviors {
   public class SetCellValueToCommandParameterBehavior : Behavior<MenuItem> {

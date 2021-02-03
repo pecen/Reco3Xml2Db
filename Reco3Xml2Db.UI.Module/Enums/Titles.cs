@@ -4,7 +4,7 @@ namespace Reco3Xml2Db.UI.Module.Enums {
   public enum Titles {
     [Description("Reco Improvement Manager")]
     AppTitle,
-    [Description("Import")]
+    [Description("Import Components")]
     ImportToDb,
     [Description("Components")]
     ComponentsGrid,

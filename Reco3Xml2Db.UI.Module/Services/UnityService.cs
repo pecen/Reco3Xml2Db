@@ -7,7 +7,6 @@ using System.Windows;
 using Unity;
 using Unity.Injection;
 using Unity.Lifetime;
-using Unity.Registration;
 using Unity.Resolution;
 
 namespace Reco3Xml2Db.UI.Module.Services {
@@ -47,9 +46,14 @@ namespace Reco3Xml2Db.UI.Module.Services {
     //public static UnityService Get() {
     //  return _instance;
     //}
+
     public static IContainerProvider Get() {
-      return (Application.Current as PrismApplication).Container; // _instance;
+      return (Application.Current as PrismApplication).Container; 
     }
+
+    //public static IUnityService Get() {
+    //  return _instance;
+    //}
 
     /// <summary>
     /// Gets the unitycontainer.
