@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Reco3Xml2Db.UI.Module.Models {
-  public class ComponentUIModel : INotifyPropertyChanged {
+  public class UIComponent : INotifyPropertyChanged {
     private bool _isChecked;
     public bool IsChecked {
       get => _isChecked;
