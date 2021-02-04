@@ -112,6 +112,7 @@
     <Compile Include="Enums\VehicleMode.cs" />
     <Compile Include="Enums\WindowRegions.cs" />
     <Compile Include="Helpers\PwdHelper.cs" />
+    <Compile Include="Models\ModelBase.cs" />
     <Compile Include="Models\UIComponent.cs" />
     <Compile Include="Properties\ComponentsGrid.Designer.cs">
       <AutoGen>True</AutoGen>
