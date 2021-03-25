@@ -4,6 +4,7 @@ using Reco3Xml2Db.Dal.Dto;
 using Reco3Xml2Db.Dal.Enums;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
 namespace Reco3Xml2Db.Library {
@@ -55,15 +56,19 @@ namespace Reco3Xml2Db.Library {
       return DataPortal.Fetch<ComponentList>(pdNumber);
     }
 
-    public static async Task<ComponentList> GetFilteredListAsync(IEnumerable<ComponentInfo> components) {
-      return await DataPortal.FetchAsync<ComponentList>(components);
-    }
+		public static async Task<ComponentList> GetFilteredListAsync(IEnumerable<ComponentInfo> components) {
+			return await DataPortal.FetchAsync<ComponentList>(components);
+		}
 
-    #endregion
+		public static async Task<ComponentList> GetFilteredListAsync(ObservableCollection<ComponentInfo> components) {
+			return await DataPortal.FetchAsync<ComponentList>(components);
+		}
 
-    #region Data Access
+		#endregion
 
-    [CreateChild]
+		#region Data Access
+
+		[CreateChild]
     private void Child_Create() {
       // Do initialization here when creating the object.
     }

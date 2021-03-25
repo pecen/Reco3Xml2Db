@@ -146,7 +146,7 @@
                         Command="{Binding CopyToClipboard}"
                         CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent.PlacementTarget.CurrentItem.Xml}"
                         Header="{x:Static properties:ComponentsGrid.Copy}">-->
-          <MenuItem Command="{Binding CopyToClipboard}" Header="{x:Static properties:ComponentsGrid.Copy}">
+					<MenuItem Command="{Binding Component.CopyToClipboard}" Header="{x:Static properties:ComponentsGrid.Copy}">
             <MenuItem.Icon>
               <commonControls:IconDisplayer HorizontalAlignment="Center" Icon="{x:Static commonIcons:StandardActionIcons.Copy}" />
             </MenuItem.Icon>
@@ -167,20 +167,20 @@
             </DataTemplate>
           </DataGridCheckBoxColumn.HeaderTemplate>
         </DataGridCheckBoxColumn>
-        <DataGridTextColumn Binding="{Binding ComponentId}" Header="{x:Static properties:ComponentsGrid.ComponentId}" />
-        <DataGridTextColumn Binding="{Binding PDNumber}" Header="{x:Static properties:ComponentsGrid.PDNumber}" />
-        <DataGridTextColumn Binding="{Binding DownloadedTimestamp}" Header="{x:Static properties:ComponentsGrid.Downloaded}" />
-        <DataGridTextColumn Binding="{Binding Description}" Header="{x:Static properties:ComponentsGrid.Description}" />
-        <DataGridTextColumn Binding="{Binding PDStatus, Converter={StaticResource StatusIntToEnumValueConverter}, ConverterParameter={x:Type enums:PDStatus}}" Header="{x:Static properties:ComponentsGrid.PDStatus}" />
-        <DataGridTextColumn Binding="{Binding ComponentType, Converter={StaticResource StatusIntToEnumValueConverter}, ConverterParameter={x:Type enums:ComponentType}}" Header="{x:Static properties:ComponentsGrid.Type}" />
-        <DataGridTextColumn Binding="{Binding PDSource, Converter={StaticResource StatusIntToEnumValueConverter}, ConverterParameter={x:Type enums:PDSource}}" Header="{x:Static properties:ComponentsGrid.PDSource}" />
-        <DataGridTextColumn Binding="{Binding SourceComponentId}" Header="{x:Static properties:ComponentsGrid.SourceComponentId}" />
+        <DataGridTextColumn Binding="{Binding Component.ComponentId}" Header="{x:Static properties:ComponentsGrid.ComponentId}" />
+				<DataGridTextColumn Binding="{Binding Component.PDNumber}" Header="{x:Static properties:ComponentsGrid.PDNumber}" />
+				<DataGridTextColumn Binding="{Binding Component.DownloadedTimestamp}" Header="{x:Static properties:ComponentsGrid.Downloaded}" />
+				<DataGridTextColumn Binding="{Binding Component.Description}" Header="{x:Static properties:ComponentsGrid.Description}" />
+				<DataGridTextColumn Binding="{Binding Component.PDStatus, Converter={StaticResource StatusIntToEnumValueConverter}, ConverterParameter={x:Type enums:PDStatus}}" Header="{x:Static properties:ComponentsGrid.PDStatus}" />
+				<DataGridTextColumn Binding="{Binding Component.ComponentType, Converter={StaticResource StatusIntToEnumValueConverter}, ConverterParameter={x:Type enums:ComponentType}}" Header="{x:Static properties:ComponentsGrid.Type}" />
+				<DataGridTextColumn Binding="{Binding Component.PDSource, Converter={StaticResource StatusIntToEnumValueConverter}, ConverterParameter={x:Type enums:PDSource}}" Header="{x:Static properties:ComponentsGrid.PDSource}" />
+				<DataGridTextColumn Binding="{Binding Component.SourceComponentId}" Header="{x:Static properties:ComponentsGrid.SourceComponentId}" />
         <DataGridTemplateColumn Width="200" Header="{x:Static properties:ComponentsGrid.Xml}">
           <DataGridTemplateColumn.CellTemplate>
             <DataTemplate>
               <TextBlock>
-                <Hyperlink Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=views:ComponentsGrid}, Path=DataContext.ViewXmlCommand}" CommandParameter="{Binding Xml}">
-                  <TextBlock Text="{Binding Xml}" />
+                <Hyperlink Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=views:ComponentsGrid}, Path=DataContext.ViewXmlCommand}" CommandParameter="{Binding Component.Xml}">
+                  <TextBlock Text="{Binding Component.Xml}" />
                 </Hyperlink>
               </TextBlock>
             </DataTemplate>
